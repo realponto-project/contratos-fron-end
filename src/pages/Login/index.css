@@ -1,0 +1,70 @@
+.App {
+  text-align: center;
+}
+.App-aside {
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-container-inputs-login {
+  display: flex;
+  flex-direction: column;
+}
+
+.App-block-inputs-login {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  align-items: flex-start;
+}
+
+.App-block-inputs-login label {
+  color: #666;
+  font-size: 16px;
+  margin-right: 15px;
+}
+
+.App-block-inputs-login input {
+  width: 200px;
+  height: 32px;
+  font-size: 14px;
+  color: #666;
+  border: 0;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  transition: border-bottom 0.8s;
+  transition-timing-function: ease;
+}
+
+.App-block-inputs-login input:focus {
+  border-bottom: 1px solid #3aa;
+}
+
+aside button[type="submit"] {
+  width: 100px;
+  height: 30px;
+  border: 0;
+  background: #3dd;
+  border-radius: 2px;
+  padding: 5px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
