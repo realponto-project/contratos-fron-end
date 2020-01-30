@@ -8,3 +8,12 @@ export function onSubmit(value) {
     });
   };
 }
+
+export function Logout(value) {
+  return dispatch => {
+    dispatch({
+      type: action.LOGIN.LOGOUT,
+      payload: null
+    });
+  };
+}
