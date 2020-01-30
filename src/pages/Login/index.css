@@ -25,39 +25,60 @@
 }
 
 .App-block-inputs-login label {
-  color: #666;
-  font-size: 16px;
+  color: rgb(43, 43, 43);
+  font-size: 18px;
   margin-right: 15px;
 }
 
 .App-block-inputs-login input {
-  width: 200px;
-  height: 32px;
-  font-size: 14px;
+  width: 250px;
+  height: 42px;
+  font-size: 15px;
   color: #666;
   border: 0;
   border-bottom: 1px solid #ccc;
+  padding-left: 5px;
   outline: none;
   transition: border-bottom 0.8s;
   transition-timing-function: ease;
 }
-
+.div-contrato {
+  display: flex;
+  width: 250px;
+  height: 55px;
+  flex-direction: column;
+  margin-bottom: 15px;
+  align-items: center;
+}
+.App-block-inputs-login ::placeholder {
+  color: rgb(177, 177, 177);
+}
+.img-Login {
+  width: 300px;
+  margin-bottom: 10px;
+  height: 65px;
+}
 .App-block-inputs-login input:focus {
-  border-bottom: 1px solid #3aa;
+  border-bottom: 1px solid #0b0550;
 }
 
 aside button[type="submit"] {
   width: 100px;
-  height: 30px;
+  height: 35px;
   border: 0;
-  background: #3dd;
+  background: #0b0550;
   border-radius: 2px;
   padding: 5px 20px;
   font-size: 14px;
   font-weight: bold;
-  color: #555;
+  color: #fff;
   cursor: pointer;
-  margin-top: 15px;
+  margin-top: 25px;
+  outline: none;
+}
+
+aside button[type="submit"]:active {
+  background: #180c99;
 }
 
 @keyframes App-logo-spin {

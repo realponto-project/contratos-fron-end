@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-// import { Container } from './styles';
-
-export default class dashPage extends Component {
+class DashPage extends Component {
   render() {
-    return <h1>welcome to the hell</h1>;
+    return <h1>teste</h1>;
   }
 }
+
+export default DashPage;

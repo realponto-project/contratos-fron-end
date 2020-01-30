@@ -1,0 +1,69 @@
+.menu {
+  height: calc(100vh - 40px);
+  width: 190px !important;
+  position: fixed !important;
+  top: 40px;
+  overflow-y: auto;
+}
+
+.menuIcon-icon-ball {
+  width: 4px;
+  height: 4px;
+  border-radius: 2px;
+  background-color: red;
+}
+.menuIcon {
+  background-color: #000c17;
+  border-bottom: 1px solid rgb(90, 91, 92);
+  color: white;
+  width: 190px !important;
+  position: fixed;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.menuIcon-icon {
+  margin: 10px;
+  padding: 3px !important;
+  cursor: pointer;
+}
+
+.menuIcon-icon-notPermission {
+  margin: 10px;
+  padding: 3px !important;
+  cursor: not-allowed;
+}
+
+.menuIcon-icon-notf {
+  margin: 10px;
+  padding: 3px !important;
+  cursor: pointer;
+  display: flex;
+}
+
+.menuIcon-icon-notPermission-notf {
+  margin: 10px;
+  padding: 3px !important;
+  cursor: not-allowed;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #000c17;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #003063;
+}
