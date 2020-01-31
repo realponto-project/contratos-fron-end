@@ -1,24 +1,69 @@
 import React, { Component } from "react";
-import { Button } from "antd";
+import { Button, Input } from "antd";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { Logout } from "../Login/LoginRedux/action";
+import { NewUser } from "../../services/user";
 
-// import { Container } from './styles';
+import "./index.css";
 
 class DashPage extends Component {
+  state = {
+    email: "",
+    username: "",
+    password: ""
+  };
+
+  newUser = async () => {
+    const value = this.state;
+    const response = await NewUser(value);
+    console.log(response);
+  };
+
+  onChange = e => {
+    const { value, name } = e.target;
+
+    this.setState({
+      [name]: value
+    });
+  };
   render() {
     return (
-      <>
-        <Button onClick={this.props.Logout}>logout</Button>
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <h1>welcome to the hell</h1>
-      </>
+        <div className="div-container-newUser">
+          <div>
+            <label>email</label>
+            <Input
+              onChange={this.onChange}
+              value={this.state.email}
+              name="email"
+              placeholder="email"
+            />
+          </div>
+          <div>
+            <label>username</label>
+            <Input
+              onChange={this.onChange}
+              value={this.state.username}
+              name="username"
+              placeholder="username"
+            />
+          </div>
+          <div>
+            <label>password</label>
+            <Input
+              onChange={this.onChange}
+              value={this.state.password}
+              name="password"
+              placeholder="password"
+            />
+          </div>
+        </div>
+        <Button onClick={this.newUser} type="submit">
+          Criar
+        </Button>
+      </div>
     );
   }
-}
-
-function mapDispacthToProps(dispach) {
-  return bindActionCreators({ Logout }, dispach);
 }
 
 function mapStateToProps(state) {
@@ -27,4 +72,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(DashPage);
+export default connect(mapStateToProps)(DashPage);

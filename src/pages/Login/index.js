@@ -64,7 +64,12 @@ class LoginPage extends Component {
       this.setState(data);
     }
   };
-
+  onFocus = () => {
+    this.setState({
+      message: "",
+      fieldError: ""
+    });
+  };
   render() {
     return (
       <>
@@ -79,6 +84,7 @@ class LoginPage extends Component {
                 <label>Email</label>
                 <input
                   onChange={this.onChange}
+                  onFocus={this.onFocus}
                   autoFocus
                   name="email"
                   required
@@ -109,6 +115,8 @@ class LoginPage extends Component {
               <div className="App-block-inputs-login">
                 <label>Senha</label>
                 <input
+                  onFocus={this.onFocus}
+                  onBlur={this.onFocus}
                   onChange={this.onChange}
                   name="password"
                   type="password"
@@ -160,7 +168,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(LoginPage);
+export default connect(mapStateToProps, mapDispacthToProps)(LoginPage);
