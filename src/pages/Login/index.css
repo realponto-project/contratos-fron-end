@@ -42,6 +42,7 @@
   transition: border-bottom 0.8s;
   transition-timing-function: ease;
 }
+
 .div-contrato {
   display: flex;
   width: 250px;

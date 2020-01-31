@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import { Menu, Icon, Tooltip } from "antd";
-import "./index.css";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
 import "antd/dist/antd.css";
+import "./index.css";
+
+import { Logout } from "../../pages/Login/LoginRedux/action";
 
 const SubMenu = Menu.SubMenu;
 
@@ -86,7 +90,7 @@ class SideBar extends Component {
               key="logout"
               className="menuIcon-icon"
               type="logout"
-              // onClick={() => this.logout()}
+              onClick={() => this.props.Logout()}
             />
           </Tooltip>
           <Tooltip placement="bottom" title={"Logout"}>
@@ -135,4 +139,14 @@ class SideBar extends Component {
   }
 }
 
-export default SideBar;
+function mapDispacthToProps(dispach) {
+  return bindActionCreators({ Logout }, dispach);
+}
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+export default connect(mapStateToProps, mapDispacthToProps)(SideBar);

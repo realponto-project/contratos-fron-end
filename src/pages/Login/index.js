@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
 
+import { Input } from "antd";
+
 import "./index.css";
 
 import { login } from "../../services/login";
@@ -12,7 +14,9 @@ import { onSubmit } from "./LoginRedux/action";
 class LoginPage extends Component {
   state = {
     email: "",
-    password: ""
+    password: "",
+    message: "",
+    fieldError: ""
   };
 
   onChange = e => {
@@ -44,8 +48,14 @@ class LoginPage extends Component {
 
     const { status, data } = await login(value);
 
+    console.log(status, data);
+
     if (status === 200) {
       await this.props.onSubmit(data);
+    }
+    if (status === 401) {
+      console.log(data);
+      this.setState(data);
     }
   };
 
@@ -70,6 +80,9 @@ class LoginPage extends Component {
                   placeholder="Digite seu email"
                   onKeyPress={this.enterKey}
                 />
+                {this.state.fieldError === "email" && (
+                  <label>{this.state.message}</label>
+                )}
               </div>
               <div className="App-block-inputs-login">
                 <label>Senha</label>
@@ -82,6 +95,9 @@ class LoginPage extends Component {
                   placeholder="Digite sua senha"
                   onKeyPress={this.enterKey}
                 />
+                {this.state.fieldError === "password" && (
+                  <label>{this.state.message}</label>
+                )}
               </div>
             </div>
             <button onClick={this.handleSubmit} type="submit">
@@ -106,7 +122,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(LoginPage);
+export default connect(mapStateToProps, mapDispacthToProps)(LoginPage);
