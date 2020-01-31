@@ -51,13 +51,30 @@ class SideBar extends Component {
     if (this.state.redirect) {
       this.changeRedirectState();
       switch (this.state.current) {
-        case "novoUsuario_add":
+        case "user_dash":
           return (
             <Redirect
               push
               to={{
-                pathname: "/logged/novoUsuario/add",
-                state: { from: this.props.location }
+                pathname: "/logged/user/dash"
+              }}
+            />
+          );
+        case "newClient_add":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/newClient/add"
+              }}
+            />
+          );
+        case "newItem_add":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/newItem/add"
               }}
             />
           );
@@ -132,6 +149,30 @@ class SideBar extends Component {
               <Icon type="pie-chart" />
               Gráficos
             </Menu.Item>
+
+            <Menu.Item key="user_dash">
+              <Icon type="user-add" />
+              Usuário
+            </Menu.Item>
+          </SubMenu>
+          <SubMenu
+            key="Cadastros"
+            title={
+              <span>
+                <Icon type="plus" />
+                <span>Cadastros</span>
+              </span>
+            }
+          >
+            <Menu.Item key="newClient_add">
+              <Icon type="user-add" />
+              Cliente
+            </Menu.Item>
+
+            <Menu.Item key="newItem_add">
+              <Icon type="tablet" />
+              Item
+            </Menu.Item>
           </SubMenu>
         </Menu>
       </div>
@@ -149,4 +190,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(SideBar);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(SideBar);

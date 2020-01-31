@@ -8,6 +8,9 @@ import { Logout } from "./Login/LoginRedux/action";
 // import moment from "moment";
 
 import Dash from "./Dash";
+import UserRoute from "./Gerenciar/Usuario";
+import NewClientRoute from "./Cadastros/Cliente";
+import NewItemRoute from "./Cadastros/Item";
 
 class PagesRoute extends Component {
   state = {
@@ -35,6 +38,13 @@ class PagesRoute extends Component {
       return (
         <Switch>
           <Route exact path="/logged/dash" component={Dash} />
+          <Route exact path="/logged/user/dash" component={UserRoute} />
+          <Route
+            exact
+            path="/logged/newClient/add"
+            component={NewClientRoute}
+          />
+          <Route exact path="/logged/newItem/add" component={NewItemRoute} />
         </Switch>
       );
     } else {
@@ -53,4 +63,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(PagesRoute);
