@@ -1,0 +1,58 @@
+.input-nome-item {
+  width: 50%;
+  height: 35px;
+  margin-left: 25px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-tipo-item {
+  width: 25%;
+  height: 35px;
+  margin-left: 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-codigo-item {
+  width: 20%;
+  height: 35px;
+  margin: 0 25px 0 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-nome-item:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-tipo-item:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-codigo-item:focus {
+  border-bottom: 1px solid #001529;
+}
+.div-descricao-item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.textArea-descricao-item {
+  margin: 10px 25px 0 25px;
+  font-size: 14px;
+  border-radius: 2px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  outline: none;
+}
+.textArea-descricao-item:focus {
+  border-bottom: 1px solid #001529;
+}

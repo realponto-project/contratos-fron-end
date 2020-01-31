@@ -62,14 +62,14 @@
   height: 60px;
 }
 .App-block-inputs-login input:focus {
-  border-bottom: 1px solid #0b0550;
+  border-bottom: 1px solid #001529;
 }
 
 aside button[type="submit"] {
   width: 100px;
   height: 35px;
   border: 0;
-  background: #0b0550;
+  background: #001529;
   border-radius: 2px;
   padding: 5px 20px;
   font-size: 14px;
@@ -81,7 +81,7 @@ aside button[type="submit"] {
 }
 
 aside button[type="submit"]:active {
-  background: #180c99;
+  background: #1e176d;
 }
 
 @keyframes App-logo-spin {
