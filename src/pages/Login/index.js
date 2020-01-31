@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
 
-import { Input } from "antd";
-
 import "./index.css";
+
+import { Icon } from "antd";
 
 import { login } from "../../services/login";
 import { onSubmit } from "./LoginRedux/action";
@@ -35,8 +35,14 @@ class LoginPage extends Component {
 
       const { status, data } = await login(value);
 
+      console.log(status, data);
+
       if (status === 200) {
         await this.props.onSubmit(data);
+      }
+      if (status === 401) {
+        console.log(data);
+        this.setState(data);
       }
     }
   };
@@ -79,9 +85,25 @@ class LoginPage extends Component {
                   value={this.state.email}
                   placeholder="Digite seu email"
                   onKeyPress={this.enterKey}
+                  className={
+                    this.state.fieldError === "email"
+                      ? "input-login-error"
+                      : "App-block-inputs-login"
+                  }
                 />
                 {this.state.fieldError === "email" && (
-                  <label>{this.state.message}</label>
+                  <label className="labelError-login">
+                    <Icon
+                      type="exclamation-circle"
+                      theme="filled"
+                      style={{
+                        color: "red",
+                        marginRight: "5px",
+                        fontSize: "18px"
+                      }}
+                    />
+                    {this.state.message}
+                  </label>
                 )}
               </div>
               <div className="App-block-inputs-login">
@@ -94,9 +116,25 @@ class LoginPage extends Component {
                   value={this.state.password}
                   placeholder="Digite sua senha"
                   onKeyPress={this.enterKey}
+                  className={
+                    this.state.fieldError === "password"
+                      ? "input-login-error"
+                      : "App-block-inputs-login"
+                  }
                 />
                 {this.state.fieldError === "password" && (
-                  <label>{this.state.message}</label>
+                  <label className="labelError-login">
+                    <Icon
+                      type="exclamation-circle"
+                      theme="filled"
+                      style={{
+                        color: "red",
+                        marginRight: "5px",
+                        fontSize: "18px"
+                      }}
+                    />
+                    {this.state.message}
+                  </label>
                 )}
               </div>
             </div>
@@ -122,4 +160,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(LoginPage);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(LoginPage);
