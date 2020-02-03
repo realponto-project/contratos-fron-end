@@ -20,7 +20,7 @@ class NewItemContainer extends Component {
     return (
       <div className="card-main">
         <div className="div-titulo">
-          <h1 className="h1-titulo">Item</h1>
+          <h1 className="h1-titulo">Itens</h1>
         </div>
 
         <div className="div-inputs-flex">
@@ -60,6 +60,7 @@ class NewItemContainer extends Component {
           <textarea
             className="textArea-descricao-item"
             value={this.state.descricao}
+            placeholder="DIGITE A DESCRIÇÃO"
             name="descricao"
             rows="4"
             onChange={this.onChange}

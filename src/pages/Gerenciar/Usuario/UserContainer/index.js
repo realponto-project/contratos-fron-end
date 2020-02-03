@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
 
-import { Icon } from "antd";
+import { Icon, Checkbox } from "antd";
 
 class UserContainer extends Component {
   state = {
@@ -28,7 +28,7 @@ class UserContainer extends Component {
             <input
               className="input-search-usuario"
               onChange={this.onChange}
-              placeholder="Pesquisar"
+              placeholder="PESQUISAR"
               value={this.state.search}
               name="search"
             ></input>
@@ -39,12 +39,12 @@ class UserContainer extends Component {
           </div>
         </div>
 
-        <div className="div-main">
+        <div className="div-main-usuario">
           <div className="div-info-usuario">
             <input
               className="input-info-usuario"
               onChange={this.onChange}
-              placeholder="Nome"
+              placeholder="NOME"
               value={this.state.nome}
               name="nome"
             ></input>
@@ -52,7 +52,7 @@ class UserContainer extends Component {
             <input
               className="input-info-usuario"
               onChange={this.onChange}
-              placeholder="Senha"
+              placeholder="SENHA"
               value={this.state.senha}
               name="senha"
             ></input>
@@ -60,7 +60,7 @@ class UserContainer extends Component {
             <input
               className="input-info-usuario"
               onChange={this.onChange}
-              placeholder="E-mail"
+              placeholder="E-MAIL"
               value={this.state.email}
               name="email"
             ></input>
@@ -68,7 +68,7 @@ class UserContainer extends Component {
             <input
               className="input-info-usuario"
               onChange={this.onChange}
-              placeholder="Telefone"
+              placeholder="TELEFONE"
               value={this.state.telefone}
               name="telefone"
             ></input>
@@ -78,7 +78,9 @@ class UserContainer extends Component {
             <label style={{ fontFamily: "Bebas", fontSize: "20px" }}>
               Permissoes
             </label>
-            <div className="div-permissoes-usuario"></div>
+            <div className="div-permissoes-usuario">
+              <Checkbox value="B">B</Checkbox>
+            </div>
           </div>
         </div>
         <div className="div-buttons-usuario">

@@ -78,6 +78,33 @@ class SideBar extends Component {
               }}
             />
           );
+        case "newContrato_add":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/newContrato/add"
+              }}
+            />
+          );
+        case "newIgpm_add":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/newIgpm/add"
+              }}
+            />
+          );
+        case "dashIgpm_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/dashIgpm/dash"
+              }}
+            />
+          );
         case "logout":
           return <Redirect to="/login" />;
         default:
@@ -172,6 +199,29 @@ class SideBar extends Component {
             <Menu.Item key="newItem_add">
               <Icon type="tablet" />
               Item
+            </Menu.Item>
+
+            <Menu.Item key="newContrato_add">
+              <Icon type="file-add" />
+              Contratos
+            </Menu.Item>
+          </SubMenu>
+          <SubMenu
+            key="IGPM"
+            title={
+              <span>
+                <Icon type="dollar" />
+                <span>IGPM</span>
+              </span>
+            }
+          >
+            <Menu.Item key="newIgpm_add">
+              <Icon type="user-add" />
+              Adicionar
+            </Menu.Item>
+            <Menu.Item key="dashIgpm_dash">
+              <Icon type="user-add" />
+              Gerenciar
             </Menu.Item>
           </SubMenu>
         </Menu>

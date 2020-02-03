@@ -1,0 +1,66 @@
+.div-line-igpm {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+  align-items: center;
+}
+.div-line-0-igpm {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.input-igpm {
+  width: 25%;
+  height: 38px;
+  margin-left: 10px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-igpm::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-igpm:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-igpm-direita {
+  width: 25%;
+  height: 38px;
+  margin: 0 25px 0 10px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-igpm-direita::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-igpm-direita:focus {
+  border-bottom: 1px solid #001529;
+}
+.select-igpm {
+  width: 25% !important;
+  margin-left: 25px !important;
+}
+.textArea-igpm {
+  margin: 10px 25px 0 25px;
+  font-size: 14px;
+  border-radius: 2px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  outline: none;
+  width: 100%;
+}
+.textArea-igpm::placeholder {
+  color: rgb(177, 177, 177);
+}
+.textArea-igpm:focus {
+  border-bottom: 1px solid #001529;
+}
