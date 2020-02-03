@@ -9,7 +9,8 @@ class DashPage extends Component {
   state = {
     email: "",
     username: "",
-    password: ""
+    password: "",
+    telphone: ""
   };
 
   newUser = async () => {
@@ -55,6 +56,15 @@ class DashPage extends Component {
               value={this.state.password}
               name="password"
               placeholder="password"
+            />
+          </div>
+          <div>
+            <label>Telefone</label>
+            <Input
+              onChange={this.onChange}
+              value={this.state.telphone}
+              name="telphone"
+              placeholder="telphone"
             />
           </div>
         </div>
