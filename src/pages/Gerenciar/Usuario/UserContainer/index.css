@@ -4,7 +4,7 @@
   justify-content: space-between;
   align-items: center;
 }
-.div-main {
+.div-main-usuario {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -36,14 +36,13 @@
 }
 .div-info-usuario {
   width: 45%;
-  height: 40%;
   display: flex;
   margin: 30px 0 0 25px;
   flex-direction: column;
 }
 .input-info-usuario {
-  height: 150px;
-  font-size: 16px;
+  height: 35px;
+  font-size: 14px;
   color: #666;
   padding-left: 10px;
   border: 1px solid #ccc;
@@ -63,10 +62,12 @@
 }
 .div-permissoes-usuario {
   width: 100%;
-  height: 80%;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 7px;
+  border-radius: 2px;
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 .div-buttons-usuario {
   width: 100%;
@@ -111,4 +112,7 @@
 }
 .input-info-usuario:focus {
   border-bottom: 1px solid #001529;
+}
+.ant-checkbox-wrapper {
+  margin: 0 !important;
 }

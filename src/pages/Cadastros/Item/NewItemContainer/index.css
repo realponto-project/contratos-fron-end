@@ -31,6 +31,15 @@
   border-radius: 2px;
   outline: none;
 }
+.input-nome-item::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-tipo-item::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-codigo-item::placeholder {
+  color: rgb(177, 177, 177);
+}
 .input-nome-item:focus {
   border-bottom: 1px solid #001529;
 }
@@ -55,4 +64,7 @@
 }
 .textArea-descricao-item:focus {
   border-bottom: 1px solid #001529;
+}
+.textArea-descricao-item::placeholder {
+  color: rgb(177, 177, 177);
 }
