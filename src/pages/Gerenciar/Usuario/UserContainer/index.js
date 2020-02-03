@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { NewUser } from "../../../../services/user";
 import "../../../../global.css";
 import "./index.css";
 
@@ -14,9 +15,30 @@ class UserContainer extends Component {
   };
 
   onChange = e => {
+    const { name, value } = e.target;
+
     this.setState({
-      [e.target.name]: e.target.value
+      [name]: value
     });
+  };
+
+  newUser = async () => {
+    const {
+      nome: username,
+      senha: password,
+      telefone: telphone,
+      email
+    } = this.state;
+
+    const value = {
+      username,
+      password,
+      telphone,
+      email
+    };
+
+    const response = await NewUser(value);
+    console.log(response);
   };
 
   render() {
@@ -84,7 +106,9 @@ class UserContainer extends Component {
           </div>
         </div>
         <div className="div-buttons-usuario">
-          <button className="button-salvar">Salvar</button>
+          <button className="button-salvar" onClick={this.newUser}>
+            Salvar
+          </button>
           <button className="button-excluir">Excluir</button>
         </div>
       </div>
