@@ -36,28 +36,28 @@ class NewClientContainer extends Component {
 
         <div className="div-inputs-flex">
           <input
-            className="input-nome-cliente"
+            className="input-nome"
             placeholder="RAZÃO SOCIAL / NOME"
             onChange={this.onChange}
             name="nome"
             value={this.state.nome}
           ></input>
           <input
-            className="input-cnpj-cliente"
+            className="input-cnpj"
             placeholder="CNPJ / CPF"
             onChange={this.onChange}
             name="cnpj"
             value={this.state.cnpj}
           ></input>
           <input
-            className="input-grupo-cliente"
+            className="input-grupo"
             placeholder="GRUPO"
             onChange={this.onChange}
             name="grupo"
             value={this.state.grupo}
           ></input>
           <input
-            className="input-codigo-cliente"
+            className="input-codigo"
             placeholder="CÓDIGO"
             onChange={this.onChange}
             name="codigo"
@@ -103,21 +103,7 @@ class NewClientContainer extends Component {
             <div className="div-h2-cliente">
               <h2 style={{ fontFamily: "Bebas", margin: 0 }}>Endereco</h2>
             </div>
-            <input
-              className="input-endereco-cliente"
-              placeholder="RUA"
-              onChange={this.onChange}
-              name="rua"
-              value={this.state.rua}
-            ></input>
             <div className="div-twoInfo-cliente">
-              <input
-                className="input-bairro-cliente"
-                placeholder="BAIRRO"
-                onChange={this.onChange}
-                name="bairro"
-                value={this.state.bairro}
-              ></input>
               <input
                 className="input-cep-cliente"
                 placeholder="CEP"
@@ -125,7 +111,21 @@ class NewClientContainer extends Component {
                 name="cep"
                 value={this.state.cep}
               ></input>
+              <input
+                className="input-bairro-cliente"
+                placeholder="BAIRRO"
+                onChange={this.onChange}
+                name="bairro"
+                value={this.state.bairro}
+              ></input>
             </div>
+            <input
+              className="input-endereco-cliente"
+              placeholder="RUA"
+              onChange={this.onChange}
+              name="rua"
+              value={this.state.rua}
+            ></input>
             <div className="div-twoInfo-cliente">
               <input
                 className="input-cidade-cliente"

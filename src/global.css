@@ -24,3 +24,71 @@
   display: flex;
   margin-top: 50px;
 }
+.input-nome {
+  width: 35%;
+  height: 35px;
+  margin-left: 25px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-cnpj {
+  width: 35%;
+  height: 35px;
+  margin-left: 10px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-grupo {
+  width: 15%;
+  height: 35px;
+  margin-left: 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-codigo {
+  width: 15%;
+  height: 35px;
+  margin: 0 25px 0 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-nome::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-cnpj::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-grupo::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-codigo::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-nome:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-cnpj:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-grupo:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-codigo:focus {
+  border-bottom: 1px solid #001529;
+}
