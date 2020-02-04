@@ -1,6 +1,11 @@
 import React, { Component } from "react";
+import * as R from "ramda";
 import "../../../../global.css";
 import "./index.css";
+import { NewClient } from "../../../../services/client";
+import { getAddressByZipCode } from "../../../../services/utils/viacep";
+import { validator, masks } from "./validator";
+import { message } from "antd";
 
 class NewClientContainer extends Component {
   state = {
@@ -18,16 +23,158 @@ class NewClientContainer extends Component {
     cidade: "",
     uf: "",
     complemento: "",
-    observacoes: ""
+    observacoes: "",
+    fieldErrors: {
+      nome: false,
+      cnpj: false,
+      grupo: false,
+      codigo: false,
+      nomeContato: false,
+      celularContato: false,
+      telefoneContato: false,
+      emailContato: false,
+      rua: false,
+      bairro: false,
+      cep: false,
+      cidade: false,
+      uf: false,
+      complemento: false,
+      observacoes: false
+    }
   };
 
-  onChange = e => {
+  clearState = () => {
     this.setState({
-      [e.target.name]: e.target.value
+      nome: "",
+      cnpj: "",
+      grupo: "",
+      codigo: "",
+      nomeContato: "",
+      celularContato: "",
+      telefoneContato: "",
+      emailContato: "",
+      rua: "",
+      bairro: "",
+      cep: "",
+      cidade: "",
+      uf: "",
+      complemento: "",
+      observacoes: "",
+      fieldErrors: {
+        nome: false,
+        cnpj: false,
+        grupo: false,
+        codigo: false,
+        nomeContato: false,
+        celularContato: false,
+        telefoneContato: false,
+        emailContato: false,
+        rua: false,
+        bairro: false,
+        cep: false,
+        cidade: false,
+        uf: false,
+        complemento: false,
+        observacoes: false
+      }
     });
   };
 
+  onChange = e => {
+    const { name, value } = masks(e.target.name, e.target.value);
+    this.setState({
+      [name]: value
+    });
+  };
+
+  newClient = async () => {
+    const {
+      nomeContato: name,
+      telefoneContato: telphone,
+      celularContato: celular,
+      emailContato: email,
+      cidade: city,
+      rua: street,
+      uf: state,
+      cep: zipCode,
+      bairro: neighborhood,
+      nome: razaosocial,
+      grupo: group,
+      codigo: code,
+      cnpj
+    } = this.state;
+
+    const value = {
+      name,
+      telphone,
+      celular,
+      email,
+      city,
+      street,
+      state,
+      zipCode,
+      neighborhood,
+      razaosocial,
+      group,
+      code,
+      cnpj
+    };
+
+    const { status } = await NewClient(value);
+
+    if (status === 200) {
+      this.clearState();
+      message.success("Cliente cadatrado com sucesso");
+    }
+  };
+
+  onFocus = e => {
+    const { name } = e.target;
+    const { fieldErrors } = this.state;
+
+    this.setState({
+      fieldErrors: { ...fieldErrors, [name]: false }
+    });
+  };
+
+  onBlur = async e => {
+    const { name, value } = e.target;
+    const { fieldErrors } = this.state;
+
+    this.setState({
+      fieldErrors: { ...fieldErrors, [name]: validator(name, value) }
+    });
+
+    if (name === "cep" && !validator(name, value)) {
+      const { status, data } = await getAddressByZipCode(value);
+      if (status === 200) {
+        if (R.has("erro", data)) {
+          this.setState({
+            fieldErrors: { ...fieldErrors, [name]: true }
+          });
+        } else {
+          const { logradouro: rua, bairro, localidade: cidade, uf } = data;
+          this.setState({
+            rua,
+            bairro,
+            cidade,
+            uf,
+            fieldErrors: {
+              ...fieldErrors,
+              rua: false,
+              bairro: false,
+              cidade: false,
+              uf: false
+            }
+          });
+        }
+      }
+    }
+  };
+
   render() {
+    const { state, onChange, onFocus, onBlur } = this;
+    const { fieldErrors } = state;
     return (
       <div className="card-main">
         <div className="div-titulo">
@@ -36,32 +183,40 @@ class NewClientContainer extends Component {
 
         <div className="div-inputs-flex">
           <input
-            className="input-nome"
+            className={`input-nome ${fieldErrors.nome && "input-error"}`}
             placeholder="RAZÃO SOCIAL / NOME"
-            onChange={this.onChange}
+            onChange={onChange}
             name="nome"
-            value={this.state.nome}
+            value={state.nome}
+            onFocus={onFocus}
+            onBlur={onBlur}
           ></input>
           <input
-            className="input-cnpj"
+            className={`input-cnpj ${fieldErrors.cnpj && "input-error"}`}
             placeholder="CNPJ / CPF"
-            onChange={this.onChange}
+            onChange={onChange}
             name="cnpj"
-            value={this.state.cnpj}
+            value={state.cnpj}
+            onFocus={onFocus}
+            onBlur={onBlur}
           ></input>
           <input
-            className="input-grupo"
+            className={`input-grupo ${fieldErrors.grupo && "input-error"}`}
             placeholder="GRUPO"
-            onChange={this.onChange}
+            onChange={onChange}
             name="grupo"
-            value={this.state.grupo}
+            value={state.grupo}
+            onFocus={onFocus}
+            onBlur={onBlur}
           ></input>
           <input
-            className="input-codigo"
+            className={`input-codigo ${fieldErrors.codigo && "input-error"}`}
             placeholder="CÓDIGO"
-            onChange={this.onChange}
+            onChange={onChange}
             name="codigo"
-            value={this.state.codigo}
+            value={state.codigo}
+            onFocus={onFocus}
+            onBlur={onBlur}
           ></input>
         </div>
 
@@ -71,32 +226,44 @@ class NewClientContainer extends Component {
               <h2 style={{ fontFamily: "Bebas", margin: 0 }}>Contato</h2>
             </div>
             <input
-              className="input-contato-cliente"
+              className={`input-contato-cliente ${fieldErrors.nomeContato &&
+                "input-error"}`}
               placeholder="NOME"
-              onChange={this.onChange}
+              onChange={onChange}
               name="nomeContato"
-              value={this.state.nomeContato}
+              value={state.nomeContato}
+              onFocus={onFocus}
+              onBlur={onBlur}
             ></input>
             <input
-              className="input-contato-cliente"
+              className={`input-contato-cliente ${fieldErrors.celularContato &&
+                "input-error"}`}
               placeholder="CELULAR"
-              onChange={this.onChange}
+              onChange={onChange}
               name="celularContato"
-              value={this.state.celularContato}
+              value={state.celularContato}
+              onFocus={onFocus}
+              onBlur={onBlur}
             ></input>
             <input
-              className="input-contato-cliente"
+              className={`input-contato-cliente ${fieldErrors.telefoneContato &&
+                "input-error"}`}
               placeholder="TELEFONE"
-              onChange={this.onChange}
+              onChange={onChange}
               name="telefoneContato"
-              value={this.state.telefoneContato}
+              value={state.telefoneContato}
+              onFocus={onFocus}
+              onBlur={onBlur}
             ></input>
             <input
-              className="input-contato-cliente"
+              className={`input-contato-cliente ${fieldErrors.emailContato &&
+                "input-error"}`}
               placeholder="E-MAIL"
-              onChange={this.onChange}
+              onChange={onChange}
               name="emailContato"
-              value={this.state.emailContato}
+              value={state.emailContato}
+              onFocus={onFocus}
+              onBlur={onBlur}
             ></input>
           </div>
           <div className="div-endereco-cliente">
@@ -105,11 +272,14 @@ class NewClientContainer extends Component {
             </div>
             <div className="div-twoInfo-cliente">
               <input
-                className="input-cep-cliente"
+                className={`input-cep-cliente ${fieldErrors.cep &&
+                  "input-error"}`}
                 placeholder="CEP"
-                onChange={this.onChange}
+                onChange={onChange}
                 name="cep"
-                value={this.state.cep}
+                value={state.cep}
+                onFocus={onFocus}
+                onBlur={onBlur}
               ></input>
               <input
                 className="input-bairro-cliente"
@@ -128,38 +298,46 @@ class NewClientContainer extends Component {
             ></input>
             <div className="div-twoInfo-cliente">
               <input
-                className="input-cidade-cliente"
+                className={`input-cidade-cliente ${fieldErrors.cidade &&
+                  "input-error"}`}
                 placeholder="CIDADE"
-                onChange={this.onChange}
+                onChange={onChange}
                 name="cidade"
-                value={this.state.cidade}
+                value={state.cidade}
+                onFocus={onFocus}
+                onBlur={onBlur}
               ></input>
               <input
-                className="input-uf-cliente"
+                className={`input-uf-cliente ${fieldErrors.uf &&
+                  "input-error"}`}
                 placeholder="UF"
-                onChange={this.onChange}
+                onChange={onChange}
                 name="uf"
-                value={this.state.uf}
+                value={state.uf}
+                onFocus={onFocus}
+                onBlur={onBlur}
               ></input>
             </div>
             <input
               className="input-endereco-cliente"
               placeholder="COMPLEMENTO"
-              onChange={this.onChange}
+              onChange={onChange}
               name="complemento"
-              value={this.state.complemento}
+              value={state.complemento}
             ></input>
             <input
               className="input-endereco-cliente"
               placeholder="OBSERVAÇÕES"
-              onChange={this.onChange}
+              onChange={onChange}
               name="observacoes"
-              value={this.state.observacoes}
+              value={state.observacoes}
             ></input>
           </div>
         </div>
         <div className="div-buttons-usuario">
-          <button className="button-salvar">Cadastrar</button>
+          <button className="button-salvar" onClick={this.newClient}>
+            Cadastrar
+          </button>
           <button className="button-excluir">Excluir</button>
         </div>
       </div>

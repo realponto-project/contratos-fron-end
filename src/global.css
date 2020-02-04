@@ -92,3 +92,12 @@
 .input-codigo:focus {
   border-bottom: 1px solid #001529;
 }
+
+.input-error {
+  transition: background 0.8s;
+  transition-timing-function: initial;
+  /* border-radius: 10px !important; */
+  border-bottom: 1px solid red !important;
+  border: red !important;
+  background: rgba(255, 0, 0, 0.2);
+}

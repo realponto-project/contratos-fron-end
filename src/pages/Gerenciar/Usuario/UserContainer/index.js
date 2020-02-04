@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { NewUser } from "../../../../services/user";
+import { Icon, Checkbox, message } from "antd";
 import "../../../../global.css";
 import "./index.css";
-
-import { Icon, Checkbox } from "antd";
+import { validator, masks } from "./validator";
+import { NewUser } from "../../../../services/user";
 
 class UserContainer extends Component {
   state = {
@@ -11,14 +11,36 @@ class UserContainer extends Component {
     senha: "",
     email: "",
     telefone: "",
-    search: ""
+    search: "",
+    fieldErrors: {
+      nome: false,
+      senha: false,
+      email: false,
+      telefone: false
+    }
   };
 
   onChange = e => {
-    const { name, value } = e.target;
+    const { name, value } = masks(e.target.name, e.target.value);
 
     this.setState({
       [name]: value
+    });
+  };
+
+  clearState = () => {
+    this.setState({
+      nome: "",
+      senha: "",
+      email: "",
+      telefone: "",
+      search: "",
+      fieldErrors: {
+        nome: false,
+        senha: false,
+        email: false,
+        telefone: false
+      }
     });
   };
 
@@ -37,11 +59,35 @@ class UserContainer extends Component {
       email
     };
 
-    const response = await NewUser(value);
-    console.log(response);
+    const { status } = await NewUser(value);
+
+    if (status === 200) {
+      this.clearState();
+      message.success("Usuario cadatrado com sucesso");
+    }
+  };
+
+  onFocus = e => {
+    const { name } = e.target;
+    const { fieldErrors } = this.state;
+
+    this.setState({
+      fieldErrors: { ...fieldErrors, [name]: false }
+    });
+  };
+
+  onBlur = e => {
+    let { name, value } = e.target;
+    const { fieldErrors } = this.state;
+
+    this.setState({
+      fieldErrors: { ...fieldErrors, [name]: validator(name, value) }
+    });
   };
 
   render() {
+    const state = this.state;
+    const { fieldErrors } = state;
     return (
       <div className="card-main">
         <div className="div-titulo-usuario">
@@ -51,12 +97,16 @@ class UserContainer extends Component {
               className="input-search-usuario"
               onChange={this.onChange}
               placeholder="PESQUISAR"
-              value={this.state.search}
+              value={state.search}
               name="search"
             ></input>
             <Icon
               type="search"
-              style={{ fontSize: "18px", marginRight: "5px" }}
+              style={{
+                fontSize: "18px",
+                marginRight: "5px",
+                cursor: "pointer"
+              }}
             />
           </div>
         </div>
@@ -64,35 +114,48 @@ class UserContainer extends Component {
         <div className="div-main-usuario">
           <div className="div-info-usuario">
             <input
-              className="input-info-usuario"
+              className={`input-info-usuario ${fieldErrors.nome &&
+                "input-error"}`}
               onChange={this.onChange}
               placeholder="NOME"
-              value={this.state.nome}
+              value={state.nome}
               name="nome"
+              onFocus={this.onFocus}
+              onBlur={this.onBlur}
             ></input>
 
             <input
-              className="input-info-usuario"
+              className={`input-info-usuario ${fieldErrors.senha &&
+                "input-error"}`}
               onChange={this.onChange}
               placeholder="SENHA"
-              value={this.state.senha}
+              value={state.senha}
               name="senha"
+              onFocus={this.onFocus}
+              onBlur={this.onBlur}
+              // type="password"
             ></input>
 
             <input
-              className="input-info-usuario"
+              className={`input-info-usuario ${fieldErrors.email &&
+                "input-error"}`}
               onChange={this.onChange}
               placeholder="E-MAIL"
-              value={this.state.email}
+              value={state.email}
               name="email"
+              onFocus={this.onFocus}
+              onBlur={this.onBlur}
             ></input>
 
             <input
-              className="input-info-usuario"
+              className={`input-info-usuario ${fieldErrors.telefone &&
+                "input-error"}`}
               onChange={this.onChange}
               placeholder="TELEFONE"
-              value={this.state.telefone}
+              value={state.telefone}
               name="telefone"
+              onFocus={this.onFocus}
+              onBlur={this.onBlur}
             ></input>
           </div>
 
