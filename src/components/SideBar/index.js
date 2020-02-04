@@ -60,6 +60,15 @@ class SideBar extends Component {
               }}
             />
           );
+        case "dashConsulta_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/dashConsulta/dash"
+              }}
+            />
+          );
         case "newClient_add":
           return (
             <Redirect
@@ -164,25 +173,6 @@ class SideBar extends Component {
           mode="inline"
         >
           <SubMenu
-            key="Gerenciar"
-            title={
-              <span>
-                <Icon type="bar-chart" />
-                <span>Gerenciar</span>
-              </span>
-            }
-          >
-            <Menu.Item key="dash">
-              <Icon type="pie-chart" />
-              Gráficos
-            </Menu.Item>
-
-            <Menu.Item key="user_dash">
-              <Icon type="user-add" />
-              Usuário
-            </Menu.Item>
-          </SubMenu>
-          <SubMenu
             key="Cadastros"
             title={
               <span>
@@ -204,6 +194,39 @@ class SideBar extends Component {
             <Menu.Item key="newContrato_add">
               <Icon type="file-add" />
               Contratos
+            </Menu.Item>
+          </SubMenu>
+          <SubMenu
+            key="Gerenciar"
+            title={
+              <span>
+                <Icon type="bar-chart" />
+                <span>Gerenciar</span>
+              </span>
+            }
+          >
+            <Menu.Item key="dash">
+              <Icon type="pie-chart" />
+              Gráficos
+            </Menu.Item>
+
+            <Menu.Item key="user_dash">
+              <Icon type="user-add" />
+              Usuário
+            </Menu.Item>
+          </SubMenu>
+          <SubMenu
+            key="Consulta"
+            title={
+              <span>
+                <Icon type="edit" />
+                <span>Consulta</span>
+              </span>
+            }
+          >
+            <Menu.Item key="dashConsulta_dash">
+              <Icon type="ordered-list" />
+              Gerenciar
             </Menu.Item>
           </SubMenu>
           <SubMenu
