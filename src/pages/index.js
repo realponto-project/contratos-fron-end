@@ -14,6 +14,7 @@ import NewItemRoute from "./Cadastros/Item";
 import NewContratosRoute from "./Cadastros/Contratos";
 import NewIgpmRoute from "./IGPM/AdicionarIGPM";
 import DashIgpmRoute from "./IGPM/GerenciarIGPM";
+import DashConsultaRoute from "./Consulta/GerenciarConsulta";
 
 class PagesRoute extends Component {
   state = {
@@ -52,6 +53,11 @@ class PagesRoute extends Component {
             exact
             path="/logged/newContrato/add"
             component={NewContratosRoute}
+          />
+          <Route
+            exact
+            path="/logged/dashConsulta/dash"
+            component={DashConsultaRoute}
           />
           <Route exact path="/logged/newIgpm/add" component={NewIgpmRoute} />
           <Route exact path="/logged/dashIgpm/dash" component={DashIgpmRoute} />
