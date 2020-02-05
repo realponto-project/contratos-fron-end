@@ -24,3 +24,27 @@ export const NewItem = async value => {
 
   return response;
 };
+
+export const GetAllItens = async () => {
+  const storeObject = store.getState();
+
+  const headers = {
+    authorization: `Bearer ${storeObject.login.token}`
+  };
+
+  let response = {};
+  await api
+    .get("/itens", { headers })
+    .then(resp => {
+      response = resp;
+    })
+    .catch(err => {
+      if (err.response) {
+        response = err.response;
+      } else {
+        console.log("Error", err.message);
+      }
+    });
+
+  return response;
+};

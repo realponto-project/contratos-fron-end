@@ -5,6 +5,7 @@ import { Icon, Select, message, Modal } from "antd";
 import * as R from "ramda";
 
 import { GetClientByParams } from "../../../../services/client";
+import { GetAllItens } from "../../../../services/item";
 import { validator, masks } from "./validator";
 import { getAddressByZipCode } from "../../../../services/utils/viacep";
 import {
@@ -47,7 +48,9 @@ class NewContratosContainer extends Component {
       uf: false,
       complemento: false,
       observacoes: false
-    }
+    },
+    itens: [],
+    allItens: []
   };
 
   clearState = () => {
@@ -69,6 +72,10 @@ class NewContratosContainer extends Component {
         codigo: false
       }
     });
+  };
+
+  componentDidMount = async () => {
+    await this.setState({ allItens: (await GetAllItens()).data });
   };
 
   onChange = e => {
@@ -121,13 +128,14 @@ class NewContratosContainer extends Component {
       const { status, data } = await GetContractByParams({ code: value });
       if (status === 200 && data) {
         const {
-          id: contractId,
+          code: contractId,
           status,
           type: tipo,
           stockBase: base,
           client: { id: clientId, razaosocial, cnpj, group: grupo }
         } = data;
 
+        console.log(status, data);
         this.setState({
           contractId,
           status,
@@ -141,6 +149,32 @@ class NewContratosContainer extends Component {
       }
     } else {
       this.setState({ contractId: "" });
+    }
+
+    if (name === "cep" && !validator(name, value)) {
+      const { status, data } = await getAddressByZipCode(value);
+      if (status === 200) {
+        if (R.has("erro", data)) {
+          this.setState({
+            fieldErrors: { ...fieldErrors, [name]: true }
+          });
+        } else {
+          const { logradouro: rua, bairro, localidade: cidade, uf } = data;
+          this.setState({
+            rua,
+            bairro,
+            cidade,
+            uf,
+            fieldErrors: {
+              ...fieldErrors,
+              rua: false,
+              bairro: false,
+              cidade: false,
+              uf: false
+            }
+          });
+        }
+      }
     }
   };
 
@@ -214,8 +248,41 @@ class NewContratosContainer extends Component {
         Item
       </label>
       <div className="div-line-modal">
-        <input className="input-item-modal" placeholder="ITEM"></input>
-        <input className="input-codigo-modal" placeholder="CÒDIGO"></input>
+        <Select
+          className="input-item-modal"
+          size="large"
+          showSearch
+          placeholder="Selecione o item"
+          optionFilterProp="children"
+          value={this.state.item}
+          // onChange={this.onChangeItem}
+          filterOption={(input, option) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
+            0
+          }
+        >
+          {this.state.allItens.map(value => (
+            <Option value={value.name}> {value.name}</Option>
+          ))}
+        </Select>
+        {/* <input className="input-codigo-modal" placeholder="CÒDIGO"></input> */}
+        <Select
+          className="input-codigo-modal"
+          size="large"
+          showSearch
+          placeholder="Selecione o código"
+          optionFilterProp="children"
+          value={this.state.codigoItem}
+          // onChange={this.onChangeItem}
+          filterOption={(input, option) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
+            0
+          }
+        >
+          {this.state.allItens.map(value => (
+            <Option value={value.code}>{value.code}</Option>
+          ))}
+        </Select>
       </div>
       <div className="div-twoInfo-modal">
         <input
@@ -298,41 +365,6 @@ class NewContratosContainer extends Component {
     });
   };
 
-  onBlur = async e => {
-    const { name, value } = e.target;
-    const { fieldErrors } = this.state;
-
-    this.setState({
-      fieldErrors: { ...fieldErrors, [name]: validator(name, value) }
-    });
-
-    if (name === "cep" && !validator(name, value)) {
-      const { status, data } = await getAddressByZipCode(value);
-      if (status === 200) {
-        if (R.has("erro", data)) {
-          this.setState({
-            fieldErrors: { ...fieldErrors, [name]: true }
-          });
-        } else {
-          const { logradouro: rua, bairro, localidade: cidade, uf } = data;
-          this.setState({
-            rua,
-            bairro,
-            cidade,
-            uf,
-            fieldErrors: {
-              ...fieldErrors,
-              rua: false,
-              bairro: false,
-              cidade: false,
-              uf: false
-            }
-          });
-        }
-      }
-    }
-  };
-
   showModal = () => {
     this.setState({
       visible: true
@@ -340,9 +372,44 @@ class NewContratosContainer extends Component {
   };
 
   handleOk = () => {
+    const {
+      rua,
+      bairro,
+      cep,
+      cidade,
+      uf,
+      complemento,
+      observacoes,
+      contractId,
+      itens
+    } = this.state;
     this.setState({
       visible: false
     });
+
+    if (!contractId) {
+      this.setState({
+        itens: [
+          ...itens,
+          {
+            rua,
+            bairro,
+            cep,
+            cidade,
+            uf,
+            complemento,
+            observacoes
+          }
+        ],
+        rua: "",
+        bairro: "",
+        cep: "",
+        cidade: "",
+        uf: "",
+        complemento: "",
+        observacoes: ""
+      });
+    }
   };
 
   handleCancel = () => {
@@ -354,6 +421,7 @@ class NewContratosContainer extends Component {
   render() {
     const { state } = this;
     const { fieldErrors } = state;
+    console.log(state);
     return (
       <div className="card-main">
         <this.ModalIncluir />
@@ -467,20 +535,22 @@ class NewContratosContainer extends Component {
             <div className="div-h2-modal">
               <h2 style={{ fontFamily: "Bebas", marginLeft: "25px" }}>Itens</h2>
             </div>
-            <div className="div-line-contratos">
-              <input
-                className="input-item-contratos"
-                placeholder="ITEM"
-              ></input>
-              <input
-                className="input-valor-contratos"
-                placeholder="VALOR"
-              ></input>
-              <input
-                className="input-data-contratos"
-                placeholder="DATA"
-              ></input>
-            </div>
+            {this.state.itens.map(() => (
+              <div className="div-line-contratos">
+                <input
+                  className="input-item-contratos"
+                  placeholder="ITEM"
+                ></input>
+                <input
+                  className="input-valor-contratos"
+                  placeholder="VALOR"
+                ></input>
+                <input
+                  className="input-data-contratos"
+                  placeholder="DATA"
+                ></input>
+              </div>
+            ))}
           </div>
         </div>
         <div className="div-buttons-usuario">
