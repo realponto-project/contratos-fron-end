@@ -24,3 +24,27 @@ export const NewContract = async value => {
 
   return response;
 };
+
+export const GetContractByParams = async query => {
+  const storeObject = store.getState();
+
+  const headers = {
+    authorization: `Bearer ${storeObject.login.token}`
+  };
+
+  let response = {};
+  await api
+    .get("/contract", { headers, params: query })
+    .then(resp => {
+      response = resp;
+    })
+    .catch(err => {
+      if (err.response) {
+        response = err.response;
+      } else {
+        console.log("Error", err.message);
+      }
+    });
+
+  return response;
+};

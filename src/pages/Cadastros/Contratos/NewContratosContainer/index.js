@@ -4,10 +4,13 @@ import "./index.css";
 import { Icon, Select, message, Modal } from "antd";
 import * as R from "ramda";
 
-import { GetByParams } from "../../../../services/client";
+import { GetClientByParams } from "../../../../services/client";
 import { validator, masks } from "./validator";
-import { NewContract } from "../../../../services/contract";
 import { getAddressByZipCode } from "../../../../services/utils/viacep";
+import {
+  NewContract,
+  GetContractByParams
+} from "../../../../services/contract";
 
 const { Option } = Select;
 
@@ -32,6 +35,7 @@ class NewContratosContainer extends Component {
     uf: "",
     complemento: "",
     observacoes: "",
+    contractId: "",
     fieldErrors: {
       razaosocial: false,
       cnpj: false,
@@ -74,6 +78,33 @@ class NewContratosContainer extends Component {
     });
   };
 
+  getClientByParams = async (name, value, fieldErrors) => {
+    const { status, data } = await GetClientByParams({
+      [name]: name === "cnpj" ? value.replace(/\D/gi, "") : value
+    });
+    if (status === 200) {
+      if (data) {
+        const { id: clientId, razaosocial, cnpj, group: grupo } = data;
+        const cnpjFormated = masks("cnpj", cnpj);
+        this.setState({
+          [cnpjFormated.name]: cnpjFormated.value,
+          clientId,
+          razaosocial,
+          grupo,
+          fieldErrors: {
+            ...fieldErrors,
+            razaosocial: false,
+            cnpj: false
+          }
+        });
+      } else {
+        this.setState({
+          fieldErrors: { ...fieldErrors, [name]: true }
+        });
+      }
+    }
+  };
+
   onBlur = async e => {
     const { name, value } = e.target;
     const { fieldErrors } = this.state;
@@ -83,31 +114,33 @@ class NewContratosContainer extends Component {
     });
 
     if (name === "razaosocial" || name === "cnpj") {
-      const { status, data } = await GetByParams({
-        [name]: name === "cnpj" ? value.replace(/\D/gi, "") : value
-      });
-      if (status === 200) {
-        if (data) {
-          const { id: clientId, razaosocial, cnpj, group: grupo } = data;
-          const cnpjFormated = masks("cnpj", cnpj);
-          this.setState({
-            [cnpjFormated.name]: cnpjFormated.value,
-            clientId,
-            razaosocial,
-            grupo,
-            fieldErrors: {
-              ...fieldErrors,
-              razaosocial: false,
-              cnpj: false
-            }
-          });
-          console.log(masks("cnpj", cnpj));
-        } else {
-          this.setState({
-            fieldErrors: { ...fieldErrors, [name]: true }
-          });
-        }
+      await this.getClientByParams(name, value, fieldErrors);
+    }
+
+    if (name === "codigo") {
+      const { status, data } = await GetContractByParams({ code: value });
+      if (status === 200 && data) {
+        const {
+          id: contractId,
+          status,
+          type: tipo,
+          stockBase: base,
+          client: { id: clientId, razaosocial, cnpj, group: grupo }
+        } = data;
+
+        this.setState({
+          contractId,
+          status,
+          tipo,
+          base,
+          clientId,
+          razaosocial,
+          cnpj,
+          grupo
+        });
       }
+    } else {
+      this.setState({ contractId: "" });
     }
   };
 
@@ -156,7 +189,6 @@ class NewContratosContainer extends Component {
     };
 
     const response = await NewContract(value);
-    console.log(response);
 
     if (response.status === 200) {
       this.clearState();
@@ -399,10 +431,11 @@ class NewContratosContainer extends Component {
             value={this.state.cnpj}
           ></input>
           <Select
-            onChange={this.onChangeStatus}
-            defaultValue={this.state.status}
+            placeholder="STATUS"
+            value={this.state.status}
             className="select-contratos"
             size="large"
+            onChange={this.onChangeStatus}
           >
             <Option value="ATIVO">ATIVO</Option>
             <Option value="DEBITO">EM DÉBITO</Option>
@@ -410,7 +443,7 @@ class NewContratosContainer extends Component {
           </Select>
           <Select
             onChange={this.onChangeTipo}
-            defaultValue={this.state.tipo}
+            value={this.state.tipo}
             className="select-contratos"
             size="large"
           >
@@ -419,7 +452,7 @@ class NewContratosContainer extends Component {
           </Select>
           <Select
             onChange={this.onChangeBase}
-            defaultValue={this.state.base}
+            value={this.state.base}
             className="select-contratos"
             size="large"
           >

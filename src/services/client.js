@@ -25,7 +25,7 @@ export const NewClient = async value => {
   return response;
 };
 
-export const GetByParams = async query => {
+export const GetClientByParams = async query => {
   const storeObject = store.getState();
 
   const headers = {
