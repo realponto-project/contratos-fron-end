@@ -1,6 +1,3 @@
-import * as cnpjLib from "@fnando/cnpj";
-import * as cpfLib from "@fnando/cpf";
-
 export const validator = (name, value) => {
   switch (name) {
     case "nome":

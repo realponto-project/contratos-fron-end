@@ -4,6 +4,7 @@ import * as cpfLib from "@fnando/cpf";
 export const validator = (name, value) => {
   switch (name) {
     case "emailContato":
+      // eslint-disable-next-line no-useless-escape
       if (!/^[\w_\-\.]+@[\w_\-\.]{2,}\.[\w]{2,}(\.[\w])?/.test(value))
         return true;
       break;
