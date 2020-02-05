@@ -66,6 +66,13 @@
   width: 100%;
   margin: 0 25px 15px 25px;
 }
+.div-noItens-contratos {
+  font-size: 20px;
+  color: #262626;
+  font-weight: bold;
+  width: 100%;
+  margin: 0 25px 15px 25px;
+}
 .input-item-contratos {
   width: 58%;
   height: 38px;
@@ -99,7 +106,6 @@
   outline: none;
 }
 .button-incluir {
-  width: 100px;
   height: 35px;
   border: 0;
   background: #42a5f6;

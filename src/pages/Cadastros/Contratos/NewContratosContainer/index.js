@@ -29,6 +29,8 @@ class NewContratosContainer extends Component {
     tipo: "TIPO",
     base: "BASE",
     clientId: "",
+    item: "NÃO SELECIONADO",
+    codigoModal: "",
     rua: "",
     bairro: "",
     cep: "",
@@ -230,13 +232,25 @@ class NewContratosContainer extends Component {
     }
   };
 
+  onChangeItem = value => {
+    this.setState({
+      item: value
+    });
+  };
+
+  onChangeCodigo = value => {
+    this.setState({
+      codigoItem: value
+    });
+  };
+
   ModalIncluir = () => (
     <Modal
       visible={this.state.visible}
       onOk={this.handleOk}
-      onCancel={this.handleCancel}
+      onCancel={this.handleOk}
       cancelText="Cancelar"
-      okText="Incluir"
+      okText="Salvar"
     >
       <label
         style={{
@@ -249,13 +263,13 @@ class NewContratosContainer extends Component {
       </label>
       <div className="div-line-modal">
         <Select
-          className="input-item-modal"
+          style={{ width: "75%", marginRight: "10px" }}
           size="large"
           showSearch
-          placeholder="Selecione o item"
+          placeholder="ITEM"
           optionFilterProp="children"
           value={this.state.item}
-          // onChange={this.onChangeItem}
+          onChange={this.onChangeItem}
           filterOption={(input, option) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
             0
@@ -265,15 +279,14 @@ class NewContratosContainer extends Component {
             <Option value={value.name}> {value.name}</Option>
           ))}
         </Select>
-        {/* <input className="input-codigo-modal" placeholder="CÒDIGO"></input> */}
         <Select
-          className="input-codigo-modal"
+          style={{ width: "25%" }}
           size="large"
           showSearch
-          placeholder="Selecione o código"
+          placeholder="CÓDIGO"
           optionFilterProp="children"
           value={this.state.codigoItem}
-          // onChange={this.onChangeItem}
+          onChange={this.onChangeCodigo}
           filterOption={(input, option) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
             0
@@ -421,7 +434,6 @@ class NewContratosContainer extends Component {
   render() {
     const { state } = this;
     const { fieldErrors } = state;
-    console.log(state);
     return (
       <div className="card-main">
         <this.ModalIncluir />
@@ -535,22 +547,28 @@ class NewContratosContainer extends Component {
             <div className="div-h2-modal">
               <h2 style={{ fontFamily: "Bebas", marginLeft: "25px" }}>Itens</h2>
             </div>
-            {this.state.itens.map(() => (
-              <div className="div-line-contratos">
-                <input
-                  className="input-item-contratos"
-                  placeholder="ITEM"
-                ></input>
-                <input
-                  className="input-valor-contratos"
-                  placeholder="VALOR"
-                ></input>
-                <input
-                  className="input-data-contratos"
-                  placeholder="DATA"
-                ></input>
+            {this.state.itens.length !== 0 ? (
+              this.state.itens.map(() => (
+                <div className="div-line-contratos">
+                  <input
+                    className="input-item-contratos"
+                    placeholder="ITEM"
+                  ></input>
+                  <input
+                    className="input-valor-contratos"
+                    placeholder="VALOR"
+                  ></input>
+                  <input
+                    className="input-data-contratos"
+                    placeholder="DATA"
+                  ></input>
+                </div>
+              ))
+            ) : (
+              <div className="div-noItens-contratos">
+                NÃO HÁ NENHUM ITEM NO CONTRATO
               </div>
-            ))}
+            )}
           </div>
         </div>
         <div className="div-buttons-usuario">

@@ -77,7 +77,6 @@
   margin-top: 25px;
 }
 .button-salvar {
-  width: 100px;
   height: 35px;
   border: 0;
   background: #001529;
@@ -94,7 +93,6 @@
   background: #180c99;
 }
 .button-excluir {
-  width: 100px;
   height: 35px;
   border: 0;
   background: red;

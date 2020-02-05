@@ -54,6 +54,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
 }
 .div-main-table {
   display: flex;
@@ -64,6 +65,55 @@
 .div-line-table {
   display: flex;
   width: 100%;
-  height: 40px;
-  background-color: red;
+  height: 45px;
+}
+.label-nome-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 35%;
+  margin-right: 10px;
+}
+.label-cnpj-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 20%;
+  margin-right: 10px;
+}
+.label-grupo-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 15%;
+  margin-right: 10px;
+}
+.label-codigo-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 15%;
+  margin-right: 10px;
+}
+.label-tipo-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 15%;
+}
+.div-pages {
+  margin-right: 25px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.div-main-pages {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
