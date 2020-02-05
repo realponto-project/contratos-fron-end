@@ -213,7 +213,8 @@ class NewContratosContainer extends Component {
       status,
       tipo: type,
       base: stockBase,
-      clientId
+      clientId,
+      itens = []
     } = this.state;
 
     const value = {
@@ -221,15 +222,17 @@ class NewContratosContainer extends Component {
       status,
       type,
       stockBase,
-      clientId
+      clientId,
+      itens
     };
 
-    const response = await NewContract(value);
+    console.log(value);
+    // const response = await NewContract(value);
 
-    if (response.status === 200) {
-      this.clearState();
-      message.success("Contrato cadatrado com sucesso");
-    }
+    // if (response.status === 200) {
+    //   this.clearState();
+    //   message.success("Contrato cadatrado com sucesso");
+    // }
   };
 
   onChangeItem = value => {
@@ -386,13 +389,13 @@ class NewContratosContainer extends Component {
 
   handleOk = () => {
     const {
-      rua,
-      bairro,
-      cep,
-      cidade,
-      uf,
-      complemento,
-      observacoes,
+      rua: street,
+      bairro: neighborhood,
+      cep: zipCode,
+      cidade: city,
+      uf: state,
+      complemento: complement,
+      observacoes: observation,
       contractId,
       itens
     } = this.state;
@@ -405,13 +408,13 @@ class NewContratosContainer extends Component {
         itens: [
           ...itens,
           {
-            rua,
-            bairro,
-            cep,
-            cidade,
-            uf,
-            complemento,
-            observacoes
+            street,
+            neighborhood,
+            zipCode,
+            city,
+            state,
+            complement,
+            observation
           }
         ],
         rua: "",
