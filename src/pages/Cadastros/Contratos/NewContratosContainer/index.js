@@ -29,6 +29,8 @@ class NewContratosContainer extends Component {
     tipo: "TIPO",
     base: "BASE",
     clientId: "",
+    item: "",
+    codigoModal: "",
     rua: "",
     bairro: "",
     cep: "",
@@ -234,9 +236,9 @@ class NewContratosContainer extends Component {
     <Modal
       visible={this.state.visible}
       onOk={this.handleOk}
-      onCancel={this.handleCancel}
+      onCancel={this.handleOk}
       cancelText="Cancelar"
-      okText="Incluir"
+      okText="Salvar"
     >
       <label
         style={{

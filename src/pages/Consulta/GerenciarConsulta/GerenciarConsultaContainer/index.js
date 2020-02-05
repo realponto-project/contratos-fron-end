@@ -9,7 +9,10 @@ class GerenciarConsultaContainer extends Component {
     cnpj: "",
     grupo: "",
     codigo: "",
-    tipo: ""
+    tipo: "",
+    total: 10,
+    count: 0,
+    page: 3
   };
 
   onChange = e => {
@@ -22,8 +25,108 @@ class GerenciarConsultaContainer extends Component {
   TableConsulta = () => (
     <div className="div-table">
       <div className="div-main-table">
-        <div className="div-line-table"></div>
+        <div className="div-line-table">
+          <label className="label-nome-table">TESTE TESTE TESTE</label>
+          <label className="label-cnpj-table">50.418.420/0001-60</label>
+          <label className="label-grupo-table">TESTE</label>
+          <label className="label-codigo-table">321312</label>
+          <label className="label-tipo-table">ANUAL</label>
+        </div>
       </div>
+    </div>
+  );
+
+  changePages = pages => {
+    this.setState(
+      {
+        page: pages
+      }
+      // () => {
+      //   this.getStock();
+      // }
+    );
+  };
+
+  Pages = () => (
+    <div className="div-pages">
+      {Math.ceil(this.state.count / this.state.total) >= 5 &&
+      Math.ceil(this.state.count / this.state.total) - this.state.page < 1 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 4)}
+        >
+          {this.state.page - 4}
+        </button>
+      ) : null}
+      {Math.ceil(this.state.count / this.state.total) >= 4 &&
+      Math.ceil(this.state.count / this.state.total) - this.state.page < 2 &&
+      this.state.page > 3 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 3)}
+        >
+          {this.state.page - 3}
+        </button>
+      ) : null}
+      {this.state.page >= 3 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 2)}
+        >
+          {this.state.page - 2}
+        </button>
+      ) : null}
+      {this.state.page >= 2 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 1)}
+        >
+          {this.state.page - 1}
+        </button>
+      ) : null}
+      <div className="div-teste">{this.state.page}</div>
+      {this.state.page < this.state.count / this.state.total ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 1)}
+        >
+          {this.state.page + 1}
+        </button>
+      ) : null}
+      {this.state.page + 1 < this.state.count / this.state.total ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 2)}
+        >
+          {this.state.page + 2}
+        </button>
+      ) : null}
+      {this.state.page + 2 < this.state.count / this.state.total &&
+      this.state.page < 3 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 3)}
+        >
+          {this.state.page + 3}
+        </button>
+      ) : null}
+      {this.state.page + 3 < this.state.count / this.state.total &&
+      this.state.page < 2 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 4)}
+        >
+          {this.state.page + 4}
+        </button>
+      ) : null}
     </div>
   );
 
@@ -73,6 +176,9 @@ class GerenciarConsultaContainer extends Component {
         </div>
 
         <this.TableConsulta />
+        <div className="div-main-pages">
+          <this.Pages />
+        </div>
       </div>
     );
   }
