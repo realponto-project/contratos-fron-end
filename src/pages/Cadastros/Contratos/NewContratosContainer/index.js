@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
-import { Icon, Select, message } from "antd";
+import { Icon, Select, message, Modal } from "antd";
+import * as R from "ramda";
 
 import { GetByParams } from "../../../../services/client";
 import { validator, masks } from "./validator";
 import { NewContract } from "../../../../services/contract";
+import { getAddressByZipCode } from "../../../../services/utils/viacep";
 
 const { Option } = Select;
 
 class NewContratosContainer extends Component {
   state = {
+    visible: false,
     search: "",
     razaosocial: "",
     cnpj: "",
@@ -22,10 +25,24 @@ class NewContratosContainer extends Component {
     tipo: "TIPO",
     base: "BASE",
     clientId: "",
+    rua: "",
+    bairro: "",
+    cep: "",
+    cidade: "",
+    uf: "",
+    complemento: "",
+    observacoes: "",
     fieldErrors: {
       razaosocial: false,
       cnpj: false,
-      codigo: false
+      codigo: false,
+      rua: false,
+      bairro: false,
+      cep: false,
+      cidade: false,
+      uf: false,
+      complemento: false,
+      observacoes: false
     }
   };
 
@@ -147,10 +164,167 @@ class NewContratosContainer extends Component {
     }
   };
 
-  render() {
+  ModalIncluir = () => (
+    <Modal
+      visible={this.state.visible}
+      onOk={this.handleOk}
+      onCancel={this.handleCancel}
+      cancelText="Cancelar"
+      okText="Incluir"
+    >
+      <label
+        style={{
+          fontFamily: "Bebas",
+          fontSize: "20px",
+          margin: "10px 0 0 0"
+        }}
+      >
+        Item
+      </label>
+      <div className="div-line-modal">
+        <input className="input-item-modal" placeholder="ITEM"></input>
+        <input className="input-codigo-modal" placeholder="CÒDIGO"></input>
+      </div>
+      <div className="div-twoInfo-modal">
+        <input
+          className={`input-cep-modal ${this.state.fieldErrors.cep &&
+            "input-error"}`}
+          placeholder="CEP"
+          onChange={this.onChange}
+          name="cep"
+          value={this.state.cep}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
+        ></input>
+        <input
+          className="input-bairro-modal"
+          placeholder="BAIRRO"
+          onChange={this.onChange}
+          name="bairro"
+          value={this.state.bairro}
+        ></input>
+      </div>
+      <input
+        className="input-endereco-modal"
+        placeholder="RUA"
+        onChange={this.onChange}
+        name="rua"
+        value={this.state.rua}
+      ></input>
+      <div className="div-twoInfo-modal">
+        <input
+          className={`input-cidade-modal ${this.state.fieldErrors.cidade &&
+            "input-error"}`}
+          placeholder="CIDADE"
+          onChange={this.onChange}
+          name="cidade"
+          value={this.state.cidade}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
+        ></input>
+        <input
+          className={`input-uf-modal ${this.state.fieldErrors.uf &&
+            "input-error"}`}
+          placeholder="UF"
+          onChange={this.onChange}
+          name="uf"
+          value={this.state.uf}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
+        ></input>
+      </div>
+      <input
+        className="input-endereco-modal"
+        placeholder="COMPLEMENTO"
+        onChange={this.onChange}
+        name="complemento"
+        value={this.state.complemento}
+      ></input>
+      <input
+        className="input-endereco-modal"
+        placeholder="OBSERVAÇÕES"
+        onChange={this.onChange}
+        name="observacoes"
+        value={this.state.observacoes}
+      ></input>
+    </Modal>
+  );
+
+  onChange = e => {
+    const { name, value } = masks(e.target.name, e.target.value);
+    this.setState({
+      [name]: value
+    });
+  };
+
+  onFocus = e => {
+    const { name } = e.target;
     const { fieldErrors } = this.state;
+
+    this.setState({
+      fieldErrors: { ...fieldErrors, [name]: false }
+    });
+  };
+
+  onBlur = async e => {
+    const { name, value } = e.target;
+    const { fieldErrors } = this.state;
+
+    this.setState({
+      fieldErrors: { ...fieldErrors, [name]: validator(name, value) }
+    });
+
+    if (name === "cep" && !validator(name, value)) {
+      const { status, data } = await getAddressByZipCode(value);
+      if (status === 200) {
+        if (R.has("erro", data)) {
+          this.setState({
+            fieldErrors: { ...fieldErrors, [name]: true }
+          });
+        } else {
+          const { logradouro: rua, bairro, localidade: cidade, uf } = data;
+          this.setState({
+            rua,
+            bairro,
+            cidade,
+            uf,
+            fieldErrors: {
+              ...fieldErrors,
+              rua: false,
+              bairro: false,
+              cidade: false,
+              uf: false
+            }
+          });
+        }
+      }
+    }
+  };
+
+  showModal = () => {
+    this.setState({
+      visible: true
+    });
+  };
+
+  handleOk = () => {
+    this.setState({
+      visible: false
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      visible: false
+    });
+  };
+
+  render() {
+    const { state } = this;
+    const { fieldErrors } = state;
     return (
       <div className="card-main">
+        <this.ModalIncluir />
         <div className="div-titulo-usuario">
           <h1 className="h1-titulo">Contratos</h1>
           <div className="div-search-usuario">
@@ -257,7 +431,7 @@ class NewContratosContainer extends Component {
         </div>
         <div className="div-main-contratos">
           <div className="div-itens-contratos">
-            <div className="div-h2-cliente">
+            <div className="div-h2-modal">
               <h2 style={{ fontFamily: "Bebas", marginLeft: "25px" }}>Itens</h2>
             </div>
             <div className="div-line-contratos">
@@ -280,7 +454,9 @@ class NewContratosContainer extends Component {
           <button className="button-salvar" onClick={this.newContract}>
             Salvar
           </button>
-          <button className="button-incluir">Incluir</button>
+          <button className="button-incluir" onClick={this.showModal}>
+            Incluir
+          </button>
         </div>
       </div>
     );

@@ -159,3 +159,139 @@
   border-radius: 2px;
   outline: none;
 }
+.ant-modal-content {
+  width: 700px;
+}
+.ant-modal-body {
+  display: flex;
+  flex-direction: column;
+}
+.input-item-modal {
+  width: 75%;
+  height: 35px;
+  margin: 10px 10px 0 0;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-codigo-modal {
+  width: 25%;
+  height: 35px;
+  margin: 10px 0 0 0;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-item-modal::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-item-modal:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-codigo-modal::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-codigo-modal:focus {
+  border-bottom: 1px solid #001529;
+}
+.div-line-modal {
+  width: 100%;
+  display: flex;
+  margin-bottom: 20px;
+}
+.input-endereco-modal {
+  width: 100%;
+  height: 35px;
+  margin-top: 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-endereco-modal::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-endereco-modal:focus {
+  border-bottom: 1px solid #001529;
+}
+.div-twoInfo-modal {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.input-bairro-modal {
+  width: 55%;
+  height: 35px;
+  margin-top: 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-cep-modal {
+  width: 40%;
+  height: 35px;
+  margin-top: 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-bairro-modal::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-cep-modal::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-bairro-modal:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-cep-modal:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-cidade-modal {
+  width: 80%;
+  height: 35px;
+  margin-top: 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-uf-modal {
+  width: 15%;
+  height: 35px;
+  margin-top: 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-cidade-modal::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-uf-modal::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-cidade-modal:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-uf-modal:focus {
+  border-bottom: 1px solid #001529;
+}

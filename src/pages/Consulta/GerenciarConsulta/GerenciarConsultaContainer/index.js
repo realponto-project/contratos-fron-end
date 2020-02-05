@@ -19,6 +19,14 @@ class GerenciarConsultaContainer extends Component {
     });
   };
 
+  TableConsulta = () => (
+    <div className="div-table">
+      <div className="div-main-table">
+        <div className="div-line-table"></div>
+      </div>
+    </div>
+  );
+
   render() {
     const { state, onChange } = this;
     return (
@@ -63,6 +71,8 @@ class GerenciarConsultaContainer extends Component {
             value={state.tipo}
           ></input>
         </div>
+
+        <this.TableConsulta />
       </div>
     );
   }
