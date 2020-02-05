@@ -1,0 +1,51 @@
+.input-cnpj-consulta {
+  width: 20%;
+  height: 35px;
+  margin-left: 10px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-cnpj-consulta::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-cnpj-consulta:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-tipo-consulta {
+  width: 15%;
+  height: 35px;
+  margin: 0 25px 0 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-tipo-consulta::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-tipo-consulta:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-codigo-consulta {
+  width: 15%;
+  height: 35px;
+  margin: 0 0 0 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-codigo-consulta::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-codigo-consulta:focus {
+  border-bottom: 1px solid #001529;
+}

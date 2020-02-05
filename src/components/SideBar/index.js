@@ -243,7 +243,7 @@ class SideBar extends Component {
               Adicionar
             </Menu.Item>
             <Menu.Item key="dashIgpm_dash">
-              <Icon type="user-add" />
+              <Icon type="ordered-list" />
               Gerenciar
             </Menu.Item>
           </SubMenu>
