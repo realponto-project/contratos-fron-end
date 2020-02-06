@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
-import { Icon, Select, message, Modal, DatePicker, InputNumber } from "antd";
+import { Icon, Select, message, Modal, DatePicker } from "antd";
 import * as R from "ramda";
 
 import { GetClientByParams } from "../../../../services/client";
@@ -554,7 +554,7 @@ class NewContratosContainer extends Component {
           <DatePicker
             size="large"
             placeholder="DATA ATIVAÇÃO"
-            className="input-data"
+            style={{ marginLeft: "10px" }}
             name="dateActivation"
             value={this.state.dateActivation}
             format="DD/MM/YYYY"
