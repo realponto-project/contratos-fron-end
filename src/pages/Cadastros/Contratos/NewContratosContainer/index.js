@@ -428,37 +428,37 @@ class NewContratosContainer extends Component {
       item: name,
       itens
     } = this.state;
-    this.setState({
-      visible: false
-    });
 
-    // if (!contractCode) {
-    this.setState({
-      itens: [
-        ...itens,
-        {
-          name,
-          itemId,
-          street,
-          neighborhood,
-          zipCode,
-          city,
-          state,
-          complement,
-          observation
-        }
-      ],
-      itemId: "",
-      item: "",
-      rua: "",
-      bairro: "",
-      cep: "",
-      cidade: "",
-      uf: "",
-      complemento: "",
-      observacoes: ""
-    });
-    // }
+    if (this.state.item !== "NÃO SELECIONADO") {
+      this.setState({
+        itens: [
+          ...itens,
+          {
+            name,
+            itemId,
+            street,
+            neighborhood,
+            zipCode,
+            city,
+            state,
+            complement,
+            observation
+          }
+        ],
+        itemId: "",
+        item: "",
+        rua: "",
+        bairro: "",
+        cep: "",
+        cidade: "",
+        uf: "",
+        complemento: "",
+        observacoes: "",
+        visible: false
+      });
+    } else {
+      message.error("Selecione um item");
+    }
   };
 
   handleCancel = () => {
