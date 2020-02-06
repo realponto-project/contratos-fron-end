@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
 import { masks } from "./validator";
+import { GetAllContract } from "../../../../services/contract";
 
 class GerenciarConsultaContainer extends Component {
   state = {
@@ -12,7 +13,17 @@ class GerenciarConsultaContainer extends Component {
     tipo: "",
     total: 10,
     count: 0,
-    page: 3
+    page: 3,
+    contracts: []
+  };
+
+  componentDidMount = async () => {
+    const contracts = await GetAllContract();
+
+    console.log(contracts);
+    this.setState({
+      contracts: contracts.data.rows
+    });
   };
 
   onChange = e => {
@@ -25,13 +36,27 @@ class GerenciarConsultaContainer extends Component {
   TableConsulta = () => (
     <div className="div-table">
       <div className="div-main-table">
-        <div className="div-line-table">
-          <label className="label-nome-table">TESTE TESTE TESTE</label>
-          <label className="label-cnpj-table">50.418.420/0001-60</label>
-          <label className="label-grupo-table">TESTE</label>
-          <label className="label-codigo-table">321312</label>
-          <label className="label-tipo-table">ANUAL</label>
-        </div>
+        {this.state.contracts.map(line => (
+          <div className="div-line-table">
+            <label className="label-nome-table">
+              {line.client.razaosocial}
+            </label>
+            <label className="label-cnpj-table">
+              {line.client.cnpj.length === 12
+                ? line.client.cnpj.replace(
+                    /(\d{2})(\d{3})(\d{3})(\d{4})/,
+                    "$1.$2.$3/$4"
+                  )
+                : line.client.cnpj.replace(
+                    /(\d{2})(\d{3})(\d{3})(\d{4})(\d{1,2})/,
+                    "$1.$2.$3/$4-$5"
+                  )}
+            </label>
+            <label className="label-grupo-table">{line.client.group}</label>
+            <label className="label-codigo-table">{line.code}</label>
+            <label className="label-tipo-table">{line.status}</label>
+          </div>
+        ))}
       </div>
     </div>
   );

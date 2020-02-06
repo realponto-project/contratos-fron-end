@@ -34,7 +34,7 @@ export const GetAllItens = async () => {
 
   let response = {};
   await api
-    .get("/itens", { headers })
+    .get("/item", { headers })
     .then(resp => {
       response = resp;
     })
