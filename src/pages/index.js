@@ -22,7 +22,6 @@ class PagesRoute extends Component {
   };
 
   componentDidMount = async () => {
-    // console.log("test");
     await promisify(jwt.verify)(
       this.props.login.token,
       // this.props.login.token,
@@ -79,7 +78,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(PagesRoute);
+export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);

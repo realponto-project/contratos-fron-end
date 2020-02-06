@@ -15,8 +15,7 @@ class DashPage extends Component {
 
   newUser = async () => {
     const value = this.state;
-    const response = await NewUser(value);
-    console.log(response);
+    await NewUser(value);
   };
 
   onChange = e => {

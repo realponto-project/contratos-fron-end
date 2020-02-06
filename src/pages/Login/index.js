@@ -35,13 +35,10 @@ class LoginPage extends Component {
 
       const { status, data } = await login(value);
 
-      console.log(status, data);
-
       if (status === 200) {
         await this.props.onSubmit(data);
       }
       if (status === 401) {
-        console.log(data);
         this.setState(data);
       }
     }
@@ -54,13 +51,10 @@ class LoginPage extends Component {
 
     const { status, data } = await login(value);
 
-    console.log(status, data);
-
     if (status === 200) {
       await this.props.onSubmit(data);
     }
     if (status === 401) {
-      console.log(data);
       this.setState(data);
     }
   };

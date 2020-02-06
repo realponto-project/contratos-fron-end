@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
-import { Icon, Select, message, Modal } from "antd";
+import { Icon, Select, message, Modal, DatePicker, InputNumber } from "antd";
 import * as R from "ramda";
 
 import { GetClientByParams } from "../../../../services/client";
@@ -10,8 +10,10 @@ import { validator, masks } from "./validator";
 import { getAddressByZipCode } from "../../../../services/utils/viacep";
 import {
   NewContract,
+  UpdateContract,
   GetContractByParams
 } from "../../../../services/contract";
+import moment from "moment";
 
 const { Option } = Select;
 
@@ -38,7 +40,8 @@ class NewContratosContainer extends Component {
     uf: "",
     complemento: "",
     observacoes: "",
-    contractId: "",
+    contractCode: "",
+    itemId: "",
     fieldErrors: {
       razaosocial: false,
       cnpj: false,
@@ -57,6 +60,7 @@ class NewContratosContainer extends Component {
 
   clearState = () => {
     this.setState({
+      visible: false,
       search: "",
       razaosocial: "",
       cnpj: "",
@@ -68,11 +72,30 @@ class NewContratosContainer extends Component {
       tipo: "TIPO",
       base: "BASE",
       clientId: "",
+      item: "NÃO SELECIONADO",
+      codigoModal: "",
+      rua: "",
+      bairro: "",
+      cep: "",
+      cidade: "",
+      uf: "",
+      complemento: "",
+      observacoes: "",
+      contractCode: "",
+      itemId: "",
       fieldErrors: {
         razaosocial: false,
         cnpj: false,
-        codigo: false
-      }
+        codigo: false,
+        rua: false,
+        bairro: false,
+        cep: false,
+        cidade: false,
+        uf: false,
+        complemento: false,
+        observacoes: false
+      },
+      itens: []
     });
   };
 
@@ -130,27 +153,40 @@ class NewContratosContainer extends Component {
       const { status, data } = await GetContractByParams({ code: value });
       if (status === 200 && data) {
         const {
-          code: contractId,
+          code: contractCode,
           status,
           type: tipo,
           stockBase: base,
-          client: { id: clientId, razaosocial, cnpj, group: grupo }
+          client: { id: clientId, razaosocial, cnpj, group: grupo },
+          items: itens = []
         } = data;
 
-        console.log(status, data);
         this.setState({
-          contractId,
+          contractCode,
           status,
           tipo,
           base,
           clientId,
           razaosocial,
           cnpj,
-          grupo
+          grupo,
+          itens
+        });
+      } else {
+        this.setState({
+          razaosocial: "",
+          cnpj: "",
+          grupo: "",
+          valorTotal: "",
+          dataAtivacao: "",
+          status: "STATUS",
+          tipo: "TIPO",
+          base: "BASE",
+          clientId: "",
+          contractCode: "",
+          itens: []
         });
       }
-    } else {
-      this.setState({ contractId: "" });
     }
 
     if (name === "cep" && !validator(name, value)) {
@@ -180,15 +216,6 @@ class NewContratosContainer extends Component {
     }
   };
 
-  onFocus = e => {
-    const { name } = e.target;
-    const { fieldErrors } = this.state;
-
-    this.setState({
-      fieldErrors: { ...fieldErrors, [name]: false }
-    });
-  };
-
   onChangeStatus = value => {
     this.setState({
       status: value
@@ -214,30 +241,43 @@ class NewContratosContainer extends Component {
       tipo: type,
       base: stockBase,
       clientId,
-      itens = []
+      contractCode,
+      itens = [],
+      dateActivation
     } = this.state;
 
-    const value = {
-      code,
+    let value = {
       status,
       type,
       stockBase,
-      clientId,
-      itens
+      itens,
+      dateActivation
     };
 
-    console.log(value);
-    // const response = await NewContract(value);
+    if (contractCode !== "") {
+      value = { ...value, contractCode };
 
-    // if (response.status === 200) {
-    //   this.clearState();
-    //   message.success("Contrato cadatrado com sucesso");
-    // }
+      const response = await UpdateContract(value);
+
+      if (response.status === 200) {
+        this.clearState();
+        message.success("Contrato atualizado com sucesso");
+      }
+    } else {
+      value = { ...value, clientId, code };
+      const response = await NewContract(value);
+
+      if (response.status === 200) {
+        this.clearState();
+        message.success("Contrato cadatrado com sucesso");
+      }
+    }
   };
 
-  onChangeItem = value => {
+  onChangeItem = (value, props) => {
     this.setState({
-      item: value
+      item: value,
+      itemId: props.key
     });
   };
 
@@ -251,7 +291,7 @@ class NewContratosContainer extends Component {
     <Modal
       visible={this.state.visible}
       onOk={this.handleOk}
-      onCancel={this.handleOk}
+      onCancel={this.handleCancel}
       cancelText="Cancelar"
       okText="Salvar"
     >
@@ -279,7 +319,10 @@ class NewContratosContainer extends Component {
           }
         >
           {this.state.allItens.map(value => (
-            <Option value={value.name}> {value.name}</Option>
+            <Option key={value.id} value={value.name}>
+              {" "}
+              {value.name}
+            </Option>
           ))}
         </Select>
         <Select
@@ -365,22 +408,6 @@ class NewContratosContainer extends Component {
     </Modal>
   );
 
-  onChange = e => {
-    const { name, value } = masks(e.target.name, e.target.value);
-    this.setState({
-      [name]: value
-    });
-  };
-
-  onFocus = e => {
-    const { name } = e.target;
-    const { fieldErrors } = this.state;
-
-    this.setState({
-      fieldErrors: { ...fieldErrors, [name]: false }
-    });
-  };
-
   showModal = () => {
     this.setState({
       visible: true
@@ -396,47 +423,65 @@ class NewContratosContainer extends Component {
       uf: state,
       complemento: complement,
       observacoes: observation,
-      contractId,
+      // contractCode,
+      itemId,
+      item: name,
       itens
     } = this.state;
     this.setState({
       visible: false
     });
 
-    if (!contractId) {
-      this.setState({
-        itens: [
-          ...itens,
-          {
-            street,
-            neighborhood,
-            zipCode,
-            city,
-            state,
-            complement,
-            observation
-          }
-        ],
-        rua: "",
-        bairro: "",
-        cep: "",
-        cidade: "",
-        uf: "",
-        complemento: "",
-        observacoes: ""
-      });
-    }
+    // if (!contractCode) {
+    this.setState({
+      itens: [
+        ...itens,
+        {
+          name,
+          itemId,
+          street,
+          neighborhood,
+          zipCode,
+          city,
+          state,
+          complement,
+          observation
+        }
+      ],
+      itemId: "",
+      item: "",
+      rua: "",
+      bairro: "",
+      cep: "",
+      cidade: "",
+      uf: "",
+      complemento: "",
+      observacoes: ""
+    });
+    // }
   };
 
   handleCancel = () => {
     this.setState({
-      visible: false
+      visible: false,
+      item: "NÃO SELECIONADO",
+      codigoModal: "",
+      rua: "",
+      bairro: "",
+      cep: "",
+      cidade: "",
+      uf: "",
+      complemento: "",
+      observacoes: "",
+      contractCode: "",
+      itemId: ""
     });
   };
 
   render() {
     const { state } = this;
     const { fieldErrors } = state;
+
     return (
       <div className="card-main">
         <this.ModalIncluir />
@@ -506,13 +551,17 @@ class NewContratosContainer extends Component {
             name="nome"
             value={this.state.nome}
           ></input>
-          <input
-            className="input-data"
+          <DatePicker
+            size="large"
             placeholder="DATA ATIVAÇÃO"
-            onChange={this.onChange}
-            name="cnpj"
-            value={this.state.cnpj}
-          ></input>
+            className="input-data"
+            name="dateActivation"
+            value={this.state.dateActivation}
+            format="DD/MM/YYYY"
+            onChange={e => {
+              this.setState({ dateActivation: e });
+            }}
+          />
           <Select
             placeholder="STATUS"
             value={this.state.status}
@@ -551,19 +600,33 @@ class NewContratosContainer extends Component {
               <h2 style={{ fontFamily: "Bebas", marginLeft: "25px" }}>Itens</h2>
             </div>
             {this.state.itens.length !== 0 ? (
-              this.state.itens.map(() => (
+              this.state.itens.map((item, index) => (
                 <div className="div-line-contratos">
                   <input
+                    readOnly
                     className="input-item-contratos"
-                    placeholder="ITEM"
+                    placeholder={item.name}
                   ></input>
                   <input
+                    step="0.01"
+                    min="0"
+                    max="99999"
+                    type="number"
                     className="input-valor-contratos"
                     placeholder="VALOR"
+                    onChange={e => {
+                      const { value } = e.target;
+                      const { itens } = this.state;
+                      itens[index].price = value.slice(0, 9);
+
+                      this.setState({ itens });
+                    }}
+                    value={item.price}
                   ></input>
                   <input
                     className="input-data-contratos"
-                    placeholder="DATA"
+                    // placeholder="DATA"
+                    value={moment(item.createdAt).format("lll")}
                   ></input>
                 </div>
               ))
