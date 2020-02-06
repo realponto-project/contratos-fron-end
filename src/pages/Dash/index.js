@@ -27,8 +27,10 @@ class DashPage extends Component {
   };
   render() {
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <h1>welcome to the hell</h1>
+      <div className="card-main">
+        <div className="div-titulo">
+          <h1 className="h1-titulo">Graficos</h1>
+        </div>
         <div className="div-container-newUser">
           <div>
             <label>email</label>
