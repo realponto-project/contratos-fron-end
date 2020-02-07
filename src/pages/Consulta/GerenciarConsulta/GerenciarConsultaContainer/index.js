@@ -13,16 +13,26 @@ class GerenciarConsultaContainer extends Component {
     tipo: "",
     total: 10,
     count: 0,
-    page: 3,
+    page: 1,
     contracts: []
   };
 
   componentDidMount = async () => {
-    const contracts = await GetAllContract();
+    await this.getAllContract();
+  };
 
-    console.log(contracts);
+  getAllContract = async () => {
+    const query = {
+      page: this.state.page,
+      total: this.state.total
+    };
+    const contracts = await GetAllContract(query);
+
     this.setState({
-      contracts: contracts.data.rows
+      contracts: contracts.data.rows,
+      page: contracts.data.page,
+      count: contracts.data.count,
+      show: contracts.data.show
     });
   };
 
@@ -65,10 +75,10 @@ class GerenciarConsultaContainer extends Component {
     this.setState(
       {
         page: pages
+      },
+      () => {
+        this.getAllContract();
       }
-      // () => {
-      //   this.getStock();
-      // }
     );
   };
 
