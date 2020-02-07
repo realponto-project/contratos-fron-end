@@ -194,6 +194,30 @@
   border-radius: 2px;
   outline: none;
 }
+.input-valor::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-valor:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-cnpj-contratos::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-cnpj-contratos:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-nome-contratos::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-nome-contratos:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-codigo-contratos::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-codigo-contratos:focus {
+  border-bottom: 1px solid #001529;
+}
 .input-item-modal::placeholder {
   color: rgb(177, 177, 177);
 }
@@ -209,7 +233,7 @@
 .div-line-modal {
   width: 100%;
   display: flex;
-  margin-bottom: 20px;
+  margin: 5px 0 20px 0;
 }
 .input-endereco-modal {
   width: 100%;

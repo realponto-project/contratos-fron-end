@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
-import { Icon, Select, message, Modal, DatePicker, InputNumber } from "antd";
+import { Icon, Select, message, Modal, DatePicker } from "antd";
 import * as R from "ramda";
 
 import { GetClientByParams } from "../../../../services/client";
@@ -428,37 +428,37 @@ class NewContratosContainer extends Component {
       item: name,
       itens
     } = this.state;
-    this.setState({
-      visible: false
-    });
 
-    // if (!contractCode) {
-    this.setState({
-      itens: [
-        ...itens,
-        {
-          name,
-          itemId,
-          street,
-          neighborhood,
-          zipCode,
-          city,
-          state,
-          complement,
-          observation
-        }
-      ],
-      itemId: "",
-      item: "",
-      rua: "",
-      bairro: "",
-      cep: "",
-      cidade: "",
-      uf: "",
-      complemento: "",
-      observacoes: ""
-    });
-    // }
+    if (this.state.item !== "NÃO SELECIONADO") {
+      this.setState({
+        itens: [
+          ...itens,
+          {
+            name,
+            itemId,
+            street,
+            neighborhood,
+            zipCode,
+            city,
+            state,
+            complement,
+            observation
+          }
+        ],
+        itemId: "",
+        item: "",
+        rua: "",
+        bairro: "",
+        cep: "",
+        cidade: "",
+        uf: "",
+        complemento: "",
+        observacoes: "",
+        visible: false
+      });
+    } else {
+      message.error("Selecione um item");
+    }
   };
 
   handleCancel = () => {
@@ -554,7 +554,7 @@ class NewContratosContainer extends Component {
           <DatePicker
             size="large"
             placeholder="DATA ATIVAÇÃO"
-            className="input-data"
+            style={{ marginLeft: "10px" }}
             name="dateActivation"
             value={this.state.dateActivation}
             format="DD/MM/YYYY"
