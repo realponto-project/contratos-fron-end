@@ -109,7 +109,7 @@
 .div-pages {
   margin-right: 25px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
 }
 .div-main-pages {
