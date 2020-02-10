@@ -234,6 +234,15 @@ class NewContratosContainer extends Component {
     }
   };
 
+  removeItem = async index => {
+    const oldItem = this.state.itens;
+    const newItens = oldItem.filter((item, indexx) => index !== indexx);
+
+    await this.setState({
+      itens: newItens
+    });
+  };
+
   onChangeStatus = value => {
     this.setState({
       status: value
@@ -500,6 +509,7 @@ class NewContratosContainer extends Component {
   };
 
   render() {
+    console.log(this.state.itens);
     const { state } = this;
     const { fieldErrors } = state;
 
@@ -674,7 +684,10 @@ class NewContratosContainer extends Component {
                     // placeholder="DATA"
                     value={moment(item.createdAt).format("lll")}
                   ></input>
-                  <button className="button-delete">
+                  <button
+                    className="button-delete"
+                    onClick={() => this.removeItem(index)}
+                  >
                     <Icon type="delete" />
                   </button>
                 </div>
