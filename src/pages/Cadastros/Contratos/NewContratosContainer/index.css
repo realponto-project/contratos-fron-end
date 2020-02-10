@@ -74,7 +74,7 @@
   margin: 0 25px 15px 25px;
 }
 .input-item-contratos {
-  width: 58%;
+  width: 53%;
   height: 38px;
   color: #666;
   padding-left: 10px;
@@ -116,7 +116,7 @@
   color: #fff;
   cursor: pointer;
   outline: none;
-  margin-right: 10px;
+  margin-right: 25px;
 }
 .button-incluir:active {
   background: #2279c0;
@@ -324,4 +324,20 @@
 }
 .input-uf-modal:focus {
   border-bottom: 1px solid #001529;
+}
+.button-delete {
+  height: 38px;
+  border: 0;
+  background: red;
+  border-radius: 2px;
+  padding: 5px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  margin: 0 25px 0 10px;
+}
+.button-delete:active {
+  background: rgb(185, 23, 23);
 }

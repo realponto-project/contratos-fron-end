@@ -1,3 +1,10 @@
 .div-container-newUser {
   width: 700px;
 }
+.div-graficos {
+  width: 100%;
+  margin-top: 50px;
+}
+.div-barras-graficos {
+  margin: 0 25px 0 25px;
+}
