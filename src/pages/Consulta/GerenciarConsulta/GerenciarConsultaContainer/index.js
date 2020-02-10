@@ -4,8 +4,11 @@ import "./index.css";
 import { masks } from "./validator";
 import { GetAllContract } from "../../../../services/contract";
 
+import { Spin } from "antd";
+
 class GerenciarConsultaContainer extends Component {
   state = {
+    loading: false,
     nome: "",
     cnpj: "",
     grupo: "",
@@ -22,6 +25,10 @@ class GerenciarConsultaContainer extends Component {
   };
 
   getAllContract = async () => {
+    this.setState({
+      loading: true
+    });
+
     const query = {
       page: this.state.page,
       total: this.state.total
@@ -32,7 +39,8 @@ class GerenciarConsultaContainer extends Component {
       contracts: contracts.data.rows,
       page: contracts.data.page,
       count: contracts.data.count,
-      show: contracts.data.show
+      show: contracts.data.show,
+      loading: false
     });
   };
 
@@ -71,8 +79,8 @@ class GerenciarConsultaContainer extends Component {
     </div>
   );
 
-  changePages = pages => {
-    this.setState(
+  changePages = async pages => {
+    await this.setState(
       {
         page: pages
       },
@@ -210,7 +218,13 @@ class GerenciarConsultaContainer extends Component {
           ></input>
         </div>
 
-        <this.TableConsulta />
+        {this.state.loading ? (
+          <div className="div-spin">
+            <Spin />
+          </div>
+        ) : (
+          <this.TableConsulta />
+        )}
         <div className="div-main-pages">
           <this.Pages />
         </div>

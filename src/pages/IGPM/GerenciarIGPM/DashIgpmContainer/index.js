@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
 
+import { Spin } from "antd";
+
 class DashIgmpContainer extends Component {
   state = {
+    loading: false,
     nome: "",
     data: "",
     nContrato: "",
@@ -142,7 +145,14 @@ class DashIgmpContainer extends Component {
             value={this.state.nContrato}
           ></input>
         </div>
-        <this.TableIgpm />
+
+        {this.state.loading ? (
+          <div className="div-spin">
+            <Spin />
+          </div>
+        ) : (
+          <this.TableIgpm />
+        )}
         <div className="div-main-pages">
           <this.Pages />
         </div>
