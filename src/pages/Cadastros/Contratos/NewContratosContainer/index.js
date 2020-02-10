@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import "../../../../global.css";
 import "./index.css";
 import { Icon, Select, message, Modal, DatePicker } from "antd";
@@ -13,10 +14,10 @@ import { getAddressByZipCode } from "../../../../services/utils/viacep";
 import {
   NewContract,
   UpdateContract,
-  GetContractByParams,
-  GetLogsByCode
+  GetContractByParams
 } from "../../../../services/contract";
 import moment from "moment";
+import { setContractCode } from "../ContratosRedux/action";
 
 const { Option } = Select;
 
@@ -104,6 +105,8 @@ class NewContratosContainer extends Component {
   };
 
   setRedirect = () => {
+    this.props.setContractCode(this.state.codigo);
+
     this.setState({
       redirect: true
     });
@@ -165,16 +168,6 @@ class NewContratosContainer extends Component {
     }
 
     if (name === "codigo") {
-      const query = {
-        filters: {
-          contract: {
-            specific: {
-              code: value
-            }
-          }
-        }
-      };
-      console.log(await GetLogsByCode(query));
       const { status, data } = await GetContractByParams({ code: value });
       if (status === 200 && data) {
         const {
@@ -685,10 +678,17 @@ class NewContratosContainer extends Component {
   }
 }
 
+function mapDispacthToProps(dispach) {
+  return bindActionCreators({ setContractCode }, dispach);
+}
+
 function mapStateToProps(state) {
   return {
     login: state.login
   };
 }
 
-export default connect(mapStateToProps)(NewContratosContainer);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(NewContratosContainer);

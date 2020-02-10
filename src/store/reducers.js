@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
 
 import { login } from "../pages/Login/LoginRedux/reduce";
+import { contractCode } from "../pages/Cadastros/Contratos/ContratosRedux/reduce";
 
 const appReducer = combineReducers({
-  login
+  login,
+  contractCode
   // auth,
 });
 
