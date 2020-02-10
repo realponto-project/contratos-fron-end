@@ -3,6 +3,7 @@ import "../../../../global.css";
 import "./index.css";
 import { Icon, Select, message, Modal, DatePicker } from "antd";
 import * as R from "ramda";
+import { Redirect } from "react-router-dom";
 
 import { GetClientByParams } from "../../../../services/client";
 import { GetAllItens } from "../../../../services/item";
@@ -19,6 +20,7 @@ const { Option } = Select;
 
 class NewContratosContainer extends Component {
   state = {
+    redirect: false,
     visible: false,
     search: "",
     razaosocial: "",
@@ -97,6 +99,17 @@ class NewContratosContainer extends Component {
       },
       itens: []
     });
+  };
+
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+    });
+  };
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to="/logged/history/dash" />;
+    }
   };
 
   componentDidMount = async () => {
@@ -484,6 +497,7 @@ class NewContratosContainer extends Component {
 
     return (
       <div className="card-main">
+        {this.renderRedirect()}
         <this.ModalIncluir />
         <div className="div-titulo-usuario">
           <h1 className="h1-titulo">Contratos</h1>
@@ -592,7 +606,12 @@ class NewContratosContainer extends Component {
             <Option value="NOVAREAL">NOVA REALPONTO</Option>
             <Option value="PONTOREAL">PONTOREAL</Option>
           </Select>
-          <button className="button-historico-contratos">HISTÓRICO</button>
+          <button
+            onClick={this.setRedirect}
+            className="button-historico-contratos"
+          >
+            HISTÓRICO
+          </button>
         </div>
         <div className="div-main-contratos">
           <div className="div-itens-contratos">
@@ -628,6 +647,9 @@ class NewContratosContainer extends Component {
                     // placeholder="DATA"
                     value={moment(item.createdAt).format("lll")}
                   ></input>
+                  <button className="button-delete">
+                    <Icon type="delete" />
+                  </button>
                 </div>
               ))
             ) : (

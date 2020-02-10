@@ -3,11 +3,9 @@ import "../../../../global.css";
 import "./index.css";
 import { masks } from "./validator";
 import { GetAllContract } from "../../../../services/contract";
-import { Select } from "antd";
+import { Select, Spin } from "antd";
 
 const { Option } = Select;
-
-import { Spin } from "antd";
 
 class GerenciarConsultaContainer extends Component {
   state = {
@@ -74,27 +72,31 @@ class GerenciarConsultaContainer extends Component {
   TableConsulta = () => (
     <div className="div-table">
       <div className="div-main-table">
-        {this.state.contracts.map(line => (
-          <div className="div-line-table">
-            <label className="label-nome-table">
-              {line.client.razaosocial}
-            </label>
-            <label className="label-cnpj-table">
-              {line.client.cnpj.length === 12
-                ? line.client.cnpj.replace(
-                    /(\d{2})(\d{3})(\d{3})(\d{4})/,
-                    "$1.$2.$3/$4"
-                  )
-                : line.client.cnpj.replace(
-                    /(\d{2})(\d{3})(\d{3})(\d{4})(\d{1,2})/,
-                    "$1.$2.$3/$4-$5"
-                  )}
-            </label>
-            <label className="label-grupo-table">{line.client.group}</label>
-            <label className="label-codigo-table">{line.code}</label>
-            <label className="label-tipo-table">{line.type}</label>
-          </div>
-        ))}
+        {this.state.contracts.length !== 0 ? (
+          this.state.contracts.map(line => (
+            <div className="div-line-table">
+              <label className="label-nome-table">
+                {line.client.razaosocial}
+              </label>
+              <label className="label-cnpj-table">
+                {line.client.cnpj.length === 12
+                  ? line.client.cnpj.replace(
+                      /(\d{2})(\d{3})(\d{3})(\d{4})/,
+                      "$1.$2.$3/$4"
+                    )
+                  : line.client.cnpj.replace(
+                      /(\d{2})(\d{3})(\d{3})(\d{4})(\d{1,2})/,
+                      "$1.$2.$3/$4-$5"
+                    )}
+              </label>
+              <label className="label-grupo-table">{line.client.group}</label>
+              <label className="label-codigo-table">{line.code}</label>
+              <label className="label-tipo-table">{line.type}</label>
+            </div>
+          ))
+        ) : (
+          <div className="div-noItens-consulta">NÃO HÁ NENHUM CONTRATO</div>
+        )}
       </div>
     </div>
   );
@@ -202,7 +204,7 @@ class GerenciarConsultaContainer extends Component {
         </div>
         <div className="div-inputs-flex">
           <input
-            className="input-nome"
+            className="input-nome-consulta"
             placeholder="RAZÃO SOCIAL / NOME"
             onChange={onChange}
             name="nome"
@@ -216,7 +218,7 @@ class GerenciarConsultaContainer extends Component {
             value={state.cnpj}
           ></input>
           <input
-            className="input-grupo"
+            className="input-grupo-consulta"
             placeholder="GRUPO"
             onChange={onChange}
             name="grupo"
@@ -230,7 +232,8 @@ class GerenciarConsultaContainer extends Component {
             value={state.codigo}
           ></input>
           <Select
-            className="input-tipo-consulta"
+            style={{ marginRight: "25px", marginLeft: "15px", width: "15%" }}
+            size="large"
             placeholder="TIPO"
             name="tipo"
             value={state.tipo}

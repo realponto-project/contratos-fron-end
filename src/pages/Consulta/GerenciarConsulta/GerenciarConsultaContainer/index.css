@@ -1,6 +1,6 @@
 .input-cnpj-consulta {
   width: 20%;
-  height: 35px;
+  height: 38px;
   margin-left: 10px;
   color: #666;
   padding-left: 10px;
@@ -8,6 +8,40 @@
   font-size: 14px;
   border-radius: 2px;
   outline: none;
+}
+.input-nome-consulta {
+  width: 35%;
+  height: 38px;
+  margin-left: 25px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-grupo-consulta {
+  width: 15%;
+  height: 38px;
+  margin-left: 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-grupo-consulta::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-grupo-consulta:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-nome-consulta::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-nome-consulta:focus {
+  border-bottom: 1px solid #001529;
 }
 .input-cnpj-consulta::placeholder {
   color: rgb(177, 177, 177);
@@ -17,7 +51,7 @@
 }
 .input-tipo-consulta {
   width: 15%;
-  height: 35px;
+  height: 38px;
   margin: 0 25px 0 15px;
   color: #666;
   padding-left: 10px;
@@ -34,7 +68,7 @@
 }
 .input-codigo-consulta {
   width: 15%;
-  height: 35px;
+  height: 38px;
   margin: 0 0 0 15px;
   color: #666;
   padding-left: 10px;
@@ -54,7 +88,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin: 20px 0 10px 0;
 }
 .div-main-table {
   display: flex;
@@ -111,6 +145,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: bold;
+  font-size: 16px;
 }
 .div-main-pages {
   width: 100%;
@@ -126,4 +162,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.div-noItens-consulta {
+  font-size: 16px;
+  color: #262626;
+  font-weight: bold;
+  width: 100%;
 }
