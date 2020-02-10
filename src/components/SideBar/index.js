@@ -123,6 +123,15 @@ class SideBar extends Component {
     return (
       <div>
         <div className="menuIcon">
+          <Tooltip placement="bottom" title={"Contratos"}>
+            <Icon
+              className="menuIcon-icon"
+              type="file-add"
+              onClick={() =>
+                this.handleClickCompany(" newContrato_add", "Cadastros")
+              }
+            />
+          </Tooltip>
           <Tooltip placement="bottom" title={"Gráficos"}>
             <Icon
               type="pie-chart"
@@ -130,12 +139,20 @@ class SideBar extends Component {
               onClick={() => this.handleClickCompany("dash", "Gerenciar")}
             />
           </Tooltip>
-          <Tooltip placement="bottom" title={"Logout"}>
+          <Tooltip placement="bottom" title={"Consulta"}>
             <Icon
-              key="logout"
               className="menuIcon-icon"
-              type="logout"
-              // onClick={() => this.logout()}
+              type="edit"
+              onClick={() =>
+                this.handleClickCompany("dashConsulta_dash", "Consulta")
+              }
+            />
+          </Tooltip>
+          <Tooltip placement="bottom" title={"IGPM"}>
+            <Icon
+              className="menuIcon-icon"
+              type="dollar"
+              onClick={() => this.handleClickCompany("dashIgpm_dash", "IGPM")}
             />
           </Tooltip>
           <Tooltip placement="bottom" title={"Logout"}>
@@ -144,22 +161,6 @@ class SideBar extends Component {
               className="menuIcon-icon"
               type="logout"
               onClick={() => this.props.Logout()}
-            />
-          </Tooltip>
-          <Tooltip placement="bottom" title={"Logout"}>
-            <Icon
-              key="logout"
-              className="menuIcon-icon"
-              type="logout"
-              // onClick={() => this.logout()}
-            />
-          </Tooltip>
-          <Tooltip placement="bottom" title={"Logout"}>
-            <Icon
-              key="logout"
-              className="menuIcon-icon"
-              type="logout"
-              // onClick={() => this.logout()}
             />
           </Tooltip>
         </div>
