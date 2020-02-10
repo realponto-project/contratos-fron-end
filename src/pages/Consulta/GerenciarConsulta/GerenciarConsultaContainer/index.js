@@ -3,6 +3,9 @@ import "../../../../global.css";
 import "./index.css";
 import { masks } from "./validator";
 import { GetAllContract } from "../../../../services/contract";
+import { Select } from "antd";
+
+const { Option } = Select;
 
 import { Spin } from "antd";
 
@@ -13,7 +16,7 @@ class GerenciarConsultaContainer extends Component {
     cnpj: "",
     grupo: "",
     codigo: "",
-    tipo: "",
+    tipo: "TODOS",
     total: 10,
     count: 0,
     page: 1,
@@ -30,6 +33,22 @@ class GerenciarConsultaContainer extends Component {
     });
 
     const query = {
+      filters: {
+        client: {
+          specific: {
+            razaosocial: this.state.nome,
+            cnpj: this.state.cnpj.replace(/\D/gi, ""),
+            group: this.state.grupo
+          }
+        },
+        contract: {
+          specific: {
+            type: this.state.tipo !== "TODOS" && this.state.tipo,
+            // type: null,
+            code: this.state.codigo
+          }
+        }
+      },
       page: this.state.page,
       total: this.state.total
     };
@@ -44,11 +63,12 @@ class GerenciarConsultaContainer extends Component {
     });
   };
 
-  onChange = e => {
+  onChange = async e => {
     const { name, value } = masks(e.target.name, e.target.value);
-    this.setState({
+    await this.setState({
       [name]: value
     });
+    await this.getAllContract();
   };
 
   TableConsulta = () => (
@@ -72,7 +92,7 @@ class GerenciarConsultaContainer extends Component {
             </label>
             <label className="label-grupo-table">{line.client.group}</label>
             <label className="label-codigo-table">{line.code}</label>
-            <label className="label-tipo-table">{line.status}</label>
+            <label className="label-tipo-table">{line.type}</label>
           </div>
         ))}
       </div>
@@ -209,13 +229,19 @@ class GerenciarConsultaContainer extends Component {
             name="codigo"
             value={state.codigo}
           ></input>
-          <input
+          <Select
             className="input-tipo-consulta"
             placeholder="TIPO"
-            onChange={onChange}
             name="tipo"
             value={state.tipo}
-          ></input>
+            onChange={value =>
+              this.setState({ tipo: value }, () => this.getAllContract())
+            }
+          >
+            <Option value="TODOS">TODOS</Option>
+            <Option value="MENSAL">MENSAL</Option>
+            <Option value="ANUAL">ANUAL</Option>
+          </Select>
         </div>
 
         {this.state.loading ? (
