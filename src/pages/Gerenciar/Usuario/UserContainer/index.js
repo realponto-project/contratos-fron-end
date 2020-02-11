@@ -165,6 +165,8 @@ class UserContainer extends Component {
             </label>
             <div className="div-permissoes-usuario">
               <Checkbox value="B">B</Checkbox>
+              <Checkbox value="B">B</Checkbox>
+              <Checkbox value="B">B</Checkbox>
             </div>
           </div>
         </div>

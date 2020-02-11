@@ -37,7 +37,7 @@ class NewContratosContainer extends Component {
     base: "BASE",
     clientId: "",
     item: "NÃO SELECIONADO",
-    codigoModal: "",
+    codigoModal: "CÓDIGO",
     rua: "",
     bairro: "",
     cep: "",
@@ -361,7 +361,7 @@ class NewContratosContainer extends Component {
           showSearch
           placeholder="CÓDIGO"
           optionFilterProp="children"
-          value={this.state.codigoItem}
+          value={this.state.codigoModal}
           onChange={this.onChangeCodigo}
           filterOption={(input, option) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
@@ -481,6 +481,7 @@ class NewContratosContainer extends Component {
         ],
         itemId: "",
         item: "NÃO SELECIONADO",
+        codigoModal: "CÓDIGO",
         rua: "",
         bairro: "",
         cep: "",
@@ -499,7 +500,7 @@ class NewContratosContainer extends Component {
     this.setState({
       visible: false,
       item: "NÃO SELECIONADO",
-      codigoModal: "",
+      codigoModal: "CÓDIGO",
       rua: "",
       bairro: "",
       cep: "",
@@ -643,7 +644,8 @@ class NewContratosContainer extends Component {
             </div>
             {this.state.itens.length !== 0 ? (
               this.state.itens.map((item, index) => (
-                <div className="div-line-contratos">
+                <div className="div-line-contratos" onClick={this.showModal}>
+                  <Icon type="question-circle" className="icon-info" />
                   <input
                     readOnly
                     className="input-item-contratos"
