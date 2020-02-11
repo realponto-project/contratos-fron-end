@@ -95,7 +95,7 @@ class GerenciarConsultaContainer extends Component {
             </div>
           ))
         ) : (
-          <div className="div-noItens-consulta">NÃO HÁ NENHUM CONTRATO</div>
+          <div className="div-noItens-consulta">NENHUM CONTRATO ENCONTRADO</div>
         )}
       </div>
     </div>

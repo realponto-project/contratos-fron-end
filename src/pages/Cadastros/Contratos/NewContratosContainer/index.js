@@ -234,6 +234,15 @@ class NewContratosContainer extends Component {
     }
   };
 
+  removeItem = async index => {
+    const oldItem = this.state.itens;
+    const newItens = oldItem.filter((item, indexx) => index !== indexx);
+
+    await this.setState({
+      itens: newItens
+    });
+  };
+
   onChangeStatus = value => {
     this.setState({
       status: value
@@ -450,7 +459,11 @@ class NewContratosContainer extends Component {
       itens
     } = this.state;
 
-    if (this.state.item !== "NÃO SELECIONADO") {
+    if (
+      this.state.item !== "NÃO SELECIONADO" &&
+      this.state.cep !== "" &&
+      this.state.bairro !== ""
+    ) {
       this.setState({
         itens: [
           ...itens,
@@ -467,7 +480,7 @@ class NewContratosContainer extends Component {
           }
         ],
         itemId: "",
-        item: "",
+        item: "NÃO SELECIONADO",
         rua: "",
         bairro: "",
         cep: "",
@@ -500,6 +513,7 @@ class NewContratosContainer extends Component {
   };
 
   render() {
+    console.log(this.state.itens);
     const { state } = this;
     const { fieldErrors } = state;
 
@@ -674,7 +688,10 @@ class NewContratosContainer extends Component {
                     // placeholder="DATA"
                     value={moment(item.createdAt).format("lll")}
                   ></input>
-                  <button className="button-delete">
+                  <button
+                    className="button-delete"
+                    onClick={() => this.removeItem(index)}
+                  >
                     <Icon type="delete" />
                   </button>
                 </div>
