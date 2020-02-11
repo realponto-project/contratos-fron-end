@@ -160,4 +160,7 @@ function mapDispacthToProps(dispach) {
   return bindActionCreators({ setContractCode }, dispach);
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(HistoricoContainer);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(HistoricoContainer);

@@ -459,7 +459,11 @@ class NewContratosContainer extends Component {
       itens
     } = this.state;
 
-    if (this.state.item !== "NÃO SELECIONADO") {
+    if (
+      this.state.item !== "NÃO SELECIONADO" &&
+      this.state.cep !== "" &&
+      this.state.bairro !== ""
+    ) {
       this.setState({
         itens: [
           ...itens,
@@ -476,7 +480,7 @@ class NewContratosContainer extends Component {
           }
         ],
         itemId: "",
-        item: "",
+        item: "NÃO SELECIONADO",
         rua: "",
         bairro: "",
         cep: "",
