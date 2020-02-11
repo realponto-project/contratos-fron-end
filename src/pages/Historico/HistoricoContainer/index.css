@@ -1,0 +1,35 @@
+.history-container-main {
+  /* display: flex;
+  flex-direction: row; */
+  width: 100%;
+  /* background: red; */
+  border: solid;
+  margin: 20px;
+  padding: 20px;
+}
+
+.history-row-title {
+  display: flex;
+  flex-direction: row;
+}
+
+.history-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.history-column-username {
+  width: 15%;
+}
+
+.history-column-action {
+  width: 15%;
+}
+
+.history-column-date {
+  width: 15%;
+}
+
+.history-column-log {
+  width: 55%;
+}

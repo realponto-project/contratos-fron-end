@@ -30,7 +30,7 @@ class NewContratosContainer extends Component {
     cnpj: "",
     codigo: "",
     grupo: "",
-    valorTotal: "",
+    valorTotal: "0",
     dataAtivacao: "",
     status: "STATUS",
     tipo: "TIPO",
@@ -71,7 +71,7 @@ class NewContratosContainer extends Component {
       cnpj: "",
       codigo: "",
       grupo: "",
-      valorTotal: "",
+      valorTotal: "0",
       dataAtivacao: "",
       status: "STATUS",
       tipo: "TIPO",
@@ -195,7 +195,7 @@ class NewContratosContainer extends Component {
           razaosocial: "",
           cnpj: "",
           grupo: "",
-          valorTotal: "",
+          valorTotal: "0",
           dataAtivacao: "",
           status: "STATUS",
           tipo: "TIPO",
@@ -261,7 +261,8 @@ class NewContratosContainer extends Component {
       clientId,
       contractCode,
       itens = [],
-      dateActivation
+      dateActivation,
+      valorTotal: price
     } = this.state;
 
     let value = {
@@ -270,6 +271,7 @@ class NewContratosContainer extends Component {
       stockBase,
       itens,
       dateActivation,
+      price,
       userId: this.props.login.user.id
     };
 
@@ -565,11 +567,12 @@ class NewContratosContainer extends Component {
 
         <div className="div-inputs-flex-contratos">
           <input
+            readOnly
             className="input-valor"
             placeholder="VALOR"
-            onChange={this.onChange}
-            name="nome"
-            value={this.state.nome}
+            // onChange={this.onChange}
+            name="valorTotal"
+            value={this.state.valorTotal}
           ></input>
           <DatePicker
             size="large"
@@ -642,9 +645,27 @@ class NewContratosContainer extends Component {
                     onChange={e => {
                       const { value } = e.target;
                       const { itens } = this.state;
+                      itens[index].price =
+                        itens[index].price === undefined
+                          ? "0"
+                          : itens[index].price;
+
+                      this.setState({
+                        itens
+                      });
+
+                      this.setState({
+                        valorTotal:
+                          parseFloat(this.state.valorTotal, 10) +
+                          parseFloat(value.slice(0, 9), 10) -
+                          parseFloat(itens[index].price, 10)
+                      });
+
                       itens[index].price = value.slice(0, 9);
 
-                      this.setState({ itens });
+                      this.setState({
+                        itens
+                      });
                     }}
                     value={item.price}
                   ></input>
