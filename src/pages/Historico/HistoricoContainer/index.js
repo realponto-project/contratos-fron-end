@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import * as R from "ramda";
 import moment from "moment";
 import "../../../global.css";
 import "./index.css";
@@ -110,6 +111,7 @@ class HistoricoContainer extends Component {
                   </div>
                 );
               case "update":
+                const logUpdate = JSON.parse(item.log);
                 return (
                   <div className="history-row">
                     <div className="history-column-username">
@@ -121,7 +123,18 @@ class HistoricoContainer extends Component {
                     <div className="history-column-date">
                       {moment(item.createdAt).format("DD/MM/YYYY, h:mm")}
                     </div>
-                    <div className="history-column-log"></div>
+                    <div className="history-column-log">
+                      {R.keys(logUpdate.oldContratc).map(key => {
+                        if (R.has(key, logUpdate.newContratc)) {
+                          return <label>{logUpdate.oldContratc[key]} </label>;
+                        }
+                      })}
+                      {R.keys(logUpdate.newContratc).map(key => {
+                        if (R.has(key, logUpdate.oldContratc)) {
+                          return <label>{logUpdate.newContratc[key]} </label>;
+                        }
+                      })}
+                    </div>
                   </div>
                 );
               default:
@@ -151,7 +164,4 @@ function mapDispacthToProps(dispach) {
   return bindActionCreators({ setContractCode }, dispach);
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(HistoricoContainer);
+export default connect(mapStateToProps, mapDispacthToProps)(HistoricoContainer);
