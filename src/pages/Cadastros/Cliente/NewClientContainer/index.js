@@ -2,14 +2,19 @@ import React, { Component } from "react";
 import * as R from "ramda";
 import "../../../../global.css";
 import "./index.css";
-import { NewClient } from "../../../../services/client";
+import {
+  NewClient,
+  UpdateClient,
+  GetClientByParams
+} from "../../../../services/client";
 import { getAddressByZipCode } from "../../../../services/utils/viacep";
 import { validator, masks } from "./validator";
 import { message } from "antd";
 
 class NewClientContainer extends Component {
   state = {
-    nome: "",
+    clientId: "",
+    razaosocial: "",
     cnpj: "",
     grupo: "",
     codigo: "",
@@ -25,7 +30,7 @@ class NewClientContainer extends Component {
     complemento: "",
     observacoes: "",
     fieldErrors: {
-      nome: false,
+      razaosocial: false,
       cnpj: false,
       grupo: false,
       codigo: false,
@@ -45,7 +50,8 @@ class NewClientContainer extends Component {
 
   clearState = () => {
     this.setState({
-      nome: "",
+      clientId: "",
+      razaosocial: "",
       cnpj: "",
       grupo: "",
       codigo: "",
@@ -61,7 +67,7 @@ class NewClientContainer extends Component {
       complemento: "",
       observacoes: "",
       fieldErrors: {
-        nome: false,
+        razaosocial: false,
         cnpj: false,
         grupo: false,
         codigo: false,
@@ -89,6 +95,7 @@ class NewClientContainer extends Component {
 
   newClient = async () => {
     const {
+      clientId,
       nomeContato: name,
       telefoneContato: telphone,
       celularContato: celular,
@@ -98,7 +105,7 @@ class NewClientContainer extends Component {
       uf: state,
       cep: zipCode,
       bairro: neighborhood,
-      nome: razaosocial,
+      razaosocial,
       grupo: group,
       codigo: code,
       cnpj
@@ -120,11 +127,20 @@ class NewClientContainer extends Component {
       cnpj
     };
 
-    const { status } = await NewClient(value);
+    if (clientId) {
+      const { status } = await UpdateClient({ ...value, clientId });
 
-    if (status === 200) {
-      this.clearState();
-      message.success("Cliente cadatrado com sucesso");
+      if (status === 200) {
+        this.clearState();
+        message.success("Cliente atualizado com sucesso");
+      }
+    } else {
+      const { status } = await NewClient(value);
+
+      if (status === 200) {
+        this.clearState();
+        message.success("Cliente cadatrado com sucesso");
+      }
     }
   };
 
@@ -170,6 +186,122 @@ class NewClientContainer extends Component {
         }
       }
     }
+
+    if (name === "razaosocial" || name === "cnpj") {
+      const { status, data } = await GetClientByParams({
+        [name]: name === "cnpj" ? value.replace(/\D/gi, "") : value
+      });
+
+      if (status === 200 && data) {
+        const {
+          id: clientId,
+          razaosocial,
+          cnpj,
+          group: grupo,
+          code: codigo,
+          contact: {
+            name: nomeContato,
+            celular: celularContato,
+            telphone: telefoneContato,
+            email: emailContato
+          },
+          address: {
+            street: rua,
+            neighborhood: bairro,
+            zipCode: cep,
+            city: cidade,
+            state: uf,
+            complement: complemento,
+            observation: observacoes
+          }
+        } = data;
+
+        this.setState({
+          clientId,
+          razaosocial,
+          cnpj:
+            cnpj.length === 12
+              ? cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})/, "$1.$2.$3/$4")
+              : cnpj.replace(
+                  /(\d{2})(\d{3})(\d{3})(\d{4})(\d{1,2})/,
+                  "$1.$2.$3/$4-$5"
+                ),
+          grupo,
+          codigo,
+          nomeContato,
+          celularContato: celularContato.replace(
+            /(\d{2})(\d{5})(\d{4})/,
+            "($1) $2-$3"
+          ),
+          telefoneContato: telefoneContato.replace(
+            /(\d{2})(\d{4})(\d{4})/,
+            "($1) $2-$3"
+          ),
+          emailContato,
+          rua,
+          bairro,
+          cep,
+          cidade,
+          uf,
+          complemento,
+          observacoes,
+          fieldErrors: {
+            razaosocial: false,
+            cnpj: false,
+            grupo: false,
+            codigo: false,
+            nomeContato: false,
+            celularContato: false,
+            telefoneContato: false,
+            emailContato: false,
+            rua: false,
+            bairro: false,
+            cep: false,
+            cidade: false,
+            uf: false,
+            complemento: false,
+            observacoes: false
+          }
+        });
+      } else if (this.state.clientId) {
+        this.setState({
+          clientId: "",
+          razaosocial: name === "razaosocial" ? this.state.razaosocial : "",
+          cnpj: name === "cnpj" ? this.state.cnpj : "",
+          grupo: "",
+          codigo: "",
+          nomeContato: "",
+          celularContato: "",
+          telefoneContato: "",
+          emailContato: "",
+          rua: "",
+          bairro: "",
+          cep: "",
+          cidade: "",
+          uf: "",
+          complemento: "",
+          observacoes: "",
+          fieldErrors: {
+            razaosocial:
+              name === "razaosocial" ? this.state.fieldErrors.razaosocial : "",
+            cnpj: name === "cnpj" ? this.state.fieldErrors.cnpj : "",
+            grupo: false,
+            codigo: false,
+            nomeContato: false,
+            celularContato: false,
+            telefoneContato: false,
+            emailContato: false,
+            rua: false,
+            bairro: false,
+            cep: false,
+            cidade: false,
+            uf: false,
+            complemento: false,
+            observacoes: false
+          }
+        });
+      }
+    }
   };
 
   render() {
@@ -183,11 +315,11 @@ class NewClientContainer extends Component {
 
         <div className="div-inputs-flex">
           <input
-            className={`input-nome ${fieldErrors.nome && "input-error"}`}
+            className={`input-nome ${fieldErrors.razaosocial && "input-error"}`}
             placeholder="RAZÃO SOCIAL / NOME"
             onChange={onChange}
-            name="nome"
-            value={state.nome}
+            name="razaosocial"
+            value={state.razaosocial}
             onFocus={onFocus}
             onBlur={onBlur}
           ></input>
@@ -336,7 +468,7 @@ class NewClientContainer extends Component {
         </div>
         <div className="div-buttons-usuario">
           <button className="button-salvar" onClick={this.newClient}>
-            Cadastrar
+            {this.state.clientId ? "Atualizar" : "Cadastrar"}
           </button>
           <button className="button-excluir">Excluir</button>
         </div>

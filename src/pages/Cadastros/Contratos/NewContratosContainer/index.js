@@ -172,6 +172,7 @@ class NewContratosContainer extends Component {
       if (status === 200 && data) {
         const {
           code: contractCode,
+          price: valorTotal,
           status,
           type: tipo,
           stockBase: base,
@@ -183,6 +184,7 @@ class NewContratosContainer extends Component {
           contractCode,
           status,
           tipo,
+          valorTotal,
           base,
           clientId,
           razaosocial,
