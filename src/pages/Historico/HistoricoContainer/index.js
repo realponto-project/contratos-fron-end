@@ -123,7 +123,7 @@ class HistoricoContainer extends Component {
                         <label>{item.type}</label>
                       </div>
                       <div className="history-column-date">
-                        {moment(item.createdAt).format("DD/MM/YYYY, h:mm")}
+                        {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
                       </div>
                       <div className="history-column-log">
                         {R.keys(logUpdate.oldContratc).map(key => {
@@ -169,7 +169,4 @@ function mapDispacthToProps(dispach) {
   return bindActionCreators({ setContractCode }, dispach);
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(HistoricoContainer);
+export default connect(mapStateToProps, mapDispacthToProps)(HistoricoContainer);

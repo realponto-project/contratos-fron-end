@@ -5,14 +5,16 @@ import "./index.css";
 import {
   NewClient,
   UpdateClient,
+  DeleteClient,
   GetClientByParams
 } from "../../../../services/client";
 import { getAddressByZipCode } from "../../../../services/utils/viacep";
 import { validator, masks } from "./validator";
-import { message } from "antd";
+import { message, Modal } from "antd";
 
 class NewClientContainer extends Component {
   state = {
+    visible: false,
     clientId: "",
     razaosocial: "",
     cnpj: "",
@@ -304,6 +306,70 @@ class NewClientContainer extends Component {
     }
   };
 
+  showModal = () => {
+    this.setState({
+      visible: true
+    });
+  };
+
+  handleOk = async e => {
+    const { clientId } = this.state;
+    const { status } = await DeleteClient(clientId);
+
+    switch (status) {
+      case 422:
+        message.error("ocorreu um erro");
+        break;
+      case 200:
+        message.success("cliente excluído");
+        break;
+      default:
+        message.error("ocorreu um erro");
+    }
+    this.setState({
+      visible: false
+    });
+  };
+
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
+
+  ModalConfirmeDelete = () => {
+    const { razaosocial, cnpj, grupo, codigo } = this.state;
+    return (
+      <Modal
+        visible={this.state.visible}
+        onOk={this.handleOk}
+        onCancel={this.handleCancel}
+      >
+        <h2>Deseja excluir esse cliente?</h2>
+        <br />
+        <p>
+          <strong>Razão Social: </strong>
+          {razaosocial}
+        </p>
+        <p>
+          <strong>CNPJ/CPF: </strong>
+          {cnpj}
+        </p>
+        <p>
+          <strong>Grupo: </strong>
+          {grupo}
+        </p>
+        <p>
+          <strong>Código: </strong>
+          {codigo}
+        </p>
+        {/* <p>Some contents...</p>
+      <p>Some contents...</p> */}
+      </Modal>
+    );
+  };
+
   render() {
     const { state, onChange, onFocus, onBlur } = this;
     const { fieldErrors } = state;
@@ -312,7 +378,6 @@ class NewClientContainer extends Component {
         <div className="div-titulo">
           <h1 className="h1-titulo">Cliente</h1>
         </div>
-
         <div className="div-inputs-flex">
           <input
             className={`input-nome ${fieldErrors.razaosocial && "input-error"}`}
@@ -351,7 +416,6 @@ class NewClientContainer extends Component {
             onBlur={onBlur}
           ></input>
         </div>
-
         <div className="div-main-cliente">
           <div className="div-contato-cliente">
             <div className="div-h2-cliente">
@@ -470,8 +534,15 @@ class NewClientContainer extends Component {
           <button className="button-salvar" onClick={this.newClient}>
             {this.state.clientId ? "Atualizar" : "Cadastrar"}
           </button>
-          <button className="button-excluir">Excluir</button>
+          <button
+            className={`button-excluir ${!this.state.clientId &&
+              "button-disabled"}`}
+            onClick={this.state.clientId && this.showModal}
+          >
+            Excluir
+          </button>
         </div>
+        <this.ModalConfirmeDelete />
       </div>
     );
   }

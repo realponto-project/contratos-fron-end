@@ -49,6 +49,30 @@ export const UpdateClient = async value => {
   return response;
 };
 
+export const DeleteClient = async id => {
+  const storeObject = store.getState();
+
+  const headers = {
+    authorization: `Bearer ${storeObject.login.token}`
+  };
+
+  let response = {};
+  await api
+    .delete("/client", { headers, params: { id } })
+    .then(resp => {
+      response = resp;
+    })
+    .catch(err => {
+      if (err.response) {
+        response = err.response;
+      } else {
+        console.log("Error", err.message);
+      }
+    });
+
+  return response;
+};
+
 export const GetClientByParams = async query => {
   const storeObject = store.getState();
 
