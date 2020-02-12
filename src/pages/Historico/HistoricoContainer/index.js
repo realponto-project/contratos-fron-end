@@ -25,7 +25,7 @@ class HistoricoContainer extends Component {
         }
       }
     };
-    const { status, data } = await GetLogsByCode({ query });
+    const { status, data } = await GetLogsByCode(query);
 
     if (status === 200) this.setState({ logs: data.rows });
   };
@@ -136,6 +136,24 @@ class HistoricoContainer extends Component {
                             return <label>{logUpdate.newContratc[key]} </label>;
                           }
                         })}
+                      </div>
+                    </div>
+                  );
+                case "deletItem":
+                  const logDeleteItem = JSON.parse(item.log);
+                  return (
+                    <div className="history-row">
+                      <div className="history-column-username">
+                        <label>{item.user.username} </label>
+                      </div>
+                      <div className="history-column-action">
+                        <label>{item.type}</label>
+                      </div>
+                      <div className="history-column-date">
+                        {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
+                      </div>
+                      <div className="history-column-log">
+                        {console.log(logDeleteItem)}
                       </div>
                     </div>
                   );

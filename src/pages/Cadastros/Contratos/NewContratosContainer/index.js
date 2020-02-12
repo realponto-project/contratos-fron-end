@@ -32,7 +32,7 @@ class NewContratosContainer extends Component {
     grupo: "",
     valorTotal: "0",
     dataAtivacao: "",
-    dataRescisao: "",
+    dataRescisao: null,
     status: "STATUS",
     tipo: "TIPO",
     base: "BASE",
@@ -73,6 +73,7 @@ class NewContratosContainer extends Component {
       codigo: "",
       grupo: "",
       valorTotal: "0",
+      dataRescisao: null,
       dataAtivacao: "",
       status: "STATUS",
       tipo: "TIPO",
@@ -114,7 +115,7 @@ class NewContratosContainer extends Component {
   };
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to="/logged/history/dash" />;
+      return <Redirect push to="/logged/history/dash" />;
     }
   };
 
@@ -178,14 +179,19 @@ class NewContratosContainer extends Component {
           type: tipo,
           stockBase: base,
           client: { id: clientId, razaosocial, cnpj, group: grupo },
-          items: itens = []
+          items: itens = [],
+          dateActivation: dataAtivacao,
+          dateTermination: dataRescisao
         } = data;
 
+        console.log(dataAtivacao, dataRescisao);
         this.setState({
           contractCode,
           status,
           tipo,
           valorTotal,
+          dataAtivacao: moment(dataAtivacao),
+          dataRescisao,
           base,
           clientId,
           razaosocial,
@@ -199,6 +205,7 @@ class NewContratosContainer extends Component {
           cnpj: "",
           grupo: "",
           valorTotal: "0",
+          dataRescisao: null,
           dataAtivacao: "",
           status: "STATUS",
           tipo: "TIPO",
@@ -273,7 +280,8 @@ class NewContratosContainer extends Component {
       clientId,
       contractCode,
       itens = [],
-      dateActivation,
+      dataAtivacao: dateActivation,
+      dataRescisao: dateTermination,
       valorTotal: price
     } = this.state;
 
@@ -283,9 +291,13 @@ class NewContratosContainer extends Component {
       stockBase,
       itens,
       dateActivation,
+      dateTermination,
       price,
       userId: this.props.login.user.id
     };
+
+    console.log("contractCode: ", contractCode);
+    console.log(contractCode !== "");
 
     if (contractCode !== "") {
       value = { ...value, contractCode };
@@ -307,16 +319,11 @@ class NewContratosContainer extends Component {
     }
   };
 
-  onChangeItem = (value, props) => {
+  onChangeSelect = (value, option) => {
     this.setState({
-      item: value,
-      itemId: props.key
-    });
-  };
-
-  onChangeCodigo = value => {
-    this.setState({
-      codigoItem: value
+      item: option.props.item.name,
+      codigoModal: option.props.item.code,
+      itemId: option.key
     });
   };
 
@@ -345,14 +352,14 @@ class NewContratosContainer extends Component {
           placeholder="ITEM"
           optionFilterProp="children"
           value={this.state.item}
-          onChange={this.onChangeItem}
+          onChange={this.onChangeSelect}
           filterOption={(input, option) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
             0
           }
         >
           {this.state.allItens.map(value => (
-            <Option key={value.id} value={value.name}>
+            <Option key={value.id} value={value.name} item={value}>
               {value.name}
             </Option>
           ))}
@@ -364,14 +371,16 @@ class NewContratosContainer extends Component {
           placeholder="CÓDIGO"
           optionFilterProp="children"
           value={this.state.codigoModal}
-          onChange={this.onChangeCodigo}
+          onChange={this.onChangeSelect}
           filterOption={(input, option) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
             0
           }
         >
           {this.state.allItens.map(value => (
-            <Option value={value.code}>{value.code}</Option>
+            <Option key={value.id} value={value.code} item={value}>
+              {value.code}
+            </Option>
           ))}
         </Select>
       </div>
@@ -440,7 +449,8 @@ class NewContratosContainer extends Component {
     </Modal>
   );
 
-  showModal = () => {
+  showModal = e => {
+    console.log(e);
     this.setState({
       visible: true
     });
@@ -518,6 +528,8 @@ class NewContratosContainer extends Component {
   render() {
     const { state } = this;
     const { fieldErrors } = state;
+
+    console.log(state);
 
     return (
       <div className="card-main">
@@ -655,8 +667,12 @@ class NewContratosContainer extends Component {
             </div>
             {this.state.itens.length !== 0 ? (
               this.state.itens.map((item, index) => (
-                <div className="div-line-contratos" onClick={this.showModal}>
-                  <Icon type="question-circle" className="icon-info" />
+                <div className="div-line-contratos">
+                  <Icon
+                    type="question-circle"
+                    className="icon-info"
+                    onClick={() => this.showModal(index)}
+                  />
                   <input
                     readOnly
                     className="input-item-contratos"
