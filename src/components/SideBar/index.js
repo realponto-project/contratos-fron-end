@@ -14,7 +14,7 @@ class SideBar extends Component {
   state = {
     current: "0",
     redirect: false,
-    open: ["Gerenciar"]
+    open: [""]
   };
 
   handleClickCompany = async (current, keyPath) => {

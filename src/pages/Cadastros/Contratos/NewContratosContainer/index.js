@@ -32,6 +32,7 @@ class NewContratosContainer extends Component {
     grupo: "",
     valorTotal: "0",
     dataAtivacao: "",
+    dataRescisao: "",
     status: "STATUS",
     tipo: "TIPO",
     base: "BASE",
@@ -352,7 +353,6 @@ class NewContratosContainer extends Component {
         >
           {this.state.allItens.map(value => (
             <Option key={value.id} value={value.name}>
-              {" "}
               {value.name}
             </Option>
           ))}
@@ -516,7 +516,6 @@ class NewContratosContainer extends Component {
   };
 
   render() {
-    console.log(this.state.itens);
     const { state } = this;
     const { fieldErrors } = state;
 
@@ -580,34 +579,44 @@ class NewContratosContainer extends Component {
             name="grupo"
             value={this.state.grupo}
           ></input>
-        </div>
-
-        <div className="div-inputs-flex-contratos">
           <input
             readOnly
             className="input-valor"
             placeholder="VALOR"
-            // onChange={this.onChange}
             name="valorTotal"
             value={this.state.valorTotal}
           ></input>
+        </div>
+
+        <div className="div-inputs-flex-contratos">
           <DatePicker
             size="large"
             placeholder="DATA ATIVAÇÃO"
-            style={{ marginLeft: "10px" }}
-            name="dateActivation"
-            value={this.state.dateActivation}
+            style={{ marginLeft: "25px" }}
+            name="dataAtivacao"
+            value={this.state.dataAtivacao}
             format="DD/MM/YYYY"
             onChange={e => {
-              this.setState({ dateActivation: e });
+              this.setState({ dataAtivacao: e });
+            }}
+          />
+          <DatePicker
+            size="large"
+            placeholder="DATA RESCISÃO"
+            style={{ marginLeft: "10px" }}
+            name="dataRescisao"
+            value={this.state.dataRescisao}
+            format="DD/MM/YYYY"
+            onChange={e => {
+              this.setState({ dataRescisao: e });
             }}
           />
           <Select
             placeholder="STATUS"
             value={this.state.status}
-            className="select-contratos"
             size="large"
             onChange={this.onChangeStatus}
+            style={{ width: "15%", marginLeft: "10px" }}
           >
             <Option value="ATIVO">ATIVO</Option>
             <Option value="DEBITO">EM DÉBITO</Option>
@@ -616,8 +625,8 @@ class NewContratosContainer extends Component {
           <Select
             onChange={this.onChangeTipo}
             value={this.state.tipo}
-            className="select-contratos"
             size="large"
+            style={{ width: "12%", marginLeft: "10px" }}
           >
             <Option value="MENSAL">MENSAL</Option>
             <Option value="ANUAL">ANUAL</Option>
@@ -689,7 +698,6 @@ class NewContratosContainer extends Component {
                   ></input>
                   <input
                     className="input-data-contratos"
-                    // placeholder="DATA"
                     value={moment(item.createdAt).format("lll")}
                   ></input>
                   <button

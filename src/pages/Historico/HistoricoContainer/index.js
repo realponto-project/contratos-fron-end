@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -58,96 +59,100 @@ class HistoricoContainer extends Component {
           <div className="div-separate-main">
             <div className="div-separate" />
           </div>
-          {this.state.logs.map(item => {
-            switch (item.type) {
-              case "create":
-                const logCreate = JSON.parse(item.log);
-                return (
-                  <div className="history-row">
-                    <div className="history-column-username">
-                      <label>{item.user.username} </label>
+          {this.state.logs.length !== 0 ? (
+            this.state.logs.map(item => {
+              switch (item.type) {
+                case "create":
+                  const logCreate = JSON.parse(item.log);
+                  return (
+                    <div className="history-row">
+                      <div className="history-column-username">
+                        <label>{item.user.username} </label>
+                      </div>
+                      <div className="history-column-action">
+                        <label>{item.type}</label>
+                      </div>
+                      <div className="history-column-date">
+                        <label>
+                          {moment(item.createdAt).format("DD/MM/YYYY, h:mm")}
+                        </label>
+                      </div>
+                      <div className="history-column-log">
+                        <label>{logCreate.client.razaosocial} </label>
+                        <label>{logCreate.client.cnpj} </label>
+                        <label>{logCreate.client.group} </label>
+                        <label>{logCreate.client.code} </label>
+                        <label>{logCreate.status} </label>
+                        <label>{logCreate.type} </label>
+                        <label>{logCreate.stockBase} </label>
+                      </div>
                     </div>
-                    <div className="history-column-action">
-                      <label>{item.type}</label>
+                  );
+                case "addItem":
+                  const logAddItem = JSON.parse(item.log);
+                  return (
+                    <div className="history-row">
+                      <div className="history-column-username">
+                        <label>{item.user.username} </label>
+                      </div>
+                      <div className="history-column-action">
+                        <label>{item.type}</label>
+                      </div>
+                      <div className="history-column-date">
+                        <label>
+                          {moment(item.createdAt).format("DD/MM/YYYY, h:mm")}
+                        </label>
+                      </div>
+                      <div className="history-column-log">
+                        <label>{logAddItem.price} </label>
+                        <label>{logAddItem.item.name} </label>
+                        <label>{logAddItem.item.type} </label>
+                        <label>{logAddItem.item.code} </label>
+                        <label>{logAddItem.item.description} </label>
+                      </div>
                     </div>
-                    <div className="history-column-date">
-                      <label>
+                  );
+                case "update":
+                  const logUpdate = JSON.parse(item.log);
+                  return (
+                    <div className="history-row">
+                      <div className="history-column-username">
+                        <label>{item.user.username} </label>
+                      </div>
+                      <div className="history-column-action">
+                        <label>{item.type}</label>
+                      </div>
+                      <div className="history-column-date">
                         {moment(item.createdAt).format("DD/MM/YYYY, h:mm")}
-                      </label>
+                      </div>
+                      <div className="history-column-log">
+                        {R.keys(logUpdate.oldContratc).map(key => {
+                          if (R.has(key, logUpdate.newContratc)) {
+                            return <label>{logUpdate.oldContratc[key]} </label>;
+                          }
+                        })}
+                        {R.keys(logUpdate.newContratc).map(key => {
+                          if (R.has(key, logUpdate.oldContratc)) {
+                            return <label>{logUpdate.newContratc[key]} </label>;
+                          }
+                        })}
+                      </div>
                     </div>
-                    <div className="history-column-log">
-                      <label>{logCreate.client.razaosocial} </label>
-                      <label>{logCreate.client.cnpj} </label>
-                      <label>{logCreate.client.group} </label>
-                      <label>{logCreate.client.code} </label>
-                      <label>{logCreate.status} </label>
-                      <label>{logCreate.type} </label>
-                      <label>{logCreate.stockBase} </label>
+                  );
+                default:
+                  return (
+                    <div className="history-row">
+                      <div className="history-column-username"></div>
+                      <div className="history-column-action"></div>
+                      <div className="history-column-date"></div>
+                      <div className="history-column-log"></div>
                     </div>
-                  </div>
-                );
-              case "addItem":
-                const logAddItem = JSON.parse(item.log);
-                return (
-                  <div className="history-row">
-                    <div className="history-column-username">
-                      <label>{item.user.username} </label>
-                    </div>
-                    <div className="history-column-action">
-                      <label>{item.type}</label>
-                    </div>
-                    <div className="history-column-date">
-                      <label>
-                        {moment(item.createdAt).format("DD/MM/YYYY, h:mm")}
-                      </label>
-                    </div>
-                    <div className="history-column-log">
-                      <label>{logAddItem.price} </label>
-                      <label>{logAddItem.item.name} </label>
-                      <label>{logAddItem.item.type} </label>
-                      <label>{logAddItem.item.code} </label>
-                      <label>{logAddItem.item.description} </label>
-                    </div>
-                  </div>
-                );
-              case "update":
-                const logUpdate = JSON.parse(item.log);
-                return (
-                  <div className="history-row">
-                    <div className="history-column-username">
-                      <label>{item.user.username} </label>
-                    </div>
-                    <div className="history-column-action">
-                      <label>{item.type}</label>
-                    </div>
-                    <div className="history-column-date">
-                      {moment(item.createdAt).format("DD/MM/YYYY, h:mm")}
-                    </div>
-                    <div className="history-column-log">
-                      {R.keys(logUpdate.oldContratc).map(key => {
-                        if (R.has(key, logUpdate.newContratc)) {
-                          return <label>{logUpdate.oldContratc[key]} </label>;
-                        }
-                      })}
-                      {R.keys(logUpdate.newContratc).map(key => {
-                        if (R.has(key, logUpdate.oldContratc)) {
-                          return <label>{logUpdate.newContratc[key]} </label>;
-                        }
-                      })}
-                    </div>
-                  </div>
-                );
-              default:
-                return (
-                  <div className="history-row">
-                    <div className="history-column-username"></div>
-                    <div className="history-column-action"></div>
-                    <div className="history-column-date"></div>
-                    <div className="history-column-log"></div>
-                  </div>
-                );
-            }
-          })}
+                  );
+              }
+            })
+          ) : (
+            <div className="div-noItens-contratos">NÃO HÁ NENHUM LOG</div>
+          )}
         </div>
       </div>
     );
@@ -164,4 +169,7 @@ function mapDispacthToProps(dispach) {
   return bindActionCreators({ setContractCode }, dispach);
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(HistoricoContainer);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(HistoricoContainer);
