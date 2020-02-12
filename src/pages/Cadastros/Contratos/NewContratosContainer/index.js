@@ -30,7 +30,7 @@ class NewContratosContainer extends Component {
     cnpj: "",
     codigo: "",
     grupo: "",
-    valorTotal: "0",
+    valorTotal: "VALOR TOTAL",
     dataAtivacao: "",
     dataRescisao: null,
     status: "STATUS",
@@ -72,8 +72,8 @@ class NewContratosContainer extends Component {
       cnpj: "",
       codigo: "",
       grupo: "",
-      valorTotal: "0",
       dataRescisao: null,
+      valorTotal: "VALOR TOTAL",
       dataAtivacao: "",
       status: "STATUS",
       tipo: "TIPO",
@@ -204,8 +204,8 @@ class NewContratosContainer extends Component {
           razaosocial: "",
           cnpj: "",
           grupo: "",
-          valorTotal: "0",
           dataRescisao: null,
+          valorTotal: "VALOR TOTAL",
           dataAtivacao: "",
           status: "STATUS",
           tipo: "TIPO",
@@ -450,9 +450,42 @@ class NewContratosContainer extends Component {
   );
 
   showModal = e => {
-    console.log(e);
     this.setState({
       visible: true
+    });
+  };
+
+  getModal = index => {
+    const {
+      id = null,
+      name: item,
+      code: codigoModal,
+      itemId,
+      address
+    } = this.state.itens[index];
+
+    const {
+      street: rua,
+      neighborhood: bairro,
+      zipCode: cep,
+      city: cidade,
+      state: uf,
+      complement: complemento,
+      observation: observacoes
+    } = id ? address : this.state.itens[index];
+
+    this.setState({
+      visible: true,
+      itemId,
+      item,
+      codigoModal,
+      rua,
+      bairro,
+      cep,
+      cidade,
+      uf,
+      complemento,
+      observacoes
     });
   };
 
@@ -504,7 +537,7 @@ class NewContratosContainer extends Component {
         visible: false
       });
     } else {
-      message.error("Selecione um item");
+      message.error("Verifique se não falta nada para ser preenchido.");
     }
   };
 
@@ -671,7 +704,7 @@ class NewContratosContainer extends Component {
                   <Icon
                     type="question-circle"
                     className="icon-info"
-                    onClick={() => this.showModal(index)}
+                    onClick={() => this.getModal(index)}
                   />
                   <input
                     readOnly
@@ -692,7 +725,6 @@ class NewContratosContainer extends Component {
                         itens[index].price === undefined
                           ? "0"
                           : itens[index].price;
-
                       this.setState({
                         itens
                       });
@@ -714,7 +746,7 @@ class NewContratosContainer extends Component {
                   ></input>
                   <input
                     className="input-data-contratos"
-                    value={moment(item.createdAt).format("lll")}
+                    value={moment(item.createdAt).format("L")}
                   ></input>
                   <button
                     className="button-delete"
