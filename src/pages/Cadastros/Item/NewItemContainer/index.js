@@ -2,16 +2,21 @@ import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
 import { message } from "antd";
-import { NewItem } from "../../../../services/item";
+import {
+  NewItem,
+  GetItemByParams,
+  DeleteItem
+} from "../../../../services/item";
 import { validator } from "./validator";
 class NewItemContainer extends Component {
   state = {
-    nome: "",
+    itemId: "",
+    name: "",
     tipo: "",
     codigo: "",
     descricao: "",
     fieldErrors: {
-      nome: "",
+      name: "",
       tipo: "",
       codigo: "",
       descricao: ""
@@ -20,12 +25,13 @@ class NewItemContainer extends Component {
 
   clearState = () => {
     this.setState({
-      nome: "",
+      itemId: "",
+      name: "",
       tipo: "",
       codigo: "",
       descricao: "",
       fieldErrors: {
-        nome: "",
+        name: "",
         tipo: "",
         codigo: "",
         descricao: ""
@@ -41,13 +47,36 @@ class NewItemContainer extends Component {
     });
   };
 
-  onBlur = e => {
+  onBlur = async e => {
     const { name, value } = e.target;
     const { fieldErrors } = this.state;
 
     this.setState({
       fieldErrors: { ...fieldErrors, [name]: validator(name, value) }
     });
+
+    if (name === "name") {
+      const { status, data } = await GetItemByParams({ name, value });
+
+      if (status === 200 && data) {
+        const {
+          id: itemId,
+          name,
+          type: tipo,
+          code: codigo,
+          description: descricao
+        } = data;
+        this.setState({
+          itemId,
+          name,
+          tipo,
+          codigo,
+          descricao
+        });
+      }
+
+      console.log(status, data);
+    }
   };
 
   onFocus = e => {
@@ -61,7 +90,7 @@ class NewItemContainer extends Component {
 
   newItem = async () => {
     const {
-      nome: name,
+      name,
       tipo: type,
       codigo: code,
       descricao: description
@@ -88,11 +117,11 @@ class NewItemContainer extends Component {
 
         <div className="div-inputs-flex">
           <input
-            className={`input-nome-item ${fieldErrors.nome && "input-error"}`}
+            className={`input-nome-item ${fieldErrors.name && "input-error"}`}
             onChange={this.onChange}
             placeholder="NOME"
-            value={this.state.nome}
-            name="nome"
+            value={this.state.name}
+            name="name"
             onBlur={onBlur}
             onFocus={onFocus}
           ></input>
@@ -141,9 +170,18 @@ class NewItemContainer extends Component {
         </div>
         <div className="div-buttons-usuario">
           <button className="button-salvar" onClick={this.newItem}>
-            Cadastrar
+            {this.state.itemId ? "Atualizar" : "Cadastrar"}
           </button>
-          <button className="button-excluir">Excluir</button>
+          <button
+            className={`button-excluir ${!this.state.itemId &&
+              "button-disabled"}`}
+            onClick={
+              this.state.itemId &&
+              (async () => await DeleteItem(this.state.itemId))
+            }
+          >
+            Excluir
+          </button>
         </div>
       </div>
     );

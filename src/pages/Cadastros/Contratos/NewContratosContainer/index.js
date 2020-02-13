@@ -30,7 +30,7 @@ class NewContratosContainer extends Component {
     cnpj: "",
     codigo: "",
     grupo: "",
-    valorTotal: "VALOR TOTAL",
+    valorTotal: "",
     dataAtivacao: "",
     dataRescisao: null,
     status: "STATUS",
@@ -73,7 +73,7 @@ class NewContratosContainer extends Component {
       codigo: "",
       grupo: "",
       dataRescisao: null,
-      valorTotal: "VALOR TOTAL",
+      valorTotal: "",
       dataAtivacao: "",
       status: "STATUS",
       tipo: "TIPO",
@@ -172,6 +172,7 @@ class NewContratosContainer extends Component {
     if (name === "codigo") {
       const { status, data } = await GetContractByParams({ code: value });
       if (status === 200 && data) {
+        // console.log(data);
         const {
           code: contractCode,
           price: valorTotal,
@@ -184,14 +185,13 @@ class NewContratosContainer extends Component {
           dateTermination: dataRescisao
         } = data;
 
-        console.log(dataAtivacao, dataRescisao);
         this.setState({
           contractCode,
           status,
           tipo,
           valorTotal,
           dataAtivacao: moment(dataAtivacao),
-          dataRescisao,
+          dataRescisao: dataRescisao ? moment(dataRescisao) : dataRescisao,
           base,
           clientId,
           razaosocial,
@@ -205,7 +205,7 @@ class NewContratosContainer extends Component {
           cnpj: "",
           grupo: "",
           dataRescisao: null,
-          valorTotal: "VALOR TOTAL",
+          valorTotal: "",
           dataAtivacao: "",
           status: "STATUS",
           tipo: "TIPO",
@@ -289,15 +289,18 @@ class NewContratosContainer extends Component {
       status,
       type,
       stockBase,
-      itens,
+      itens: itens.map(item => {
+        if (R.has("id", item)) {
+          const { price, address, contractItemId, id: itemId, id } = item;
+          return { price, address, contractItemId, itemId, id };
+        }
+        return item;
+      }),
       dateActivation,
       dateTermination,
       price,
       userId: this.props.login.user.id
     };
-
-    console.log("contractCode: ", contractCode);
-    console.log(contractCode !== "");
 
     if (contractCode !== "") {
       value = { ...value, contractCode };
@@ -720,7 +723,12 @@ class NewContratosContainer extends Component {
                     placeholder="VALOR"
                     onChange={e => {
                       const { value } = e.target;
-                      const { itens } = this.state;
+                      const {
+                        itens,
+                        valorTotal = this.state.valorTotal
+                          ? parseFloat(this.state.valorTotal, 10)
+                          : 0
+                      } = this.state;
                       itens[index].price =
                         itens[index].price === undefined
                           ? "0"
@@ -731,7 +739,7 @@ class NewContratosContainer extends Component {
 
                       this.setState({
                         valorTotal:
-                          parseFloat(this.state.valorTotal, 10) +
+                          valorTotal +
                           parseFloat(value.slice(0, 9), 10) -
                           parseFloat(itens[index].price, 10)
                       });

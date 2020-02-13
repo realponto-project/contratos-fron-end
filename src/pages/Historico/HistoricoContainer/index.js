@@ -74,7 +74,7 @@ class HistoricoContainer extends Component {
                       </div>
                       <div className="history-column-date">
                         <label>
-                          {moment(item.createdAt).format("DD/MM/YYYY, h:mm")}
+                          {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
                         </label>
                       </div>
                       <div className="history-column-log">
@@ -100,7 +100,7 @@ class HistoricoContainer extends Component {
                       </div>
                       <div className="history-column-date">
                         <label>
-                          {moment(item.createdAt).format("DD/MM/YYYY, h:mm")}
+                          {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
                         </label>
                       </div>
                       <div className="history-column-log">
@@ -154,6 +154,24 @@ class HistoricoContainer extends Component {
                       </div>
                       <div className="history-column-log">
                         {console.log(logDeleteItem)}
+                      </div>
+                    </div>
+                  );
+                case "updateItem":
+                  const logUpdateItem = JSON.parse(item.log);
+                  return (
+                    <div className="history-row">
+                      <div className="history-column-username">
+                        <label>{item.user.username} </label>
+                      </div>
+                      <div className="history-column-action">
+                        <label>{item.type}</label>
+                      </div>
+                      <div className="history-column-date">
+                        {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
+                      </div>
+                      <div className="history-column-log">
+                        {console.log(logUpdateItem)}
                       </div>
                     </div>
                   );
