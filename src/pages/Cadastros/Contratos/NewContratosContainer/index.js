@@ -23,8 +23,10 @@ const { Option } = Select;
 
 class NewContratosContainer extends Component {
   state = {
+    index: "",
     redirect: false,
     visible: false,
+    modalAtualizada: false,
     search: "",
     razaosocial: "",
     cnpj: "",
@@ -333,10 +335,10 @@ class NewContratosContainer extends Component {
   ModalIncluir = () => (
     <Modal
       visible={this.state.visible}
-      onOk={this.handleOk}
+      onOk={this.state.modalAtualizada ? this.handleOkAtualizar : this.handleOk}
       onCancel={this.handleCancel}
       cancelText="Cancelar"
-      okText="Salvar"
+      okText={this.state.modalAtualizada ? "Atualizar" : "Salvar"}
     >
       <label
         style={{
@@ -488,8 +490,64 @@ class NewContratosContainer extends Component {
       cidade,
       uf,
       complemento,
-      observacoes
+      observacoes,
+      index,
+      modalAtualizada: true
     });
+  };
+
+  handleOkAtualizar = () => {
+    const {
+      rua: street,
+      bairro: neighborhood,
+      cep: zipCode,
+      cidade: city,
+      uf: state,
+      complemento: complement,
+      observacoes: observation,
+      itemId,
+      item: name,
+      itens,
+      index
+    } = this.state;
+
+    const copyItens = itens;
+
+    copyItens[index] = {
+      street,
+      neighborhood,
+      zipCode,
+      city,
+      state,
+      complement,
+      observation,
+      itemId,
+      name
+    };
+
+    if (
+      this.state.item !== "NÃO SELECIONADO" &&
+      this.state.cep !== "" &&
+      this.state.bairro !== ""
+    ) {
+      this.setState({
+        itens: copyItens,
+        itemId: "",
+        item: "NÃO SELECIONADO",
+        codigoModal: "CÓDIGO",
+        rua: "",
+        bairro: "",
+        cep: "",
+        cidade: "",
+        uf: "",
+        complemento: "",
+        observacoes: "",
+        visible: false,
+        modalAtualizada: false
+      });
+    } else {
+      message.error("Verifique se não falta nada para ser preenchido.");
+    }
   };
 
   handleOk = () => {
@@ -537,7 +595,8 @@ class NewContratosContainer extends Component {
         uf: "",
         complemento: "",
         observacoes: "",
-        visible: false
+        visible: false,
+        modalAtualizada: false
       });
     } else {
       message.error("Verifique se não falta nada para ser preenchido.");
@@ -557,7 +616,8 @@ class NewContratosContainer extends Component {
       complemento: "",
       observacoes: "",
       contractCode: "",
-      itemId: ""
+      itemId: "",
+      modalAtualizada: false
     });
   };
 
