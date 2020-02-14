@@ -6,6 +6,7 @@ import {
   NewClient,
   UpdateClient,
   DeleteClient,
+  RestoreClient,
   GetClientByParams
 } from "../../../../services/client";
 import { getAddressByZipCode } from "../../../../services/utils/viacep";
@@ -15,6 +16,7 @@ import { message, Modal } from "antd";
 class NewClientContainer extends Component {
   state = {
     visible: false,
+    deletedAt: false,
     clientId: "",
     razaosocial: "",
     cnpj: "",
@@ -52,6 +54,7 @@ class NewClientContainer extends Component {
 
   clearState = () => {
     this.setState({
+      deletedAt: false,
       clientId: "",
       razaosocial: "",
       cnpj: "",
@@ -191,7 +194,10 @@ class NewClientContainer extends Component {
 
     if (name === "razaosocial" || name === "cnpj") {
       const { status, data } = await GetClientByParams({
-        [name]: name === "cnpj" ? value.replace(/\D/gi, "") : value
+        where: {
+          [name]: name === "cnpj" ? value.replace(/\D/gi, "") : value
+        },
+        paranoid: false
       });
 
       if (status === 200 && data) {
@@ -215,10 +221,12 @@ class NewClientContainer extends Component {
             state: uf,
             complement: complemento,
             observation: observacoes
-          }
+          },
+          deletedAt
         } = data;
 
         this.setState({
+          deletedAt: !!deletedAt,
           clientId,
           razaosocial,
           cnpj:
@@ -267,6 +275,7 @@ class NewClientContainer extends Component {
         });
       } else if (this.state.clientId) {
         this.setState({
+          deletedAt: false,
           clientId: "",
           razaosocial: name === "razaosocial" ? this.state.razaosocial : "",
           cnpj: name === "cnpj" ? this.state.cnpj : "",
@@ -329,10 +338,10 @@ class NewClientContainer extends Component {
     this.setState({
       visible: false
     });
+    this.clearState();
   };
 
   handleCancel = e => {
-    console.log(e);
     this.setState({
       visible: false
     });
@@ -370,7 +379,7 @@ class NewClientContainer extends Component {
 
   render() {
     const { state, onChange, onFocus, onBlur } = this;
-    const { fieldErrors } = state;
+    const { fieldErrors, deletedAt } = state;
     return (
       <div className="card-main">
         <div className="div-titulo">
@@ -396,6 +405,7 @@ class NewClientContainer extends Component {
             onBlur={onBlur}
           ></input>
           <input
+            readOnly={deletedAt}
             className={`input-grupo ${fieldErrors.grupo && "input-error"}`}
             placeholder="GRUPO"
             onChange={onChange}
@@ -405,6 +415,7 @@ class NewClientContainer extends Component {
             onBlur={onBlur}
           ></input>
           <input
+            readOnly={deletedAt}
             className={`input-codigo ${fieldErrors.codigo && "input-error"}`}
             placeholder="CÓDIGO"
             onChange={onChange}
@@ -420,6 +431,7 @@ class NewClientContainer extends Component {
               <h2 style={{ fontFamily: "Bebas", margin: 0 }}>Contato</h2>
             </div>
             <input
+              readOnly={deletedAt}
               className={`input-contato-cliente ${fieldErrors.nomeContato &&
                 "input-error"}`}
               placeholder="NOME"
@@ -430,6 +442,7 @@ class NewClientContainer extends Component {
               onBlur={onBlur}
             ></input>
             <input
+              readOnly={deletedAt}
               className={`input-contato-cliente ${fieldErrors.celularContato &&
                 "input-error"}`}
               placeholder="CELULAR"
@@ -440,6 +453,7 @@ class NewClientContainer extends Component {
               onBlur={onBlur}
             ></input>
             <input
+              readOnly={deletedAt}
               className={`input-contato-cliente ${fieldErrors.telefoneContato &&
                 "input-error"}`}
               placeholder="TELEFONE"
@@ -450,6 +464,7 @@ class NewClientContainer extends Component {
               onBlur={onBlur}
             ></input>
             <input
+              readOnly={deletedAt}
               className={`input-contato-cliente ${fieldErrors.emailContato &&
                 "input-error"}`}
               placeholder="E-MAIL"
@@ -466,6 +481,7 @@ class NewClientContainer extends Component {
             </div>
             <div className="div-twoInfo-cliente">
               <input
+                readOnly={deletedAt}
                 className={`input-cep-cliente ${fieldErrors.cep &&
                   "input-error"}`}
                 placeholder="CEP"
@@ -476,6 +492,7 @@ class NewClientContainer extends Component {
                 onBlur={onBlur}
               ></input>
               <input
+                readOnly={deletedAt}
                 className="input-bairro-cliente"
                 placeholder="BAIRRO"
                 onChange={this.onChange}
@@ -484,6 +501,7 @@ class NewClientContainer extends Component {
               ></input>
             </div>
             <input
+              readOnly={deletedAt}
               className="input-endereco-cliente"
               placeholder="RUA"
               onChange={this.onChange}
@@ -492,6 +510,7 @@ class NewClientContainer extends Component {
             ></input>
             <div className="div-twoInfo-cliente">
               <input
+                readOnly={deletedAt}
                 className={`input-cidade-cliente ${fieldErrors.cidade &&
                   "input-error"}`}
                 placeholder="CIDADE"
@@ -502,6 +521,7 @@ class NewClientContainer extends Component {
                 onBlur={onBlur}
               ></input>
               <input
+                readOnly={deletedAt}
                 className={`input-uf-cliente ${fieldErrors.uf &&
                   "input-error"}`}
                 placeholder="UF"
@@ -513,6 +533,7 @@ class NewClientContainer extends Component {
               ></input>
             </div>
             <input
+              readOnly={deletedAt}
               className="input-endereco-cliente"
               placeholder="COMPLEMENTO"
               onChange={onChange}
@@ -520,6 +541,7 @@ class NewClientContainer extends Component {
               value={state.complemento}
             ></input>
             <input
+              readOnly={deletedAt}
               className="input-endereco-cliente"
               placeholder="OBSERVAÇÕES"
               onChange={onChange}
@@ -529,16 +551,34 @@ class NewClientContainer extends Component {
           </div>
         </div>
         <div className="div-buttons-usuario">
-          <button
-            className={`button-excluir-cliente ${!this.state.clientId &&
-              "button-disabled"}`}
-            onClick={this.state.clientId && this.showModal}
-          >
-            Excluir
-          </button>
-          <button className="button-salvar-cliente" onClick={this.newClient}>
-            {this.state.clientId ? "Atualizar" : "Cadastrar"}
-          </button>
+          {deletedAt ? (
+            <button
+              className="button-salvar"
+              onClick={async () => {
+                const { status } = await RestoreClient(this.state.clientId);
+
+                if (status === 200) this.setState({ deletedAt: false });
+              }}
+            >
+              Restaurar
+            </button>
+          ) : (
+            <>
+              <button
+                className={`button-excluir-cliente ${!this.state.clientId &&
+                  "button-disabled"}`}
+                onClick={this.state.clientId && this.showModal}
+              >
+                Excluir
+              </button>
+              <button
+                className="button-salvar-cliente"
+                onClick={this.newClient}
+              >
+                {this.state.clientId ? "Atualizar" : "Cadastrar"}
+              </button>
+            </>
+          )}
         </div>
         <this.ModalConfirmeDelete />
       </div>

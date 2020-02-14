@@ -1,17 +1,69 @@
 import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
-import { Select } from "antd";
+import { Select, InputNumber, message } from "antd";
+
+import { NewIGPM } from "../../../../services/igpm";
+import moment from "moment";
 
 const { Option } = Select;
+const meses = [
+  "Janeiro",
+  "Fevereiro",
+  "Março",
+  "Abril",
+  "Maio",
+  "Junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro"
+];
 
 class NewIgpmContainer extends Component {
   state = {
-    select: "NÃO SELECIONADO",
-    mesAplicacao: "",
-    valorIgpm: "",
-    anoVigente: "",
+    select: undefined,
+    mesAplicacao: undefined,
+    valorIgpm: 0,
+    anoVigente: parseInt(moment().format("YYYY")),
     descricao: ""
+  };
+
+  clearState = () => {
+    this.setState({
+      select: undefined,
+      mesAplicacao: undefined,
+      valorIgpm: 0,
+      anoVigente: parseInt(moment().format("YYYY")),
+      descricao: ""
+    });
+  };
+
+  newIGPM = async () => {
+    const {
+      select: type,
+      mesAplicacao: month,
+      valorIgpm: value,
+      descricao: description,
+      anoVigente: year
+    } = this.state;
+
+    const { status, data } = await NewIGPM({
+      type,
+      month,
+      value,
+      description,
+      year
+    });
+
+    if (status === 200) {
+      this.clearState();
+      message.success("IGPM aplicado com sucesso");
+    } else {
+      message.error("Erro ao aplicar IGPM");
+    }
   };
 
   onChange = e => {
@@ -26,6 +78,12 @@ class NewIgpmContainer extends Component {
     });
   };
 
+  onChangeMes = value => {
+    this.setState({
+      mesAplicacao: value
+    });
+  };
+
   render() {
     return (
       <div className="card-main">
@@ -35,7 +93,8 @@ class NewIgpmContainer extends Component {
 
         <div className="div-line-igpm">
           <Select
-            defaultValue={this.state.select}
+            value={this.state.select}
+            placeholder="NÃO SELECIONADO"
             className="select-igpm"
             size="large"
             onChange={this.onChangeSelect}
@@ -43,27 +102,43 @@ class NewIgpmContainer extends Component {
             <Option value="ANUAL">ANUAL</Option>
             <Option value="MENSAL">MENSAL</Option>
           </Select>
-          <input
-            className="input-igpm"
+
+          <Select
             placeholder="MÊS APLICAÇÃO"
             value={this.state.mesAplicacao}
-            name="mesAplicacao"
-            onChange={this.onChange}
-          ></input>
-          <input
             className="input-igpm"
-            placeholder="VALOR IGPM"
+            size="large"
+            onChange={this.onChangeMes}
+          >
+            {meses.map((mes, index) => (
+              <Option value={index + 1}>{mes}</Option>
+            ))}
+          </Select>
+
+          <InputNumber
+            className="input-igpm"
+            size="large"
             value={this.state.valorIgpm}
+            min={0}
+            max={100}
+            step={0.5}
+            formatter={value => `${value}%`}
+            parser={value => value.replace("%", "")}
+            onChange={value => this.setState({ valorIgpm: value })}
+          />
+
+          {/* <input
             name="valorIgpm"
-            onChange={this.onChange}
-          ></input>
-          <input
+            value={this.state.valorIgpm}
+          ></input> */}
+
+          <InputNumber
             className="input-igpm-direita"
-            placeholder="ANO VIGENTE"
+            size="large"
             value={this.state.anoVigente}
-            name="anoVigente"
-            onChange={this.onChange}
-          ></input>
+            min={2000}
+            onChange={value => this.setState({ anoVigente: value })}
+          />
         </div>
         <div className="div-line-0-igpm">
           <textarea
@@ -77,7 +152,9 @@ class NewIgpmContainer extends Component {
         </div>
         <div className="div-buttons-usuario">
           <button className="button-excluir-cliente">Excluir</button>
-          <button className="button-salvar-cliente">Aplicar</button>
+          <button className="button-salvar-cliente" onClick={this.newIGPM}>
+            Aplicar
+          </button>
         </div>
       </div>
     );

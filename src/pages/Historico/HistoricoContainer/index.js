@@ -153,7 +153,39 @@ class HistoricoContainer extends Component {
                         {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
                       </div>
                       <div className="history-column-log">
-                        {console.log(logDeleteItem)}
+                        {R.keys(
+                          R.omit(
+                            ["id", "updatedAt", "itemId", "addressId"],
+                            logDeleteItem
+                          )
+                        ).map(key => {
+                          if (typeof logDeleteItem[key] === "string")
+                            return (
+                              <label>
+                                {key}: {logDeleteItem[key]}
+                              </label>
+                            );
+                          else if (typeof logDeleteItem[key] === "object") {
+                            return (
+                              <>
+                                {R.keys(logDeleteItem[key])
+                                  .filter(
+                                    filterKey =>
+                                      filterKey !== "id" &&
+                                      filterKey.indexOf("At") === -1 &&
+                                      filterKey.indexOf("Id") === -1
+                                  )
+                                  .map(itemKey => {
+                                    return (
+                                      <label>
+                                        {itemKey}: {logDeleteItem[key][itemKey]}
+                                      </label>
+                                    );
+                                  })}
+                              </>
+                            );
+                          }
+                        })}
                       </div>
                     </div>
                   );
@@ -171,7 +203,14 @@ class HistoricoContainer extends Component {
                         {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
                       </div>
                       <div className="history-column-log">
-                        {console.log(logUpdateItem)}
+                        {R.keys(logUpdateItem.oldContractItem).map(key => {
+                          return (
+                            <label>
+                              {key}: {logUpdateItem.oldContractItem[key]} ----->
+                              {logUpdateItem.newContractItem[key]}
+                            </label>
+                          );
+                        })}
                       </div>
                     </div>
                   );

@@ -134,7 +134,9 @@ class NewContratosContainer extends Component {
 
   getClientByParams = async (name, value, fieldErrors) => {
     const { status, data } = await GetClientByParams({
-      [name]: name === "cnpj" ? value.replace(/\D/gi, "") : value
+      where: {
+        [name]: name === "cnpj" ? value.replace(/\D/gi, "") : value
+      }
     });
     if (status === 200) {
       if (data) {
@@ -174,7 +176,6 @@ class NewContratosContainer extends Component {
     if (name === "codigo") {
       const { status, data } = await GetContractByParams({ code: value });
       if (status === 200 && data) {
-        // console.log(data);
         const {
           code: contractCode,
           price: valorTotal,
@@ -188,6 +189,11 @@ class NewContratosContainer extends Component {
         } = data;
 
         this.setState({
+          fieldErrors: {
+            razaosocial: false,
+            cnpj: false,
+            codigo: false
+          },
           contractCode,
           status,
           tipo,
@@ -256,7 +262,9 @@ class NewContratosContainer extends Component {
   };
 
   onChangeStatus = value => {
+    const { status, dataRescisao } = this.state;
     this.setState({
+      dataRescisao: status !== "CANCELADO" ? dataRescisao : null,
       status: value
     });
   };
@@ -809,7 +817,13 @@ class NewContratosContainer extends Component {
                   ></input>
                   <button
                     className="button-delete"
-                    onClick={() => this.removeItem(index)}
+                    onClick={() => {
+                      const price = item.price ? parseFloat(item.price, 10) : 0;
+                      this.setState({
+                        valorTotal: parseFloat(this.state.valorTotal) - price
+                      });
+                      this.removeItem(index);
+                    }}
                   >
                     <Icon type="delete" />
                   </button>

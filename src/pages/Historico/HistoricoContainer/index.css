@@ -47,9 +47,15 @@
   display: flex;
   align-items: center;
 }
+
 .history-column-log {
   width: 55%;
   margin-right: 25px;
-  display: flex;
-  align-items: center;
+
+  /* display: flex; */
+  /* align-items: center; */
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
