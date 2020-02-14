@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
-import { message } from "antd";
+import { message, Icon } from "antd";
 import {
   NewItem,
   GetItemByParams,
   DeleteItem
 } from "../../../../services/item";
 import { validator } from "./validator";
+
 class NewItemContainer extends Component {
   state = {
+    search: "",
     itemId: "",
     name: "",
     tipo: "",
@@ -30,6 +32,7 @@ class NewItemContainer extends Component {
       tipo: "",
       codigo: "",
       descricao: "",
+      search: "",
       fieldErrors: {
         name: "",
         tipo: "",
@@ -74,8 +77,6 @@ class NewItemContainer extends Component {
           descricao
         });
       }
-
-      console.log(status, data);
     }
   };
 
@@ -111,8 +112,22 @@ class NewItemContainer extends Component {
     const { fieldErrors } = state;
     return (
       <div className="card-main">
-        <div className="div-titulo">
+        <div className="div-titulo-usuario">
           <h1 className="h1-titulo">Itens</h1>
+          <div className="div-search-usuario">
+            <input
+              className="input-search-usuario"
+              onChange={this.onChange}
+              placeholder="PESQUISAR"
+              value={this.state.search}
+              name="search"
+            ></input>
+            <Icon
+              type="search"
+              style={{ fontSize: "18px", marginRight: "5px" }}
+              onBlur={onBlur}
+            />
+          </div>
         </div>
 
         <div className="div-inputs-flex">
@@ -122,7 +137,6 @@ class NewItemContainer extends Component {
             placeholder="NOME"
             value={this.state.name}
             name="name"
-            onBlur={onBlur}
             onFocus={onFocus}
           ></input>
           <input
@@ -131,7 +145,6 @@ class NewItemContainer extends Component {
             placeholder="TIPO"
             value={this.state.tipo}
             name="tipo"
-            onBlur={onBlur}
             onFocus={onFocus}
           ></input>
           <input
@@ -141,7 +154,6 @@ class NewItemContainer extends Component {
             placeholder="CÓDIGO"
             value={this.state.codigo}
             name="codigo"
-            onBlur={onBlur}
             onFocus={onFocus}
           ></input>
         </div>
@@ -164,16 +176,12 @@ class NewItemContainer extends Component {
             name="descricao"
             rows="4"
             onChange={this.onChange}
-            onBlur={onBlur}
             onFocus={onFocus}
           ></textarea>
         </div>
         <div className="div-buttons-usuario">
-          <button className="button-salvar" onClick={this.newItem}>
-            {this.state.itemId ? "Atualizar" : "Cadastrar"}
-          </button>
           <button
-            className={`button-excluir ${!this.state.itemId &&
+            className={`button-excluir-cliente ${!this.state.itemId &&
               "button-disabled"}`}
             onClick={
               this.state.itemId &&
@@ -181,6 +189,9 @@ class NewItemContainer extends Component {
             }
           >
             Excluir
+          </button>
+          <button className="button-salvar-cliente" onClick={this.newItem}>
+            {this.state.itemId ? "Atualizar" : "Cadastrar"}
           </button>
         </div>
       </div>

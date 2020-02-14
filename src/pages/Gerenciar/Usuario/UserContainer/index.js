@@ -171,10 +171,10 @@ class UserContainer extends Component {
           </div>
         </div>
         <div className="div-buttons-usuario">
-          <button className="button-salvar" onClick={this.newUser}>
+          <button className="button-excluir-cliente">Excluir</button>
+          <button className="button-salvar-cliente" onClick={this.newUser}>
             Salvar
           </button>
-          <button className="button-excluir">Excluir</button>
         </div>
       </div>
     );

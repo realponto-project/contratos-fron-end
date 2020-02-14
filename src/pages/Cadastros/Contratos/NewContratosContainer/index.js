@@ -625,27 +625,12 @@ class NewContratosContainer extends Component {
     const { state } = this;
     const { fieldErrors } = state;
 
-    console.log(state);
-
     return (
       <div className="card-main">
         {this.renderRedirect()}
         <this.ModalIncluir />
-        <div className="div-titulo-usuario">
+        <div className="div-titulo">
           <h1 className="h1-titulo">Contratos</h1>
-          <div className="div-search-usuario">
-            <input
-              className="input-search-usuario"
-              onChange={this.onChange}
-              placeholder="PESQUISAR"
-              value={this.state.search}
-              name="search"
-            ></input>
-            <Icon
-              type="search"
-              style={{ fontSize: "18px", marginRight: "5px" }}
-            />
-          </div>
         </div>
 
         <div className="div-inputs-flex">
@@ -749,12 +734,18 @@ class NewContratosContainer extends Component {
             <Option value="NOVAREAL">NOVA REALPONTO</Option>
             <Option value="PONTOREAL">PONTOREAL</Option>
           </Select>
-          <button
-            onClick={this.setRedirect}
-            className="button-historico-contratos"
-          >
-            HISTÓRICO
-          </button>
+          {this.state.contractCode !== "" ? (
+            <button
+              onClick={this.setRedirect}
+              className="button-historico-contratos"
+            >
+              HISTÓRICO
+            </button>
+          ) : (
+            <button className="button-historico-contratos-disable" disabled>
+              HISTÓRICO
+            </button>
+          )}
         </div>
         <div className="div-main-contratos">
           <div className="div-itens-contratos">
@@ -832,11 +823,11 @@ class NewContratosContainer extends Component {
           </div>
         </div>
         <div className="div-buttons-usuario">
-          <button className="button-salvar" onClick={this.newContract}>
-            Salvar
-          </button>
           <button className="button-incluir" onClick={this.showModal}>
             Incluir
+          </button>
+          <button className="button-salvar-cliente" onClick={this.newContract}>
+            Salvar
           </button>
         </div>
       </div>

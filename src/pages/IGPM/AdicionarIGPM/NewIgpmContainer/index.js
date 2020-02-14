@@ -76,8 +76,8 @@ class NewIgpmContainer extends Component {
           ></textarea>
         </div>
         <div className="div-buttons-usuario">
-          <button className="button-salvar">Aplicar</button>
-          <button className="button-excluir">Excluir</button>
+          <button className="button-excluir-cliente">Excluir</button>
+          <button className="button-salvar-cliente">Aplicar</button>
         </div>
       </div>
     );
