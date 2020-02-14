@@ -125,7 +125,7 @@
   color: #fff;
   cursor: pointer;
   outline: none;
-  margin-right: 25px;
+  margin-right: 10px;
 }
 .button-incluir:active {
   background: #2279c0;
@@ -348,4 +348,21 @@
 }
 .button-delete:active {
   background: rgb(185, 23, 23);
+}
+.button-historico-contratos-disable {
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  margin: 0 25px 0 10px;
+  background-color: #666 !important;
+  border: none;
+  border-radius: 2px;
+  padding: 5px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  cursor: not-allowed;
+  outline: none;
 }

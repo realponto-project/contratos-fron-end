@@ -137,3 +137,35 @@
 .input-uf-cliente:focus {
   border-bottom: 1px solid #001529;
 }
+.button-excluir-cliente {
+  height: 35px;
+  border: 0;
+  background-color: red;
+  border-radius: 2px;
+  padding: 5px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  margin-right: 10px;
+}
+.button-excluir-cliente:active {
+  background: rgb(185, 23, 23);
+}
+.button-salvar-cliente {
+  height: 35px;
+  border: 0;
+  background: #001529;
+  border-radius: 2px;
+  padding: 5px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  margin-right: 25px;
+}
+.button-salvar-cliente:active {
+  background: #180c99;
+}

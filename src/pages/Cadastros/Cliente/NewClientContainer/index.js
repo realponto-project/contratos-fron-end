@@ -364,8 +364,6 @@ class NewClientContainer extends Component {
           <strong>Código: </strong>
           {codigo}
         </p>
-        {/* <p>Some contents...</p>
-      <p>Some contents...</p> */}
       </Modal>
     );
   };
@@ -531,15 +529,15 @@ class NewClientContainer extends Component {
           </div>
         </div>
         <div className="div-buttons-usuario">
-          <button className="button-salvar" onClick={this.newClient}>
-            {this.state.clientId ? "Atualizar" : "Cadastrar"}
-          </button>
           <button
-            className={`button-excluir ${!this.state.clientId &&
+            className={`button-excluir-cliente ${!this.state.clientId &&
               "button-disabled"}`}
             onClick={this.state.clientId && this.showModal}
           >
             Excluir
+          </button>
+          <button className="button-salvar-cliente" onClick={this.newClient}>
+            {this.state.clientId ? "Atualizar" : "Cadastrar"}
           </button>
         </div>
         <this.ModalConfirmeDelete />
