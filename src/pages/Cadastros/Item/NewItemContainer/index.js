@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import * as R from "ramda";
 import "../../../../global.css";
 import "./index.css";
 import { message, Modal, Icon } from "antd";
@@ -114,11 +115,20 @@ class NewItemContainer extends Component {
         message.success("Item Atualizado com sucesso");
       }
     } else {
-      const { status } = await NewItem(value);
+      const { status, data } = await NewItem(value);
 
       if (status === 200) {
         this.clearState();
         message.success("Item cadatrado com sucesso");
+      } else if (status === 422) {
+        R.keys(data.errors[0].field).map(key =>
+          this.setState({
+            fieldErrors: {
+              ...this.state.fieldErrors,
+              [key]: data.errors[0].field
+            }
+          })
+        );
       }
     }
   };

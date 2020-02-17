@@ -328,6 +328,15 @@ class NewContratosContainer extends Component {
       if (response.status === 200) {
         this.clearState();
         message.success("Contrato cadatrado com sucesso");
+      } else if (response.status === 422) {
+        R.keys(response.data.errors[0].field).map(key =>
+          this.setState({
+            fieldErrors: {
+              ...this.state.fieldErrors,
+              [key]: response.data.errors[0].field
+            }
+          })
+        );
       }
     }
   };
@@ -695,6 +704,7 @@ class NewContratosContainer extends Component {
             placeholder="DATA ATIVAÇÃO"
             className="data-contratos"
             style={{ marginLeft: "25px" }}
+            name="dataAtivacao"
             value={this.state.dataAtivacao}
             format="DD/MM/YYYY"
             onChange={e => {

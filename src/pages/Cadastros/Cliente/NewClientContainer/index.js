@@ -140,11 +140,20 @@ class NewClientContainer extends Component {
         message.success("Cliente atualizado com sucesso");
       }
     } else {
-      const { status } = await NewClient(value);
+      const { status, data } = await NewClient(value);
 
       if (status === 200) {
         this.clearState();
         message.success("Cliente cadatrado com sucesso");
+      } else if (status === 422) {
+        R.keys(data.errors[0].field).map(key =>
+          this.setState({
+            fieldErrors: {
+              ...this.state.fieldErrors,
+              [key]: data.errors[0].field
+            }
+          })
+        );
       }
     }
   };
@@ -493,18 +502,24 @@ class NewClientContainer extends Component {
               ></input>
               <input
                 readOnly={deletedAt}
-                className="input-bairro-cliente"
+                className={`input-bairro-cliente ${fieldErrors.bairro &&
+                  "input-error"}`}
                 placeholder="BAIRRO"
                 onChange={this.onChange}
+                onFocus={onFocus}
+                onBlur={onBlur}
                 name="bairro"
                 value={this.state.bairro}
               ></input>
             </div>
             <input
               readOnly={deletedAt}
-              className="input-endereco-cliente"
+              className={`input-endereco-cliente ${fieldErrors.rua &&
+                "input-error"}`}
               placeholder="RUA"
               onChange={this.onChange}
+              onFocus={onFocus}
+              onBlur={onBlur}
               name="rua"
               value={this.state.rua}
             ></input>
