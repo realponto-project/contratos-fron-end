@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
@@ -8,18 +9,18 @@ import moment from "moment";
 
 const { Option } = Select;
 const meses = [
-  "Janeiro",
-  "Fevereiro",
-  "Março",
-  "Abril",
-  "Maio",
-  "Junho",
-  "Julho",
-  "Agosto",
-  "Setembro",
-  "Outubro",
-  "Novembro",
-  "Dezembro"
+  "JANEIRO",
+  "FEVEREIRO",
+  "MARÇO",
+  "ABRIL",
+  "MAIO",
+  "JUNHO",
+  "JULHO",
+  "AGOSTO",
+  "SETEMBRO",
+  "OUTUBRO",
+  "NOVEMBRO",
+  "DEZEMBRO"
 ];
 
 class NewIgpmContainer extends Component {
@@ -106,7 +107,7 @@ class NewIgpmContainer extends Component {
           <Select
             placeholder="MÊS APLICAÇÃO"
             value={this.state.mesAplicacao}
-            className="input-igpm"
+            className="select-mes-igpm"
             size="large"
             onChange={this.onChangeMes}
           >
@@ -116,7 +117,7 @@ class NewIgpmContainer extends Component {
           </Select>
 
           <InputNumber
-            className="input-igpm"
+            className="porcentagem-igpm"
             size="large"
             value={this.state.valorIgpm}
             min={0}
@@ -126,11 +127,6 @@ class NewIgpmContainer extends Component {
             parser={value => value.replace("%", "")}
             onChange={value => this.setState({ valorIgpm: value })}
           />
-
-          {/* <input
-            name="valorIgpm"
-            value={this.state.valorIgpm}
-          ></input> */}
 
           <InputNumber
             className="input-igpm-direita"

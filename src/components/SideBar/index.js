@@ -114,6 +114,15 @@ class SideBar extends Component {
               }}
             />
           );
+        case "relatorioItens_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/relatorioItens/dash"
+              }}
+            />
+          );
         case "logout":
           return <Redirect to="/login" />;
         default:
@@ -246,6 +255,20 @@ class SideBar extends Component {
             <Menu.Item key="dashIgpm_dash">
               <Icon type="ordered-list" />
               Gerenciar
+            </Menu.Item>
+          </SubMenu>
+          <SubMenu
+            key="Relatorios"
+            title={
+              <span>
+                <Icon type="file-pdf" />
+                <span>Relatorios</span>
+              </span>
+            }
+          >
+            <Menu.Item key="relatorioItens_dash">
+              <Icon type="ordered-list" />
+              Itens
             </Menu.Item>
           </SubMenu>
         </Menu>

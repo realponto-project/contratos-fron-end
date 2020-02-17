@@ -29,7 +29,7 @@
   border-bottom: 1px solid #001529;
 }
 .input-igpm-direita {
-  width: 25%;
+  width: 15% !important;
   height: 38px;
   margin: 0 25px 0 10px;
   color: #666;
@@ -38,6 +38,8 @@
   font-size: 14px;
   border-radius: 2px;
   outline: none;
+  margin-right: 25px !important;
+  margin-left: 15px !important;
 }
 .input-igpm-direita::placeholder {
   color: rgb(177, 177, 177);
@@ -46,11 +48,27 @@
   border-bottom: 1px solid #001529;
 }
 .select-igpm {
-  width: 25% !important;
+  width: 30% !important;
   margin-left: 25px !important;
 }
+.select-mes-igpm {
+  width: 40% !important;
+  margin-left: 15px !important;
+}
+.porcentagem-igpm {
+  width: 15% !important;
+  height: 38px;
+  margin: 0 25px 0 10px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+  margin-left: 15px !important;
+}
 .textArea-igpm {
-  margin: 10px 25px 0 25px;
+  margin: 25px 25px 0 25px;
   font-size: 14px;
   border-radius: 2px;
   border: 1px solid #ccc;

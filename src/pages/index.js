@@ -16,6 +16,7 @@ import NewIgpmRoute from "./IGPM/AdicionarIGPM";
 import DashIgpmRoute from "./IGPM/GerenciarIGPM";
 import DashConsultaRoute from "./Consulta/GerenciarConsulta";
 import HistoricoRoute from "./Historico";
+import RelatorioItensRoute from "./Relatorios/Itens";
 
 class PagesRoute extends Component {
   state = {
@@ -62,6 +63,11 @@ class PagesRoute extends Component {
           <Route exact path="/logged/newIgpm/add" component={NewIgpmRoute} />
           <Route exact path="/logged/dashIgpm/dash" component={DashIgpmRoute} />
           <Route exact path="/logged/history/dash" component={HistoricoRoute} />
+          <Route
+            exact
+            path="/logged/relatorioItens/dash"
+            component={RelatorioItensRoute}
+          />
         </Switch>
       );
     } else {
