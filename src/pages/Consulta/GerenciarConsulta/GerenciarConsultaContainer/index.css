@@ -83,24 +83,6 @@
 .input-codigo-consulta:focus {
   border-bottom: 1px solid #001529;
 }
-
-.div-table {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin: 20px 0 10px 0;
-}
-.div-main-table {
-  display: flex;
-  flex-direction: column;
-  background-color: 100%;
-  margin: 15px 25px;
-}
-.div-line-table {
-  display: flex;
-  width: 100%;
-  height: 45px;
-}
 .label-nome-table {
   display: flex;
   align-items: center;
