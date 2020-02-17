@@ -254,7 +254,7 @@ class NewContratosContainer extends Component {
 
   removeItem = async index => {
     const oldItem = this.state.itens;
-    const newItens = oldItem.filter((item, indexx) => index !== indexx);
+    const newItens = oldItem.filter(indexx => index !== indexx);
 
     await this.setState({
       itens: newItens
@@ -693,8 +693,8 @@ class NewContratosContainer extends Component {
           <DatePicker
             size="large"
             placeholder="DATA ATIVAÇÃO"
+            className="data-contratos"
             style={{ marginLeft: "25px" }}
-            name="dataAtivacao"
             value={this.state.dataAtivacao}
             format="DD/MM/YYYY"
             onChange={e => {
