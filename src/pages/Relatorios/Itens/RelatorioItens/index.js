@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import "../../../../global.css";
 import "./index.css";
+import "../../../../global.css";
+import { GetAllContractItem } from "../../../../services/contract";
 
 class RelatorioItens extends Component {
   state = {
@@ -124,6 +125,12 @@ class RelatorioItens extends Component {
       ) : null}
     </div>
   );
+
+  componentDidMount = () => {
+    GetAllContractItem()
+      .then(resp => console.log(resp))
+      .catch(err => console.error(err));
+  };
 
   render() {
     return (

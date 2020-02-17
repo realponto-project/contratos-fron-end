@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Icon, Checkbox, message } from "antd";
+import * as R from "ramda";
 import "../../../../global.css";
 import "./index.css";
 import { validator, masks } from "./validator";
@@ -59,11 +60,20 @@ class UserContainer extends Component {
       email
     };
 
-    const { status } = await NewUser(value);
+    const { status, data } = await NewUser(value);
 
     if (status === 200) {
       this.clearState();
       message.success("Usuario cadatrado com sucesso");
+    } else if (status === 422) {
+      R.keys(data.errors[0].field).map(key =>
+        this.setState({
+          fieldErrors: {
+            ...this.state.fieldErrors,
+            [key]: data.errors[0].field
+          }
+        })
+      );
     }
   };
 
