@@ -1,15 +1,44 @@
 import React, { Component } from "react";
 import "./index.css";
 import "../../../../global.css";
+import { Select } from "antd";
 import { GetAllContractItem } from "../../../../services/contract";
+import { GetAllItens } from "../../../../services/item";
+
+const { Option } = Select;
 
 class RelatorioItens extends Component {
   state = {
     item: "",
+    rows: [],
     codigo: "",
     total: 10,
     count: 0,
-    page: 1
+    page: 1,
+    allItens: []
+  };
+
+  componentDidMount = async () => {
+    await this.setState({ allItens: (await GetAllItens()).data });
+  };
+
+  onChangeSelect = (value, option) => {
+    this.setState({
+      item: option.props.item.name,
+      codigo: option.props.item.code
+    });
+    const query = {
+      item: {
+        name: option.props.item.name
+      }
+    };
+
+    GetAllContractItem(query)
+      .then(resp => {
+        console.log(resp);
+        this.setState({ rows: resp.data });
+      })
+      .catch(err => console.error(err));
   };
 
   onChange = e => {
@@ -22,12 +51,26 @@ class RelatorioItens extends Component {
     <div className="div-table">
       <div className="div-main-table">
         <div className="div-line-table">
-          <label className="label-nContrato-table">124563</label>
+          <label className="label-nContrato-table">N Cont.</label>
           <label className="label-razao-table">RAZÃO SOCIAL</label>
-          <label className="label-cnpj-table">04.550.884/0001-09</label>
-          <label className="label-valor-table">90,00</label>
-          <label className="label-tipo-table">ANUAL</label>
+          <label className="label-cnpj-table">CNPJ / CPF</label>
+          <label className="label-valor-table">Preço</label>
+          <label className="label-tipo-table">Tipo</label>
         </div>
+        <br />
+        {this.state.rows.map(line => (
+          <div className="div-line-table">
+            <label className="label-nContrato-table">{line.contractCode}</label>
+            <label className="label-razao-table">
+              {line.contract.client.razaosocial}
+            </label>
+            <label className="label-cnpj-table">
+              {line.contract.client.cnpj}
+            </label>
+            <label className="label-valor-table">{line.price.toFixed(2)}</label>
+            <label className="label-tipo-table">{line.contract.type}</label>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -126,12 +169,6 @@ class RelatorioItens extends Component {
     </div>
   );
 
-  componentDidMount = () => {
-    GetAllContractItem()
-      .then(resp => console.log(resp))
-      .catch(err => console.error(err));
-  };
-
   render() {
     return (
       <div className="card-main">
@@ -140,20 +177,63 @@ class RelatorioItens extends Component {
         </div>
 
         <div className="div-inputs-flex">
-          <input
+          <Select
+            className="input-item-relatorioItens"
+            style={{ width: "75%", marginRight: "10px" }}
+            size="large"
+            showSearch
+            placeholder="ITEM"
+            optionFilterProp="children"
+            value={this.state.item}
+            onChange={this.onChangeSelect}
+            filterOption={(input, option) =>
+              option.props.children
+                .toLowerCase()
+                .indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            {this.state.allItens.map(value => (
+              <Option key={value.id} value={value.name} item={value}>
+                {value.name}
+              </Option>
+            ))}
+          </Select>
+
+          <Select
+            className="input-codigo-relatorioItens"
+            style={{ width: "25%" }}
+            size="large"
+            showSearch
+            placeholder="CÓDIGO"
+            optionFilterProp="children"
+            value={this.state.codigo}
+            onChange={this.onChangeSelect}
+            filterOption={(input, option) =>
+              option.props.children
+                .toLowerCase()
+                .indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            {this.state.allItens.map(value => (
+              <Option key={value.id} value={value.code} item={value}>
+                {value.code}
+              </Option>
+            ))}
+          </Select>
+          {/* <input
             className="input-item-relatorioItens"
             placeholder="ITEM"
             onChange={this.onChange}
             name="item"
             value={this.state.item}
-          ></input>
-          <input
+          ></input> */}
+          {/* <input
             className="input-codigo-relatorioItens"
             placeholder="CODIGO"
             onChange={this.onChange}
             name="codigo"
             value={this.state.codigo}
-          ></input>
+          ></input> */}
         </div>
 
         <this.tableRelatorioItens />

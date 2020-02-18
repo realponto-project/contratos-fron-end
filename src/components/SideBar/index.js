@@ -123,6 +123,15 @@ class SideBar extends Component {
               }}
             />
           );
+        case "relatorioCadastro_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/relatorioCadastro/dash"
+              }}
+            />
+          );
         case "logout":
           return <Redirect to="/login" />;
         default:
@@ -270,6 +279,11 @@ class SideBar extends Component {
               <Icon type="ordered-list" />
               Itens
             </Menu.Item>
+
+            <Menu.Item key="relatorioCadastro_dash">
+              <Icon type="file-done" />
+              Cadastros
+            </Menu.Item>
           </SubMenu>
         </Menu>
       </div>
@@ -287,7 +301,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(SideBar);
+export default connect(mapStateToProps, mapDispacthToProps)(SideBar);

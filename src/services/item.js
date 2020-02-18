@@ -73,7 +73,7 @@ export const GetItemByParams = async query => {
   return response;
 };
 
-export const GetAllItens = async () => {
+export const GetAllItens = async query => {
   const storeObject = store.getState();
 
   const headers = {
@@ -82,7 +82,7 @@ export const GetAllItens = async () => {
 
   let response = {};
   await api
-    .get("/item", { headers })
+    .get("/item", { headers, params: query })
     .then(resp => {
       response = resp;
     })

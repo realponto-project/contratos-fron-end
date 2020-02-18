@@ -1,0 +1,26 @@
+.div-main-relatorio-cadastro {
+  width: 100%;
+  height: 100%;
+}
+
+div .div-main-relatorio-cadastro h1 {
+  display: flex;
+  justify-content: center;
+}
+
+.div-container-block {
+  margin: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.div-container-table {
+  margin: 20px;
+  padding: 10px;
+  border: solid 0.5px #666;
+  border-radius: 5px;
+}
+
+.div-container-inputs-search {
+  margin: 20px;
+}

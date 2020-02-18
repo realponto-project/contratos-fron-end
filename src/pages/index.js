@@ -17,6 +17,7 @@ import DashIgpmRoute from "./IGPM/GerenciarIGPM";
 import DashConsultaRoute from "./Consulta/GerenciarConsulta";
 import HistoricoRoute from "./Historico";
 import RelatorioItensRoute from "./Relatorios/Itens";
+import RelatorioCadastroRoute from "./Relatorios/Cadastro";
 
 class PagesRoute extends Component {
   state = {
@@ -68,6 +69,11 @@ class PagesRoute extends Component {
             path="/logged/relatorioItens/dash"
             component={RelatorioItensRoute}
           />
+          <Route
+            exact
+            path="/logged/relatorioCadastro/dash"
+            component={RelatorioCadastroRoute}
+          />
         </Switch>
       );
     } else {
@@ -86,7 +92,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(PagesRoute);
+export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);
