@@ -262,7 +262,7 @@ class SideBar extends Component {
             title={
               <span>
                 <Icon type="file-pdf" />
-                <span>Relatorios</span>
+                <span>Relatórios</span>
               </span>
             }
           >
