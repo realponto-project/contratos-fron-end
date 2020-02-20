@@ -9,18 +9,43 @@ div .div-main-relatorio-cadastro h1 {
 }
 
 .div-container-block {
-  margin: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.div-buttons-search {
+  width: 100%;
+  margin-top: 50px;
   display: flex;
   justify-content: space-between;
 }
-
 .div-container-table {
-  margin: 20px;
-  padding: 10px;
-  border: solid 0.5px #666;
-  border-radius: 5px;
+  margin: 25px;
 }
-
+.div-seminfo-relatorio {
+  width: 100%;
+  margin: 50px 25px 0 25px;
+  font-weight: bold;
+  font-size: 18px;
+}
 .div-container-inputs-search {
-  margin: 20px;
+  margin: 10px 25px 0 25px;
+  display: flex;
+}
+.button-search {
+  height: 38px;
+  border: 0;
+  background-color: rgb(214, 214, 214);
+  border-radius: 2px;
+  padding: 5px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+  outline: none;
+  margin-right: 25px;
+}
+.button-search:active {
+  background: rgb(184, 184, 184);
 }

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Select, Button, Row, Col, Input, InputNumber } from "antd";
-// import { Container } from './styles';
+import { Select, Row, Button, Col, Input } from "antd";
 import "./index.css";
 
 import { GetAllClient } from "../../../../services/client";
@@ -75,7 +74,10 @@ export default class RelatorioCadastroContainer extends Component {
     const [objectName, childrenName] = name.split(" ");
 
     await this.setState({
-      [objectName]: { ...this.state[objectName], [childrenName]: value }
+      [objectName]: {
+        ...this.state[objectName],
+        [childrenName]: value.toUpperCase()
+      }
     });
 
     switch (objectName) {
@@ -98,40 +100,48 @@ export default class RelatorioCadastroContainer extends Component {
       case "cliente":
         return (
           <div className="div-container-inputs-search">
-            <Row>
-              <Col span={2}>
-                <div style={{ padding: "0 5px" }}>
+            <Row style={{ width: "100%" }}>
+              <Col span={3}>
+                <div style={{ marginRight: "5px" }}>
                   <Input
+                    style={{ height: "38px" }}
                     value={searchClient.code}
                     name="searchClient code"
                     onChange={this.onChange}
+                    placeholder="CÓD"
                   />
                 </div>
               </Col>
-              <Col span={12}>
-                <div style={{ padding: "0 5px" }}>
+              <Col span={10}>
+                <div style={{ marginRight: "5px" }}>
                   <Input
                     value={searchClient.razaosocial}
                     name="searchClient razaosocial"
                     onChange={this.onChange}
+                    style={{ height: "38px" }}
+                    placeholder="RAZÃO SOCIAL"
                   />
                 </div>
               </Col>
-              <Col span={8}>
-                <div style={{ padding: "0 5px" }}>
+              <Col span={6}>
+                <div style={{ marginRight: "5px" }}>
                   <Input
                     value={searchClient.cnpj}
                     name="searchClient cnpj"
                     onChange={this.onChange}
+                    style={{ height: "38px" }}
+                    placeholder="CNPJ"
                   />
                 </div>
               </Col>
-              <Col span={2}>
-                <div style={{ padding: "0 5px" }}>
+              <Col span={5}>
+                <div>
                   <Input
                     value={searchClient.group}
                     name="searchClient group"
                     onChange={this.onChange}
+                    style={{ height: "38px" }}
+                    placeholder="GRUPO"
                   />
                 </div>
               </Col>
@@ -141,31 +151,37 @@ export default class RelatorioCadastroContainer extends Component {
       case "item":
         return (
           <div className="div-container-inputs-search">
-            <Row>
+            <Row style={{ width: "100%" }}>
               <Col span={14}>
-                <div style={{ padding: "0 5px" }}>
+                <div style={{ marginRight: "5px" }}>
                   <Input
+                    placeholder="ITEM"
                     value={searchItem.name}
                     name="searchItem name"
                     onChange={this.onChange}
+                    style={{ height: "38px" }}
                   />
                 </div>
               </Col>
               <Col span={6}>
-                <div style={{ padding: "0 5px" }}>
+                <div style={{ marginRight: "5px" }}>
                   <Input
+                    placeholder="TIPO"
                     value={searchItem.type}
                     name="searchItem type"
                     onChange={this.onChange}
+                    style={{ height: "38px" }}
                   />
                 </div>
               </Col>
               <Col span={4}>
-                <div style={{ padding: "0 5px" }}>
+                <div style={{ marginRight: "5px" }}>
                   <Input
+                    placeholder="CÓDIGO"
                     value={searchItem.code}
                     name="searchItem code"
                     onChange={this.onChange}
+                    style={{ height: "38px" }}
                   />
                 </div>
               </Col>
@@ -183,26 +199,45 @@ export default class RelatorioCadastroContainer extends Component {
         return (
           <div className="div-container-table">
             <Row>
-              <Col span={2}>
-                <strong>Código</strong>
+              <Col
+                style={{ fontSize: "16px", margin: "0 5px 10px 0" }}
+                span={3}
+              >
+                <strong>CÓDIGO</strong>
               </Col>
-              <Col span={12}>
-                <strong>Razão Social</strong>
+              <Col
+                style={{ fontSize: "16px", margin: "0 5px 10px 0" }}
+                span={10}
+              >
+                <strong>RAZÃO SOCIAL</strong>
               </Col>
-              <Col span={8}>
+              <Col
+                style={{ fontSize: "16px", margin: "0 5px 10px 0" }}
+                span={6}
+              >
                 <strong>CNPJ</strong>
               </Col>
-              <Col span={2}>
-                <strong>Grupo</strong>
+              <Col
+                style={{ fontSize: "16px", margin: "0 5px 10px 0" }}
+                span={4}
+              >
+                <strong>GRUPO</strong>
               </Col>
             </Row>
-            {/* {console.log(this.state)} */}
             {this.state.clientes.rows.map(cliente => (
               <Row>
-                <Col span={2}>{cliente.code}</Col>
-                <Col span={12}>{cliente.razaosocial}</Col>
-                <Col span={8}>{cliente.cnpj}</Col>
-                <Col span={2}>{cliente.group}</Col>
+                <Col style={{ margin: "0 5px 10px 0" }} span={3}>
+                  {cliente.code}
+                </Col>
+                <Col style={{ margin: "0 5px 10px 0" }} span={10}>
+                  {cliente.razaosocial}
+                </Col>
+                <Col style={{ margin: "0 5px 10px 0" }} span={6}>
+                  {cliente.cnpj}
+                </Col>
+                <Col style={{ margin: "0 5px 10px 0" }} span={4}>
+                  {cliente.group}
+                </Col>
               </Row>
             ))}
           </div>
@@ -211,22 +246,36 @@ export default class RelatorioCadastroContainer extends Component {
         return (
           <div className="div-container-table">
             <Row>
-              <Col span={14}>
-                <strong>Nome</strong>
+              <Col
+                style={{ fontSize: "16px", margin: "0 5px 10px 0" }}
+                span={13}
+              >
+                <strong>NOME</strong>
               </Col>
-              <Col span={6}>
-                <strong>Tipo</strong>
+              <Col
+                style={{ fontSize: "16px", margin: "0 5px 10px 0" }}
+                span={6}
+              >
+                <strong>TIPO</strong>
               </Col>
-              <Col span={4}>
-                <strong>Código</strong>
+              <Col
+                style={{ fontSize: "16px", margin: "0 5px 10px 0" }}
+                span={4}
+              >
+                <strong>CÓDIGO</strong>
               </Col>
             </Row>
-            {/* {console.log(this.state)} */}
             {this.state.items.map(item => (
               <Row>
-                <Col span={14}>{item.name}</Col>
-                <Col span={6}>{item.type}</Col>
-                <Col span={4}>{item.code}</Col>
+                <Col style={{ marginBottom: "10px" }} span={13}>
+                  {item.name}
+                </Col>
+                <Col style={{ marginBottom: "10px" }} span={6}>
+                  {item.type}
+                </Col>
+                <Col style={{ marginBottom: "10px" }} span={4}>
+                  {item.code}
+                </Col>
               </Row>
             ))}
           </div>
@@ -253,26 +302,41 @@ export default class RelatorioCadastroContainer extends Component {
 
   render() {
     return (
-      <div className="div-main-relatorio-cadastro">
-        <h1>Relatórios cadastrais</h1>
-        <div className="div-container-block">
-          <Select
-            style={{ width: 200 }}
-            placeholder="Tipo de cadastro"
-            onChange={this.onChangeSelect}
-          >
-            <Option value="cliente">Cliente</Option>
-            <Option value="item">Item</Option>
-          </Select>
-          <Button
-            icon="search"
-            onClick={() => this.setState({ search: !this.state.search })}
-          >
-            Search
-          </Button>
+      <div className="card-main">
+        <div className="div-titulo">
+          <h1 className="h1-titulo">Relatorios cadastrais</h1>
         </div>
-        <this.Search />
-        <this.Table />
+        <div className="div-container-block">
+          <div className="div-buttons-search">
+            <Select
+              style={{ width: "25%", marginLeft: "25px" }}
+              placeholder="TIPO DO CADASTRO"
+              onChange={this.onChangeSelect}
+              size="large"
+            >
+              <Option value="cliente">CLIENTE</Option>
+              <Option value="item">ITEM</Option>
+            </Select>
+
+            {this.state.select !== "" ? (
+              <Button
+                style={{ height: "38px", marginRight: "25px" }}
+                icon="search"
+                onClick={() => this.setState({ search: !this.state.search })}
+              >
+                {!this.state.search ? "PESQUISAR" : "OCULTAR"}
+              </Button>
+            ) : null}
+          </div>
+          <this.Search />
+          {this.state.select !== "" ? (
+            <this.Table />
+          ) : (
+            <div className="div-seminfo-relatorio">
+              NENHUM TIPO DE CADASTRO SELECIONADO
+            </div>
+          )}
+        </div>
       </div>
     );
   }

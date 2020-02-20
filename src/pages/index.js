@@ -9,7 +9,6 @@ import { Logout } from "./Login/LoginRedux/action";
 
 import Dash from "./Dash";
 import UserRoute from "./Gerenciar/Usuario";
-import GraficoRoute from "./Gerenciar/Grafico";
 import NewClientRoute from "./Cadastros/Cliente";
 import NewItemRoute from "./Cadastros/Item";
 import NewContratosRoute from "./Cadastros/Contratos";
@@ -19,6 +18,7 @@ import DashConsultaRoute from "./Consulta/GerenciarConsulta";
 import HistoricoRoute from "./Historico";
 import RelatorioItensRoute from "./Relatorios/Itens";
 import RelatorioCadastroRoute from "./Relatorios/Cadastro";
+import GerenciarUsuarioRoute from "./MOD/Usuario";
 
 class PagesRoute extends Component {
   state = {
@@ -46,7 +46,6 @@ class PagesRoute extends Component {
         <Switch>
           <Route exact path="/logged/dash" component={Dash} />
           <Route exact path="/logged/user/dash" component={UserRoute} />
-          <Route exact path="/logged/grafico/dash" component={GraficoRoute} />
           <Route
             exact
             path="/logged/newClient/add"
@@ -76,6 +75,11 @@ class PagesRoute extends Component {
             path="/logged/relatorioCadastro/dash"
             component={RelatorioCadastroRoute}
           />
+          <Route
+            exact
+            path="/logged/dashUsuario/dash"
+            component={GerenciarUsuarioRoute}
+          />
         </Switch>
       );
     } else {
@@ -94,4 +98,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(PagesRoute);

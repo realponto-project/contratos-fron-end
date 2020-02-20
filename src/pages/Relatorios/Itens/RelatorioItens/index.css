@@ -48,6 +48,11 @@
   width: 40%;
   margin-right: 10px;
 }
+.div-seminfo-relatorioItens {
+  width: 100%;
+  font-weight: bold;
+  margin-top: 15px;
+}
 .label-valor-table {
   display: flex;
   align-items: center;

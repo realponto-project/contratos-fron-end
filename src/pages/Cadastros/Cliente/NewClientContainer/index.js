@@ -94,6 +94,13 @@ class NewClientContainer extends Component {
   onChange = e => {
     const { name, value } = masks(e.target.name, e.target.value);
     this.setState({
+      [name]: value.toUpperCase()
+    });
+  };
+
+  onChangeEmail = e => {
+    const { name, value } = masks(e.target.name, e.target.value);
+    this.setState({
       [name]: value
     });
   };
@@ -477,7 +484,7 @@ class NewClientContainer extends Component {
               className={`input-contato-cliente ${fieldErrors.emailContato &&
                 "input-error"}`}
               placeholder="E-MAIL"
-              onChange={onChange}
+              onChange={this.onChangeEmail}
               name="emailContato"
               value={state.emailContato}
               onFocus={onFocus}

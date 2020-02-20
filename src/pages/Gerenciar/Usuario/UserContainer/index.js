@@ -25,6 +25,14 @@ class UserContainer extends Component {
     const { name, value } = masks(e.target.name, e.target.value);
 
     this.setState({
+      [name]: value.toUpperCase()
+    });
+  };
+
+  onChangeEmail = e => {
+    const { name, value } = masks(e.target.name, e.target.value);
+
+    this.setState({
       [name]: value
     });
   };
@@ -149,7 +157,7 @@ class UserContainer extends Component {
             <input
               className={`input-info-usuario ${fieldErrors.email &&
                 "input-error"}`}
-              onChange={this.onChange}
+              onChange={this.onChangeEmail}
               placeholder="E-MAIL"
               value={state.email}
               name="email"
