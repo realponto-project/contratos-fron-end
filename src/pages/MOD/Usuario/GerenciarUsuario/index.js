@@ -1,13 +1,36 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import "./index.css";
 import { Spin, Icon } from "antd";
+
+import { GetAllUsers, UpdateUserTroll } from "../../../../services/user";
 
 class GerenciarUsuario extends Component {
   state = {
     loading: false,
     total: 10,
     count: 0,
-    page: 3
+    page: 3,
+    users: []
+  };
+
+  componentWillMount = async () => {
+    await this.getAllUsers();
+  };
+
+  getAllUsers = () => {
+    GetAllUsers().then(resp => this.setState({ users: resp.data }));
+  };
+
+  updateUserTroll = async (id, troll) => {
+    const value = {
+      id,
+      userId: this.props.login.user.id,
+      troll
+    };
+    await UpdateUserTroll(value);
+
+    await this.getAllUsers();
   };
 
   TableIgpm = () => (
@@ -20,18 +43,26 @@ class GerenciarUsuario extends Component {
         </div>
       </div>
       <div className="div-lineMain-table">
-        <div className="div-line-table">
-          <label className="label-nome-troll">TROUXA</label>
-          <label className="label-troll-troll">
-            <Icon type="close-circle" style={{ color: "red" }} />
-          </label>
-          <div className="label-button-troll">
-            <label class="switch">
-              <input type="checkbox" />
-              <span class="slider round"></span>
+        {this.state.users.map((user, index) => (
+          <div className="div-line-table">
+            <label className="label-nome-troll">{user.username}</label>
+            <label className="label-troll-troll">
+              {user.troll ? null : (
+                <Icon type="close-circle" style={{ color: "red" }} />
+              )}
             </label>
+            <div className="label-button-troll">
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  checked={user.troll}
+                  onClick={() => this.updateUserTroll(user.id, !user.troll)}
+                />
+                <span class="slider round"></span>
+              </label>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
@@ -141,4 +172,10 @@ class GerenciarUsuario extends Component {
   }
 }
 
-export default GerenciarUsuario;
+function mapStateToProps(state) {
+  return {
+    login: state.login
+  };
+}
+
+export default connect(mapStateToProps)(GerenciarUsuario);

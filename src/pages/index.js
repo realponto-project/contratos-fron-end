@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import jwt from "jsonwebtoken";
 import { promisify } from "util";
-import { Logout } from "./Login/LoginRedux/action";
+import { Logout, onSubmit } from "./Login/LoginRedux/action";
+
 // import moment from "moment";
 
 import Dash from "./Dash";
@@ -20,6 +21,8 @@ import RelatorioItensRoute from "./Relatorios/Itens";
 import RelatorioCadastroRoute from "./Relatorios/Cadastro";
 import GerenciarUsuarioRoute from "./MOD/Usuario";
 
+import { VerifyTroll } from "../services/user";
+
 class PagesRoute extends Component {
   state = {
     auth: true
@@ -32,7 +35,21 @@ class PagesRoute extends Component {
       "%dfsJd"
     )
       .then(resp => {
-        console.log(resp);
+        VerifyTroll({ id: resp.id }).then(user => {
+          if (
+            user.status === 200 &&
+            user.data &&
+            user.data.troll !== this.props.login.user.troll
+          ) {
+            // console.log(this.props.login.user.troll);
+            this.props.onSubmit({
+              user: {
+                ...this.props.login.user,
+                troll: !this.props.login.user.troll
+              }
+            });
+          }
+        });
       })
       .catch(error => {
         console.log(error);
@@ -89,7 +106,7 @@ class PagesRoute extends Component {
 }
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators({ Logout }, dispach);
+  return bindActionCreators({ Logout, onSubmit }, dispach);
 }
 
 function mapStateToProps(state) {
@@ -98,7 +115,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(PagesRoute);
+export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);

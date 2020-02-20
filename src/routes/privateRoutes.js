@@ -13,7 +13,11 @@ class PrivateRoute extends Component {
         <div className="div-sideBar">
           <SideBar />
         </div>
-        <div className={`div-body ${this.props.login.user.troll && "troll"}`}>
+        <div
+          className={`div-body ${this.props.login.user &&
+            this.props.login.user.troll &&
+            "troll"}`}
+        >
           <Switch>
             <Route path="/logged" component={PagesRoute} />
           </Switch>

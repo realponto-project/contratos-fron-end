@@ -7,7 +7,14 @@ class UserRoute extends Component {
   render() {
     return (
       <Switch>
-        <Route exact path="/logged/user/dash" component={UserContainer} />
+        <div
+          className={`${this.props.login.user &&
+            this.props.login.user.troll &&
+            "troll"}`}
+          style={{ width: "100vw", height: "100vh" }}
+        >
+          <Route exact path="/logged/user/dash" component={UserContainer} />
+        </div>
       </Switch>
     );
   }
