@@ -137,7 +137,7 @@ class NewContratosContainer extends Component {
   onChange = e => {
     const { name, value } = masks(e.target.name, e.target.value);
     this.setState({
-      [name]: value
+      [name]: value.toUpperCase()
     });
   };
 
@@ -705,7 +705,6 @@ class NewContratosContainer extends Component {
             onFocus={this.onFocus}
           ></input>
           <input
-            readOnly
             className="input-grupo-contratos"
             placeholder="GRUPO"
             onChange={this.onChange}

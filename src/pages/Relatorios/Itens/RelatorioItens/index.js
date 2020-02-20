@@ -10,9 +10,9 @@ const { Option } = Select;
 
 class RelatorioItens extends Component {
   state = {
-    item: "",
+    item: "SELECIONE UM ITEM",
     rows: [],
-    codigo: "",
+    codigo: "CÓDIGO",
     total: 10,
     count: 0,
     page: 1,
@@ -56,26 +56,33 @@ class RelatorioItens extends Component {
     <div className="div-table">
       <div className="div-main-table">
         <div className="div-line-table">
-          <label className="label-nContrato-table">N Cont.</label>
-          <label className="label-razao-table">RAZÃO SOCIAL</label>
-          <label className="label-cnpj-table">CNPJ / CPF</label>
-          <label className="label-valor-table">Preço</label>
-          <label className="label-tipo-table">Tipo</label>
+          <strong className="label-nContrato-table">N CONT.</strong>
+          <strong className="label-razao-table">RAZÃO SOCIAL</strong>
+          <strong className="label-cnpj-table">CNPJ / CPF</strong>
+          <strong className="label-valor-table">PREÇO</strong>
+          <strong className="label-tipo-table">TIPO</strong>
         </div>
-        <br />
-        {this.state.rows.map(line => (
-          <div className="div-line-table">
-            <label className="label-nContrato-table">{line.contractCode}</label>
-            <label className="label-razao-table">
-              {line.contract.client.razaosocial}
-            </label>
-            <label className="label-cnpj-table">
-              {line.contract.client.cnpj}
-            </label>
-            <label className="label-valor-table">{line.price.toFixed(2)}</label>
-            <label className="label-tipo-table">{line.contract.type}</label>
-          </div>
-        ))}
+        {this.state.rows.length !== 0 ? (
+          this.state.rows.map(line => (
+            <div className="div-line-table">
+              <label className="label-nContrato-table">
+                {line.contractCode}
+              </label>
+              <label className="label-razao-table">
+                {line.contract.client.razaosocial}
+              </label>
+              <label className="label-cnpj-table">
+                {line.contract.client.cnpj}
+              </label>
+              <label className="label-valor-table">
+                {line.price.toFixed(2)}
+              </label>
+              <label className="label-tipo-table">{line.contract.type}</label>
+            </div>
+          ))
+        ) : (
+          <div className="div-seminfo-relatorioItens">NADA FOI ENCONTRADO</div>
+        )}
       </div>
     </div>
   );
@@ -191,19 +198,22 @@ class RelatorioItens extends Component {
 
         <div className="div-inputs-flex">
           <Select
-            className="input-item-relatorioItens"
-            style={{ width: "75%", marginRight: "10px" }}
+            style={{ width: "75%", marginRight: "10px", marginLeft: "25px" }}
             size="large"
+            defaultValue={this.state.item}
             showSearch
-            placeholder="ITEM"
             optionFilterProp="children"
             value={this.state.item}
+            notFoundContent="NADA ENCONTRADO"
             onChange={this.onChangeSelect}
             filterOption={(input, option) =>
               option.props.children
                 .toLowerCase()
                 .indexOf(input.toLowerCase()) >= 0
             }
+            getInputElement={() => (
+              <input style={{ textTransform: "uppercase" }} />
+            )}
           >
             {this.state.allItens.map(value => (
               <Option key={value.id} value={value.name} item={value}>
@@ -213,11 +223,12 @@ class RelatorioItens extends Component {
           </Select>
 
           <Select
-            className="input-codigo-relatorioItens"
-            style={{ width: "25%" }}
+            style={{ width: "25%", marginRight: "25px" }}
             size="large"
             showSearch
+            defaultValue={this.state.codigo}
             placeholder="CÓDIGO"
+            notFoundContent="NADA ENCONTRADO"
             optionFilterProp="children"
             value={this.state.codigo}
             onChange={this.onChangeSelect}
@@ -226,6 +237,9 @@ class RelatorioItens extends Component {
                 .toLowerCase()
                 .indexOf(input.toLowerCase()) >= 0
             }
+            getInputElement={() => (
+              <input style={{ textTransform: "uppercase" }} />
+            )}
           >
             {this.state.allItens.map(value => (
               <Option key={value.id} value={value.code} item={value}>
@@ -233,20 +247,6 @@ class RelatorioItens extends Component {
               </Option>
             ))}
           </Select>
-          {/* <input
-            className="input-item-relatorioItens"
-            placeholder="ITEM"
-            onChange={this.onChange}
-            name="item"
-            value={this.state.item}
-          ></input> */}
-          {/* <input
-            className="input-codigo-relatorioItens"
-            placeholder="CODIGO"
-            onChange={this.onChange}
-            name="codigo"
-            value={this.state.codigo}
-          ></input> */}
         </div>
 
         <this.tableRelatorioItens />

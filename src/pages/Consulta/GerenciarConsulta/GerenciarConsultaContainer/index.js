@@ -64,7 +64,7 @@ class GerenciarConsultaContainer extends Component {
   onChange = async e => {
     const { name, value } = masks(e.target.name, e.target.value);
     await this.setState({
-      [name]: value
+      [name]: value.toUpperCase()
     });
     await this.getAllContract();
   };

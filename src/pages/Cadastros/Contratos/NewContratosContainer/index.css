@@ -211,6 +211,9 @@
 .input-cnpj-contratos::placeholder {
   color: rgb(177, 177, 177);
 }
+.input-grupo-contratos::placeholder {
+  color: rgb(177, 177, 177);
+}
 .input-cnpj-contratos:focus {
   border-bottom: 1px solid #001529;
 }
