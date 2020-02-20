@@ -10,3 +10,7 @@
   display: flex;
   width: 100%;
 }
+
+.troll {
+  cursor: none !important;
+}

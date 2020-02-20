@@ -1,22 +1,19 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
 import "./index.css";
 
 import PagesRoute from "../pages";
 import SideBar from "../components/SideBar";
 
 class PrivateRoute extends Component {
-  state = {
-    auth: true
-  };
-
   render() {
     return (
       <div className="div-main-route">
         <div className="div-sideBar">
           <SideBar />
         </div>
-        <div className="div-body">
+        <div className={`div-body ${this.props.login.user.troll && "troll"}`}>
           <Switch>
             <Route path="/logged" component={PagesRoute} />
           </Switch>
@@ -26,4 +23,10 @@ class PrivateRoute extends Component {
   }
 }
 
-export default PrivateRoute;
+function mapStateToProps(state) {
+  return {
+    login: state.login
+  };
+}
+
+export default connect(mapStateToProps)(PrivateRoute);

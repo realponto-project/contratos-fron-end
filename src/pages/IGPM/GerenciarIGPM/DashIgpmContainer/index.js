@@ -142,7 +142,8 @@ class DashIgmpContainer extends Component {
           onCancel={this.handleCancel}
         >
           <p>
-            Clique em Ok para deletar IGPM referente a {meses[igpm.month - 1]},
+            Clique em "OK" para deletar IGPM referente a {meses[igpm.month - 1]}{" "}
+            SOB ANO VIGENTE 2019 APLICADO EM CONTRATOS DO TIPO {igpm.type},
             atenão ao deleta-lo todos os contratos que foram aplicado este fator
             de correção serão reajustado
           </p>
