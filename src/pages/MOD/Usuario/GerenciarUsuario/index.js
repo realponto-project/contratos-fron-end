@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Spin, Icon, Switch } from "antd";
+import { Spin, Icon } from "antd";
 
 class GerenciarUsuario extends Component {
   state = {
