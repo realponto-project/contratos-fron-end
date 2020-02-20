@@ -36,7 +36,8 @@ export default class RelatorioCadastroContainer extends Component {
           specific: {
             name,
             type,
-            code
+            code,
+            igpm: false
           }
         }
       }

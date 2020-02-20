@@ -9,6 +9,7 @@ import { Logout } from "./Login/LoginRedux/action";
 
 import Dash from "./Dash";
 import UserRoute from "./Gerenciar/Usuario";
+import GraficoRoute from "./Gerenciar/Grafico";
 import NewClientRoute from "./Cadastros/Cliente";
 import NewItemRoute from "./Cadastros/Item";
 import NewContratosRoute from "./Cadastros/Contratos";
@@ -45,6 +46,7 @@ class PagesRoute extends Component {
         <Switch>
           <Route exact path="/logged/dash" component={Dash} />
           <Route exact path="/logged/user/dash" component={UserRoute} />
+          <Route exact path="/logged/grafico/dash" component={GraficoRoute} />
           <Route
             exact
             path="/logged/newClient/add"

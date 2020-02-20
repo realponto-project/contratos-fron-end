@@ -1,0 +1,16 @@
+.div-container-main-grafic {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.div-container-icons-grafic {
+  display: flex;
+  flex-direction: row;
+}
+
+.div-container-icons-grafic div {
+  margin: 20px;
+  font-size: 26px;
+}

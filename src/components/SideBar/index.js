@@ -51,6 +51,15 @@ class SideBar extends Component {
     if (this.state.redirect) {
       this.changeRedirectState();
       switch (this.state.current) {
+        case "grafico_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/grafico/dash"
+              }}
+            />
+          );
         case "user_dash":
           return (
             <Redirect
@@ -225,6 +234,11 @@ class SideBar extends Component {
             }
           >
             <Menu.Item key="dash">
+              <Icon type="pie-chart" />
+              Gráficos
+            </Menu.Item>
+
+            <Menu.Item key="grafico_dash">
               <Icon type="pie-chart" />
               Gráficos
             </Menu.Item>

@@ -122,7 +122,16 @@ class NewContratosContainer extends Component {
   };
 
   componentDidMount = async () => {
-    await this.setState({ allItens: (await GetAllItens()).data });
+    const query = {
+      filters: {
+        item: {
+          specific: {
+            igpm: false
+          }
+        }
+      }
+    };
+    await this.setState({ allItens: (await GetAllItens(query)).data });
   };
 
   onChange = e => {
@@ -368,7 +377,10 @@ class NewContratosContainer extends Component {
       </label>
       <div className="div-line-modal">
         <Select
-          style={{ width: "75%", marginRight: "10px" }}
+          style={{
+            width: "75%",
+            marginRight: "10px"
+          }}
           size="large"
           showSearch
           placeholder="ITEM"
@@ -379,6 +391,13 @@ class NewContratosContainer extends Component {
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
             0
           }
+          getInputElement={() => (
+            <input
+              style={{
+                textTransform: "uppercase"
+              }}
+            />
+          )}
         >
           {this.state.allItens.map(value => (
             <Option key={value.id} value={value.name} item={value}>
@@ -638,6 +657,10 @@ class NewContratosContainer extends Component {
     });
   };
 
+  disabledDate = current => {
+    return current && current < moment().startOf("day");
+  };
+
   render() {
     const { state } = this;
     const { fieldErrors } = state;
@@ -717,6 +740,7 @@ class NewContratosContainer extends Component {
             style={{ marginLeft: "10px" }}
             name="dataRescisao"
             value={this.state.dataRescisao}
+            disabledDate={this.disabledDate}
             format="DD/MM/YYYY"
             onChange={e => {
               this.setState({ dataRescisao: e });

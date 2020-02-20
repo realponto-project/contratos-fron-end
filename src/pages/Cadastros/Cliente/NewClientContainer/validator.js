@@ -114,7 +114,11 @@ export const masks = (name, value) => {
       if (value.length > 5) value = value.replace(/(\d{5})(\d{1,3})/, "$1-$2");
 
       return { name, value };
+    case "emailContato":
+      return { name, value };
+
     default:
+      value = value.toUpperCase();
       return { name, value };
   }
 };

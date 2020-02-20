@@ -71,3 +71,8 @@
   font-size: 15px;
   width: 20%;
 }
+
+.cursor {
+  cursor: url("https://csscursor.info/source/santahand.png"), help !important;
+  /* cursor: help !important; */
+}

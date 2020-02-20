@@ -1,18 +1,60 @@
 import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
+import moment from "moment";
 
-import { Spin } from "antd";
+import { GetAllContractItem } from "../../../../services/contract";
+import { DeleteIGPM } from "../../../../services/igpm";
+
+import { Spin, Button, Modal, Icon, Tooltip } from "antd";
+
+const meses = [
+  "JANEIRO",
+  "FEVEREIRO",
+  "MARÇO",
+  "ABRIL",
+  "MAIO",
+  "JUNHO",
+  "JULHO",
+  "AGOSTO",
+  "SETEMBRO",
+  "OUTUBRO",
+  "NOVEMBRO",
+  "DEZEMBRO"
+];
 
 class DashIgmpContainer extends Component {
   state = {
+    visible: false,
     loading: false,
     nome: "",
     data: "",
     nContrato: "",
     total: 10,
     count: 0,
-    page: 3
+    page: 3,
+    contractItems: [],
+    igpm: {},
+    itemId: ""
+  };
+
+  componentDidMount = async () => {
+    await this.getAllContractItem();
+  };
+
+  getAllContractItem = async () => {
+    const query = {
+      filters: {
+        item: {
+          specific: {
+            igpm: true
+          }
+        }
+      }
+    };
+    GetAllContractItem(query).then(resp =>
+      this.setState({ contractItems: resp.data })
+    );
   };
 
   onChange = e => {
@@ -21,14 +63,130 @@ class DashIgmpContainer extends Component {
     });
   };
 
+  deleteIGPM = () => {
+    const { itemId: id } = this.state;
+    DeleteIGPM(id);
+  };
+
+  handleCancel = () => {
+    this.setState({ itemId: "", visible: false });
+  };
+
+  ModalConfirmeDelete = () => {
+    const { igpm, visible, itemId } = this.state;
+
+    if (itemId === "") {
+      return (
+        <Modal
+          title="IGPM INFO"
+          visible={visible}
+          onOk={this.deleteIGPM}
+          onCancel={this.handleCancel}
+          footer={
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <Tooltip placement="right" title={"deletar"}>
+                <Icon
+                  style={{
+                    fontSize: 20,
+                    display: "flex",
+                    alignItems: "center",
+                    color: "red"
+                  }}
+                  type="delete"
+                  onClick={() =>
+                    this.setState({ itemId: igpm.itemId, visible: true })
+                  }
+                />
+              </Tooltip>
+              <Button type="primary" onClick={this.handleCancel}>
+                OK
+              </Button>
+            </div>
+          }
+        >
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {/* <label>{console.log(igpm)}</label> */}
+            <p>
+              <strong>Tipo: </strong>
+              {igpm.type}
+            </p>
+            <p>
+              <strong>Mês: </strong>
+              {meses[igpm.month - 1]}
+            </p>
+            <p>
+              <strong>Valor: </strong>
+              {igpm.value && igpm.value.toFixed(2)} %
+            </p>
+            <p>
+              <strong>Descrição: </strong>
+              {igpm.description}
+            </p>
+            <p>
+              <strong>Data que foi aplicada: </strong>
+              {moment(igpm.createdAt).format("LLLL")}
+            </p>
+            {/* <p>
+              Clique em Ok para deletar item, atenão ao deleta-lo todos os
+              contratos que foram aplicado este fator de correção serão reajustado
+            </p> */}
+          </div>
+        </Modal>
+      );
+    } else {
+      return (
+        <Modal
+          title="Confirmar exclusão"
+          visible={visible}
+          onOk={this.deleteIGPM}
+          onCancel={this.handleCancel}
+        >
+          <p>
+            Clique em Ok para deletar IGPM referente a {meses[igpm.month - 1]},
+            atenão ao deleta-lo todos os contratos que foram aplicado este fator
+            de correção serão reajustado
+          </p>
+        </Modal>
+      );
+    }
+  };
+
   TableIgpm = () => (
     <div className="div-table">
       <div className="div-main-table">
-        <div className="div-line-table">
-          <label className="label-nome-igpm">TESTE TESTE TESTE</label>
-          <label className="label-data-igpm">FEVEREIRO</label>
-          <label className="label-nContrato-igpm">7563518</label>
-        </div>
+        {this.state.contractItems.map(line => (
+          <div className="div-line-table">
+            {/* {console.log(line)} */}
+            <label className="label-nome-igpm">
+              {line.contract.client.razaosocial}
+            </label>
+            <label
+              className="label-data-igpm cursor"
+              onClick={() =>
+                this.setState({
+                  igpm: line.item.igpms[0],
+                  visible: true
+                })
+              }
+            >
+              {line.item.name}
+            </label>
+            <label className="label-nContrato-igpm">{line.contract.code}</label>
+            {/* <Icon
+              style={{
+                fontSize: 16,
+                display: "flex",
+                alignItems: "center",
+                color: "red"
+              }}
+              type="delete"
+              onClick={() => this.setState({ itemId: line.id, visible: true })}
+            /> */}
+            {/* <Button
+              onClick={() => this.setState({ itemId: line.id, visible: true })}
+            ></Button> */}
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -117,6 +275,7 @@ class DashIgmpContainer extends Component {
   );
 
   render() {
+    console.log(this.state);
     return (
       <div className="card-main">
         <div className="div-titulo">
@@ -156,6 +315,7 @@ class DashIgmpContainer extends Component {
         <div className="div-main-pages">
           <this.Pages />
         </div>
+        <this.ModalConfirmeDelete />
       </div>
     );
   }

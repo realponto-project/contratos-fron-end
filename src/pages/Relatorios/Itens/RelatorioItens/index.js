@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import "./index.css";
 import "../../../../global.css";
-import { Select } from "antd";
+import { Select, Icon } from "antd";
 import { GetAllContractItem } from "../../../../services/contract";
 import { GetAllItens } from "../../../../services/item";
+import { pdfRelatorioItems } from "../../../../services/utils/pdf";
 
 const { Option } = Select;
 
@@ -28,8 +29,12 @@ class RelatorioItens extends Component {
       codigo: option.props.item.code
     });
     const query = {
-      item: {
-        name: option.props.item.name
+      filters: {
+        item: {
+          specific: {
+            id: option.props.item.id
+          }
+        }
       }
     };
 
@@ -172,8 +177,16 @@ class RelatorioItens extends Component {
   render() {
     return (
       <div className="card-main">
-        <div className="div-titulo">
+        <div
+          className="div-titulo"
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
           <h1 className="h1-titulo">Relatorio Itens</h1>
+          <Icon
+            style={{ fontSize: "32px" }}
+            type="printer"
+            onClick={() => pdfRelatorioItems()}
+          />
         </div>
 
         <div className="div-inputs-flex">
