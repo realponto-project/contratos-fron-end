@@ -172,19 +172,6 @@ class DashIgmpContainer extends Component {
               {line.item.name}
             </label>
             <label className="label-nContrato-igpm">{line.contract.code}</label>
-            {/* <Icon
-              style={{
-                fontSize: 16,
-                display: "flex",
-                alignItems: "center",
-                color: "red"
-              }}
-              type="delete"
-              onClick={() => this.setState({ itemId: line.id, visible: true })}
-            /> */}
-            {/* <Button
-              onClick={() => this.setState({ itemId: line.id, visible: true })}
-            ></Button> */}
           </div>
         ))}
       </div>

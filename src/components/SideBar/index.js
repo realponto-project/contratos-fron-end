@@ -51,15 +51,6 @@ class SideBar extends Component {
     if (this.state.redirect) {
       this.changeRedirectState();
       switch (this.state.current) {
-        case "grafico_dash":
-          return (
-            <Redirect
-              push
-              to={{
-                pathname: "/logged/grafico/dash"
-              }}
-            />
-          );
         case "user_dash":
           return (
             <Redirect
@@ -138,6 +129,15 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/relatorioCadastro/dash"
+              }}
+            />
+          );
+        case "dashUsuario_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/dashUsuario/dash"
               }}
             />
           );
@@ -238,11 +238,6 @@ class SideBar extends Component {
               Gráficos
             </Menu.Item>
 
-            <Menu.Item key="grafico_dash">
-              <Icon type="pie-chart" />
-              Gráficos
-            </Menu.Item>
-
             <Menu.Item key="user_dash">
               <Icon type="user-add" />
               Usuário
@@ -299,6 +294,22 @@ class SideBar extends Component {
               Cadastros
             </Menu.Item>
           </SubMenu>
+          {this.props.login.user.mod && (
+            <SubMenu
+              key="MOD"
+              title={
+                <span>
+                  <Icon type="lock" />
+                  <span>MOD</span>
+                </span>
+              }
+            >
+              <Menu.Item key="dashUsuario_dash">
+                <Icon type="user" />
+                Usuário
+              </Menu.Item>
+            </SubMenu>
+          )}
         </Menu>
       </div>
     );
@@ -311,8 +322,11 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    state: state
+    login: state.login
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(SideBar);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(SideBar);
