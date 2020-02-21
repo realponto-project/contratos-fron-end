@@ -105,31 +105,26 @@ class DashIgmpContainer extends Component {
           }
         >
           <div style={{ display: "flex", flexDirection: "column" }}>
-            {/* <label>{console.log(igpm)}</label> */}
             <p>
-              <strong>Tipo: </strong>
+              <strong>TIPO: </strong>
               {igpm.type}
             </p>
             <p>
-              <strong>Mês: </strong>
+              <strong>MÊS: </strong>
               {meses[igpm.month - 1]}
             </p>
             <p>
-              <strong>Valor: </strong>
+              <strong>VALOR: </strong>
               {igpm.value && igpm.value.toFixed(2)} %
             </p>
             <p>
-              <strong>Descrição: </strong>
+              <strong>DESCRIÇÃO: </strong>
               {igpm.description}
             </p>
             <p>
-              <strong>Data que foi aplicada: </strong>
+              <strong>DDATA QUE FOI APLICADA: </strong>
               {moment(igpm.createdAt).format("LLLL")}
             </p>
-            {/* <p>
-              Clique em Ok para deletar item, atenão ao deleta-lo todos os
-              contratos que foram aplicado este fator de correção serão reajustado
-            </p> */}
           </div>
         </Modal>
       );
@@ -142,8 +137,7 @@ class DashIgmpContainer extends Component {
           onCancel={this.handleCancel}
         >
           <p>
-            Clique em "OK" para deletar IGPM referente a {meses[igpm.month - 1]}{" "}
-            SOB ANO VIGENTE 2019 APLICADO EM CONTRATOS DO TIPO {igpm.type},
+            Clique em Ok para deletar IGPM referente a {meses[igpm.month - 1]},
             atenão ao deleta-lo todos os contratos que foram aplicado este fator
             de correção serão reajustado
           </p>
@@ -263,7 +257,6 @@ class DashIgmpContainer extends Component {
   );
 
   render() {
-    console.log(this.state);
     return (
       <div className="card-main">
         <div className="div-titulo">

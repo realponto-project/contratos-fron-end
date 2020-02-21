@@ -47,8 +47,16 @@ class GerenciarUsuario extends Component {
           <div className="div-line-table">
             <label className="label-nome-troll">{user.username}</label>
             <label className="label-troll-troll">
-              {user.troll ? null : (
-                <Icon type="close-circle" style={{ color: "red" }} />
+              {user.troll ? (
+                <Icon
+                  type="check-circle"
+                  style={{ fontSize: "22px", color: "green" }}
+                />
+              ) : (
+                <Icon
+                  type="close-circle"
+                  style={{ fontSize: "22px", color: "red" }}
+                />
               )}
             </label>
             <div className="label-button-troll">

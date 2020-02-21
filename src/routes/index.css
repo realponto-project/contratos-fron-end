@@ -1,9 +1,16 @@
-.div-body {
+.div-main-body {
   height: 100vh !important;
   width: calc(100% - 190px) !important;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+.div-body {
+  height: 96vh !important;
+  width: 100% !important;
+  display: flex;
   justify-content: center;
-  /* background-color: #f0f2f5; */
   align-items: center;
 }
 .div-main-route {
@@ -12,5 +19,15 @@
 }
 
 .troll {
-  cursor: none !important;
+  cursor: url("./mandrake.png"), help !important;
+  /* cursor: none !important; */
+}
+.div-footer-main {
+  /* cursor: url("./mickey.png") !important; */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Bebas;
+  font-size: 17px;
 }

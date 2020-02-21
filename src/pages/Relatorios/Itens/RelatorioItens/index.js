@@ -190,7 +190,7 @@ class RelatorioItens extends Component {
         >
           <h1 className="h1-titulo">Relatorio Itens</h1>
           <Icon
-            style={{ fontSize: "32px" }}
+            style={{ fontSize: "32px", margin: "15px 25px 0 0" }}
             type="printer"
             onClick={() => pdfRelatorioItems()}
           />
