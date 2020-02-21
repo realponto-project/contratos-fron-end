@@ -13,14 +13,19 @@ class PrivateRoute extends Component {
         <div className="div-sideBar">
           <SideBar />
         </div>
-        <div
-          className={`div-body ${this.props.login.user &&
-            this.props.login.user.troll &&
-            "troll"}`}
-        >
-          <Switch>
-            <Route path="/logged" component={PagesRoute} />
-          </Switch>
+        <div className="div-main-body">
+          <div
+            className={`div-body ${this.props.login.user &&
+              this.props.login.user.troll &&
+              "troll"}`}
+          >
+            <Switch>
+              <Route path="/logged" component={PagesRoute} />
+            </Switch>
+          </div>
+          <div className="div-footer-main">
+            © DEVELOPED BY JESSI LEANDRO AND GUILHERME STAIN
+          </div>
         </div>
       </div>
     );

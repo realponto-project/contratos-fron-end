@@ -175,7 +175,7 @@ export default class RelatorioCadastroContainer extends Component {
                 </div>
               </Col>
               <Col span={4}>
-                <div style={{ marginRight: "5px" }}>
+                <div>
                   <Input
                     placeholder="CÓDIGO"
                     value={searchItem.code}
@@ -217,10 +217,7 @@ export default class RelatorioCadastroContainer extends Component {
               >
                 <strong>CNPJ</strong>
               </Col>
-              <Col
-                style={{ fontSize: "16px", margin: "0 5px 10px 0" }}
-                span={4}
-              >
+              <Col style={{ fontSize: "16px", marginBottom: "0" }} span={4}>
                 <strong>GRUPO</strong>
               </Col>
             </Row>
@@ -235,7 +232,7 @@ export default class RelatorioCadastroContainer extends Component {
                 <Col style={{ margin: "0 5px 10px 0" }} span={6}>
                   {cliente.cnpj}
                 </Col>
-                <Col style={{ margin: "0 5px 10px 0" }} span={4}>
+                <Col style={{ marginBottom: "0" }} span={4}>
                   {cliente.group}
                 </Col>
               </Row>
@@ -258,19 +255,16 @@ export default class RelatorioCadastroContainer extends Component {
               >
                 <strong>TIPO</strong>
               </Col>
-              <Col
-                style={{ fontSize: "16px", margin: "0 5px 10px 0" }}
-                span={4}
-              >
+              <Col style={{ fontSize: "16px", marginBottom: "0" }} span={4}>
                 <strong>CÓDIGO</strong>
               </Col>
             </Row>
             {this.state.items.map(item => (
               <Row>
-                <Col style={{ marginBottom: "10px" }} span={13}>
+                <Col style={{ margin: "0 5px 10px 0" }} span={13}>
                   {item.name}
                 </Col>
-                <Col style={{ marginBottom: "10px" }} span={6}>
+                <Col style={{ margin: "0 5px 10px 0" }} span={6}>
                   {item.type}
                 </Col>
                 <Col style={{ marginBottom: "10px" }} span={4}>
@@ -333,7 +327,7 @@ export default class RelatorioCadastroContainer extends Component {
             <this.Table />
           ) : (
             <div className="div-seminfo-relatorio">
-              NENHUM TIPO DE CADASTRO SELECIONADO
+              <p className="p-relatorio">NENHUM TIPO DE CADASTRO SELECIONADO</p>
             </div>
           )}
         </div>
