@@ -20,10 +20,9 @@
 
 .troll {
   cursor: url("./mandrake.png"), help !important;
-  /* cursor: none !important; */
 }
 .div-footer-main {
-  /* cursor: url("./mickey.png") !important; */
+  cursor: url("./mickey.png"), help !important;
   width: 100%;
   display: flex;
   justify-content: center;
