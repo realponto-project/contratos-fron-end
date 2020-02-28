@@ -63,6 +63,7 @@
   font-size: 15px;
   width: 20%;
   margin-right: 15px;
+  cursor: help;
 }
 .label-nContrato-igpm {
   display: flex;

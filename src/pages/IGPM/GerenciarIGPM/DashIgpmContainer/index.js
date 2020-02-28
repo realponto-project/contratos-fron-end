@@ -2,11 +2,15 @@ import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
 import moment from "moment";
+import { connect } from "react-redux";
+import { Howl, Howler } from "howler";
 
 import { GetAllContractItem } from "../../../../services/contract";
 import { DeleteIGPM } from "../../../../services/igpm";
 
 import { Spin, Button, Modal, Icon, Tooltip } from "antd";
+
+import ha from "./sound.mp3";
 
 const meses = [
   "JANEIRO",
@@ -36,6 +40,21 @@ class DashIgmpContainer extends Component {
     contractItems: [],
     igpm: {},
     itemId: ""
+  };
+
+  soundPlay = () => {
+    const sound = new Howl({
+      src: ha,
+      html5: true,
+      sprite: {
+        laser: [15100, 1500]
+      }
+    });
+
+    sound.play("laser");
+    // setTimeout(function() {
+    // sound.play("laser");
+    // }, 3000);
   };
 
   componentDidMount = async () => {
@@ -78,6 +97,7 @@ class DashIgmpContainer extends Component {
     if (itemId === "") {
       return (
         <Modal
+          width={700}
           title="IGPM INFO"
           visible={visible}
           onOk={this.deleteIGPM}
@@ -137,9 +157,12 @@ class DashIgmpContainer extends Component {
           onCancel={this.handleCancel}
         >
           <p>
-            Clique em Ok para deletar IGPM referente a {meses[igpm.month - 1]},
-            atenão ao deleta-lo todos os contratos que foram aplicado este fator
-            de correção serão reajustado
+            CLIQUE EM <strong>"OK"</strong> PARA DELETAR O IGPM REFERENTE AO MẼS
+            DE <strong>{meses[igpm.month - 1]}</strong> SOB ANO VIGENTE{" "}
+            <strong>{igpm.year}</strong> APLICADO EM CONTRATOS DO TIPO{" "}
+            <strong>{igpm.type}</strong>, ATENSÃO AO DELETA-LO TODOS OS
+            CONTRATOS QUE FORAM APLICAODO ESTE FATOR DE CORREÇÃO SERÃO
+            REAJUSTAODS
           </p>
         </Modal>
       );
@@ -157,12 +180,16 @@ class DashIgmpContainer extends Component {
                 {line.contract.client.razaosocial}
               </label>
               <label
-                className="label-data-igpm cursor"
+                className={`label-data-igpm ${this.props.login.user.troll &&
+                  "cursor"}`}
                 onClick={() =>
                   this.setState({
                     igpm: line.item.igpms[0],
                     visible: true
                   })
+                }
+                onMouseEnter={
+                  this.props.login.user.troll ? () => this.soundPlay() : null
                 }
               >
                 {line.item.name}
@@ -267,6 +294,7 @@ class DashIgmpContainer extends Component {
   );
 
   render() {
+    Howler.volume(1);
     return (
       <div className="card-main">
         <div className="div-titulo">
@@ -312,4 +340,10 @@ class DashIgmpContainer extends Component {
   }
 }
 
-export default DashIgmpContainer;
+function mapStateToProps(state) {
+  return {
+    login: state.login
+  };
+}
+
+export default connect(mapStateToProps)(DashIgmpContainer);

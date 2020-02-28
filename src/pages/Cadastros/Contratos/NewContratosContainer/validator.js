@@ -11,6 +11,7 @@ export const validator = (name, value) => {
       if (value === "") return true;
       break;
 
+    case "cnpjModal":
     case "cnpj":
       if (value === "") return true;
       if (!cnpjLib.isValid(value) && !cpfLib.isValid(value)) return true;
@@ -31,6 +32,7 @@ export const masks = (name, value) => {
 
       return { name, value };
 
+    case "cnpjModal":
     case "cnpj":
       value = value.replace(/\D/gi, "");
       value = value.slice(0, 14);

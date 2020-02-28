@@ -75,10 +75,17 @@ class GerenciarConsultaContainer extends Component {
         {this.state.contracts.length !== 0 ? (
           this.state.contracts.map(line => (
             <div className="div-line-table">
-              <label className="label-nome-table">
+              {console.log(line)}
+              <label
+                className="label-nome-table"
+                style={line.dateTermination ? { color: "red" } : null}
+              >
                 {line.client.razaosocial}
               </label>
-              <label className="label-cnpj-table">
+              <label
+                className="label-cnpj-table"
+                style={line.dateTermination ? { color: "red" } : null}
+              >
                 {line.client.cnpj.length === 12
                   ? line.client.cnpj.replace(
                       /(\d{2})(\d{3})(\d{3})(\d{4})/,
@@ -89,9 +96,24 @@ class GerenciarConsultaContainer extends Component {
                       "$1.$2.$3/$4-$5"
                     )}
               </label>
-              <label className="label-grupo-table">{line.client.group}</label>
-              <label className="label-codigo-table">{line.code}</label>
-              <label className="label-tipo-table">{line.type}</label>
+              <label
+                className="label-grupo-table"
+                style={line.dateTermination ? { color: "red" } : null}
+              >
+                {line.client.group}
+              </label>
+              <label
+                className="label-codigo-table"
+                style={line.dateTermination ? { color: "red" } : null}
+              >
+                {line.code}
+              </label>
+              <label
+                className="label-tipo-table"
+                style={line.dateTermination ? { color: "red" } : null}
+              >
+                {line.type}
+              </label>
             </div>
           ))
         ) : (

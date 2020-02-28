@@ -173,9 +173,9 @@
   border-radius: 2px;
   outline: none;
 }
-.ant-modal-content {
+/* .ant-modal-content {
   width: 700px;
-}
+} */
 .ant-modal-body {
   display: flex;
   flex-direction: column;

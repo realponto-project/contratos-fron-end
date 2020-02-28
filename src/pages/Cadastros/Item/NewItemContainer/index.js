@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import * as R from "ramda";
 import "../../../../global.css";
 import "./index.css";
-import { message, Modal, Icon } from "antd";
+import { message, Modal, Icon, Select } from "antd";
 import {
   NewItem,
   UpdateItem,
@@ -12,19 +12,21 @@ import {
 } from "../../../../services/item";
 import { validator } from "./validator";
 
+const { Option } = Select;
+
 class NewItemContainer extends Component {
   state = {
     search: "",
     itemId: "",
     name: "",
-    tipo: "",
+    tipo: undefined,
     codigo: "",
     descricao: "",
     fieldErrors: {
-      name: "",
-      tipo: "",
-      codigo: "",
-      descricao: ""
+      name: false,
+      tipo: false,
+      codigo: false,
+      descricao: false
     },
     visible: false,
     deletedAt: false
@@ -34,15 +36,15 @@ class NewItemContainer extends Component {
     this.setState({
       itemId: "",
       name: "",
-      tipo: "",
+      tipo: undefined,
       codigo: "",
       descricao: "",
       search: "",
       fieldErrors: {
-        name: "",
-        tipo: "",
-        codigo: "",
-        descricao: ""
+        name: false,
+        tipo: false,
+        codigo: false,
+        descricao: false
       }
     });
   };
@@ -157,6 +159,7 @@ class NewItemContainer extends Component {
     const { name, tipo, codigo, descricao } = this.state;
     return (
       <Modal
+        width={700}
         visible={this.state.visible}
         onOk={this.handleOk}
         onCancel={() =>
@@ -220,14 +223,27 @@ class NewItemContainer extends Component {
             name="name"
             onFocus={onFocus}
           ></input>
-          <input
+          {/* <input
             className={`input-tipo-item ${fieldErrors.tipo && "input-error"}`}
             onChange={this.onChange}
             placeholder="TIPO"
             value={this.state.tipo}
             name="tipo"
             onFocus={onFocus}
-          ></input>
+          ></input> */}
+          <Select
+            value={this.state.tipo}
+            className={`input-tipo-item ${fieldErrors.tipo && "input-error"}`}
+            placeholder="TIPO"
+            onChange={value => this.setState({ tipo: value })}
+          >
+            <Option key="SOFTWARE" value="SOFTWARE">
+              SOFTWARE
+            </Option>
+            <Option key="EQUIPAMENTO" value="EQUIPAMENTO">
+              EQUIPAMENTO
+            </Option>
+          </Select>
           <input
             className={`input-codigo-item  ${fieldErrors.codigo &&
               "input-error"}`}

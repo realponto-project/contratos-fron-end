@@ -7,11 +7,14 @@ import {
   UpdateClient,
   DeleteClient,
   RestoreClient,
-  GetClientByParams
+  GetClientByParams,
+  GetAllGroups
 } from "../../../../services/client";
 import { getAddressByZipCode } from "../../../../services/utils/viacep";
 import { validator, masks } from "./validator";
-import { message, Modal } from "antd";
+import { message, Modal, Select } from "antd";
+
+const { Option } = Select;
 
 class NewClientContainer extends Component {
   state = {
@@ -49,7 +52,8 @@ class NewClientContainer extends Component {
       uf: false,
       complemento: false,
       observacoes: false
-    }
+    },
+    groups: []
   };
 
   clearState = () => {
@@ -89,6 +93,12 @@ class NewClientContainer extends Component {
         observacoes: false
       }
     });
+  };
+
+  componentDidMount = async () => {
+    await GetAllGroups()
+      .then(resp => this.setState({ groups: resp.data }))
+      .catch(err => console.error(err));
   };
 
   onChange = e => {
@@ -420,16 +430,35 @@ class NewClientContainer extends Component {
             onFocus={onFocus}
             onBlur={onBlur}
           ></input>
-          <input
-            readOnly={deletedAt}
-            className={`input-grupo ${fieldErrors.grupo && "input-error"}`}
-            placeholder="GRUPO"
-            onChange={onChange}
+          {/* <input
             name="grupo"
-            value={state.grupo}
             onFocus={onFocus}
+            onChange={onChange}
             onBlur={onBlur}
-          ></input>
+            ></input> */}
+          <Select
+            showSearch
+            onSearch={grupo => this.setState({ grupo })}
+            onChange={grupo => this.setState({ grupo })}
+            onBlur={grupo => this.setState({ grupo: grupo.toUpperCase() })}
+            className={`input-grupo ${fieldErrors.grupo && "input-error"}`}
+            readOnly={deletedAt}
+            value={state.grupo}
+            placeholder="GRUPO"
+            getInputElement={() => (
+              <input
+                style={{
+                  textTransform: "uppercase"
+                }}
+              />
+            )}
+          >
+            {this.state.groups.map((group, index) => (
+              <Option key={index} value={group}>
+                {group}
+              </Option>
+            ))}
+          </Select>
           <input
             readOnly={deletedAt}
             className={`input-codigo ${fieldErrors.codigo && "input-error"}`}

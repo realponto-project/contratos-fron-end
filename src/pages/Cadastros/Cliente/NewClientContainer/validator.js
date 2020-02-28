@@ -10,6 +10,7 @@ export const validator = (name, value) => {
       break;
 
     case "nome":
+    case "razaosocial":
     case "grupo":
     case "codigo":
     case "nomeContato":

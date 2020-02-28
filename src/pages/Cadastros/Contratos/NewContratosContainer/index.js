@@ -32,15 +32,15 @@ class NewContratosContainer extends Component {
     cnpj: "",
     codigo: "",
     grupo: "",
-    valorTotal: "",
     dataAtivacao: "",
     dataRescisao: null,
     status: "STATUS",
-    tipo: "TIPO",
     base: "BASE",
     clientId: "",
     item: "NÃO SELECIONADO",
     codigoModal: "CÓDIGO",
+    cnpjModal: "",
+    tipo: undefined,
     rua: "",
     bairro: "",
     cep: "",
@@ -49,10 +49,14 @@ class NewContratosContainer extends Component {
     complemento: "",
     observacoes: "",
     contractCode: "",
+    type: "",
     itemId: "",
+    priceMonthly: 0,
+    priceYearly: 0,
     fieldErrors: {
       razaosocial: false,
       cnpj: false,
+      cnpjModal: false,
       codigo: false,
       rua: false,
       bairro: false,
@@ -75,14 +79,13 @@ class NewContratosContainer extends Component {
       codigo: "",
       grupo: "",
       dataRescisao: null,
-      valorTotal: "",
       dataAtivacao: "",
       status: "STATUS",
-      tipo: "TIPO",
       base: "BASE",
       clientId: "",
       item: "NÃO SELECIONADO",
       codigoModal: "",
+      cnpjModal: "",
       rua: "",
       bairro: "",
       cep: "",
@@ -94,6 +97,7 @@ class NewContratosContainer extends Component {
       itemId: "",
       fieldErrors: {
         razaosocial: false,
+        cnpjModal: false,
         cnpj: false,
         codigo: false,
         rua: false,
@@ -149,7 +153,12 @@ class NewContratosContainer extends Component {
     });
     if (status === 200) {
       if (data) {
-        const { id: clientId, razaosocial, cnpj, group: grupo } = data;
+        const {
+          id: clientId,
+          razaosocial,
+          cnpj,
+          group: { group: grupo }
+        } = data;
         const cnpjFormated = masks("cnpj", cnpj);
         this.setState({
           [cnpjFormated.name]: cnpjFormated.value,
@@ -184,17 +193,18 @@ class NewContratosContainer extends Component {
 
     if (name === "codigo") {
       const { status, data } = await GetContractByParams({ code: value });
+      console.log(status, data);
       if (status === 200 && data) {
         const {
           code: contractCode,
-          price: valorTotal,
           status,
-          type: tipo,
           stockBase: base,
           client: { id: clientId, razaosocial, cnpj, group: grupo },
           items: itens = [],
           dateActivation: dataAtivacao,
-          dateTermination: dataRescisao
+          dateTermination: dataRescisao,
+          priceMonthly,
+          priceYearly
         } = data;
 
         this.setState({
@@ -205,8 +215,6 @@ class NewContratosContainer extends Component {
           },
           contractCode,
           status,
-          tipo,
-          valorTotal,
           dataAtivacao: moment(dataAtivacao),
           dataRescisao: dataRescisao ? moment(dataRescisao) : dataRescisao,
           base,
@@ -214,7 +222,9 @@ class NewContratosContainer extends Component {
           razaosocial,
           cnpj,
           grupo,
-          itens
+          itens,
+          priceMonthly,
+          priceYearly
         });
       } else {
         this.setState({
@@ -222,14 +232,14 @@ class NewContratosContainer extends Component {
           cnpj: "",
           grupo: "",
           dataRescisao: null,
-          valorTotal: "",
           dataAtivacao: "",
           status: "STATUS",
-          tipo: "TIPO",
           base: "BASE",
           clientId: "",
           contractCode: "",
-          itens: []
+          itens: [],
+          priceMonthly: 0,
+          priceYearly: 0
         });
       }
     }
@@ -261,6 +271,14 @@ class NewContratosContainer extends Component {
     }
   };
 
+  onFocus = e => {
+    const { name } = e.target;
+
+    const { fieldErrors } = this.state;
+
+    this.setState({ fieldErrors: { ...fieldErrors, [name]: false } });
+  };
+
   removeItem = async index => {
     const oldItem = this.state.itens;
     const newItens = oldItem.filter(indexx => index !== indexx);
@@ -278,12 +296,6 @@ class NewContratosContainer extends Component {
     });
   };
 
-  onChangeTipo = value => {
-    this.setState({
-      tipo: value
-    });
-  };
-
   onChangeBase = value => {
     this.setState({
       base: value
@@ -294,19 +306,18 @@ class NewContratosContainer extends Component {
     const {
       codigo: code,
       status,
-      tipo: type,
       base: stockBase,
       clientId,
       contractCode,
       itens = [],
       dataAtivacao: dateActivation,
       dataRescisao: dateTermination,
-      valorTotal: price
+      priceMonthly,
+      priceYearly
     } = this.state;
 
     let value = {
       status,
-      type,
       stockBase,
       itens: itens.map(item => {
         if (R.has("id", item)) {
@@ -317,8 +328,9 @@ class NewContratosContainer extends Component {
       }),
       dateActivation,
       dateTermination,
-      price,
-      userId: this.props.login.user.id
+      userId: this.props.login.user.id,
+      priceMonthly,
+      priceYearly
     };
 
     if (contractCode !== "") {
@@ -354,12 +366,14 @@ class NewContratosContainer extends Component {
     this.setState({
       item: option.props.item.name,
       codigoModal: option.props.item.code,
+      type: option.props.item.type,
       itemId: option.key
     });
   };
 
   ModalIncluir = () => (
     <Modal
+      width={700}
       visible={this.state.visible}
       onOk={this.state.modalAtualizada ? this.handleOkAtualizar : this.handleOk}
       onCancel={this.handleCancel}
@@ -424,6 +438,29 @@ class NewContratosContainer extends Component {
             </Option>
           ))}
         </Select>
+      </div>
+      <div className="div-line-modal">
+        <Select
+          onChange={value => this.setState({ tipo: value })}
+          placeholder="TIPO"
+          value={this.state.tipo}
+          size="large"
+          style={{ width: "40%" }}
+        >
+          <Option value="MENSAL">MENSAL</Option>
+          <Option value="ANUAL">ANUAL</Option>
+        </Select>
+        <input
+          className={`input-cnpj-contratos ${this.state.fieldErrors.cnpjModal &&
+            "input-error"}`}
+          style={{ width: "40%" }}
+          placeholder="CNPJ / CPF"
+          onChange={this.onChange}
+          name="cnpjModal"
+          value={this.state.cnpjModal}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
+        ></input>
       </div>
       <div className="div-twoInfo-modal">
         <input
@@ -602,9 +639,13 @@ class NewContratosContainer extends Component {
     } = this.state;
 
     if (
-      this.state.item !== "NÃO SELECIONADO" &&
-      this.state.cep !== "" &&
-      this.state.bairro !== ""
+      this.state.itemId &&
+      this.state.tipo &&
+      ((this.state.type === "EQUIPAMENTO" &&
+        this.state.cep &&
+        this.state.bairro) ||
+        (this.state.type === "SOFTWARE" &&
+          ((this.state.cep && this.state.bairro) || !this.state.cep)))
     ) {
       this.setState({
         itens: [
@@ -624,6 +665,7 @@ class NewContratosContainer extends Component {
         itemId: "",
         item: "NÃO SELECIONADO",
         codigoModal: "CÓDIGO",
+        tipo: undefined,
         rua: "",
         bairro: "",
         cep: "",
@@ -705,18 +747,26 @@ class NewContratosContainer extends Component {
             onFocus={this.onFocus}
           ></input>
           <input
+            readOnly
             className="input-grupo-contratos"
             placeholder="GRUPO"
             onChange={this.onChange}
             name="grupo"
             value={this.state.grupo}
           ></input>
+        </div>
+        <div className="div-inputs-flex-contratos">
           <input
             readOnly
             className="input-valor"
-            placeholder="VALOR"
-            name="valorTotal"
-            value={this.state.valorTotal}
+            placeholder="VALOR MENSAL"
+            value={this.state.priceMonthly}
+          ></input>
+          <input
+            readOnly
+            className="input-valor"
+            placeholder="VALOR ANUAL"
+            value={this.state.priceYearly}
           ></input>
         </div>
 
@@ -757,15 +807,6 @@ class NewContratosContainer extends Component {
             <Option value="CANCELADO">CANCELADO</Option>
           </Select>
           <Select
-            onChange={this.onChangeTipo}
-            value={this.state.tipo}
-            size="large"
-            style={{ width: "12%", marginLeft: "10px" }}
-          >
-            <Option value="MENSAL">MENSAL</Option>
-            <Option value="ANUAL">ANUAL</Option>
-          </Select>
-          <Select
             onChange={this.onChangeBase}
             value={this.state.base}
             className="select-contratos"
@@ -788,6 +829,7 @@ class NewContratosContainer extends Component {
             </button>
           )}
         </div>
+
         <div className="div-main-contratos">
           <div className="div-itens-contratos">
             <div className="div-h2-modal">
@@ -816,10 +858,10 @@ class NewContratosContainer extends Component {
                     onChange={e => {
                       const { value } = e.target;
                       const {
-                        itens,
-                        valorTotal = this.state.valorTotal
-                          ? parseFloat(this.state.valorTotal, 10)
-                          : 0
+                        itens
+                        // valorTotal = this.state.valorTotal
+                        // ? parseFloat(this.state.valorTotal, 10)
+                        // : 0
                       } = this.state;
                       itens[index].price =
                         itens[index].price === undefined
@@ -829,12 +871,12 @@ class NewContratosContainer extends Component {
                         itens
                       });
 
-                      this.setState({
-                        valorTotal:
-                          valorTotal +
-                          parseFloat(value.slice(0, 9), 10) -
-                          parseFloat(itens[index].price, 10)
-                      });
+                      // this.setState({
+                      //   valorTotal:
+                      //     valorTotal +
+                      //     parseFloat(value.slice(0, 9), 10) -
+                      //     parseFloat(itens[index].price, 10)
+                      // });
 
                       itens[index].price = value.slice(0, 9);
 
@@ -852,9 +894,9 @@ class NewContratosContainer extends Component {
                     className="button-delete"
                     onClick={() => {
                       const price = item.price ? parseFloat(item.price, 10) : 0;
-                      this.setState({
-                        valorTotal: parseFloat(this.state.valorTotal) - price
-                      });
+                      // this.setState({
+                      //   valorTotal: parseFloat(this.state.valorTotal) - price
+                      // });
                       this.removeItem(index);
                     }}
                   >

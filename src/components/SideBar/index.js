@@ -155,7 +155,7 @@ class SideBar extends Component {
               className="menuIcon-icon"
               type="file-add"
               onClick={() =>
-                this.handleClickCompany(" newContrato_add", "Cadastros")
+                this.handleClickCompany("newContrato_add", "Cadastros")
               }
             />
           </Tooltip>
@@ -326,7 +326,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(SideBar);
+export default connect(mapStateToProps, mapDispacthToProps)(SideBar);
