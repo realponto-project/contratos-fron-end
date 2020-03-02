@@ -32,7 +32,7 @@ class DashIgmpContainer extends Component {
     nContrato: "",
     total: 10,
     count: 0,
-    page: 3,
+    page: 1,
     contractItems: [],
     igpm: {},
     itemId: ""
@@ -148,28 +148,38 @@ class DashIgmpContainer extends Component {
 
   TableIgpm = () => (
     <div className="div-table">
-      <div className="div-main-table">
-        {this.state.contractItems.map(line => (
-          <div className="div-line-table">
-            {/* {console.log(line)} */}
-            <label className="label-nome-igpm">
-              {line.contract.client.razaosocial}
-            </label>
-            <label
-              className="label-data-igpm cursor"
-              onClick={() =>
-                this.setState({
-                  igpm: line.item.igpms[0],
-                  visible: true
-                })
-              }
-            >
-              {line.item.name}
-            </label>
-            <label className="label-nContrato-igpm">{line.contract.code}</label>
-          </div>
-        ))}
-      </div>
+      {this.state.contractItems.length !== 0 ? (
+        <div className="div-main-table">
+          {this.state.contractItems.map(line => (
+            <div className="div-line-table">
+              {/* {console.log(line)} */}
+              <label className="label-nome-igpm">
+                {line.contract.client.razaosocial}
+              </label>
+              <label
+                className="label-data-igpm cursor"
+                onClick={() =>
+                  this.setState({
+                    igpm: line.item.igpms[0],
+                    visible: true
+                  })
+                }
+              >
+                {line.item.name}
+              </label>
+              <label className="label-nContrato-igpm">
+                {line.contract.code}
+              </label>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="div-main-table">
+          <h3 style={{ fontFamily: "Bebas", fontSize: "20px" }}>
+            *** NADA FOI ENCONTRADO ***
+          </h3>
+        </div>
+      )}
     </div>
   );
 

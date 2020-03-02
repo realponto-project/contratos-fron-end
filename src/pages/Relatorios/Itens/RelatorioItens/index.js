@@ -56,7 +56,7 @@ class RelatorioItens extends Component {
     <div className="div-table">
       <div className="div-main-table">
         <div className="div-line-table">
-          <strong className="label-nContrato-table">N CONT.</strong>
+          <strong className="label-nContrato-table">Nº CONT.</strong>
           <strong className="label-razao-table">RAZÃO SOCIAL</strong>
           <strong className="label-cnpj-table">CNPJ / CPF</strong>
           <strong className="label-valor-table">PREÇO</strong>
@@ -81,7 +81,9 @@ class RelatorioItens extends Component {
             </div>
           ))
         ) : (
-          <div className="div-seminfo-relatorioItens">NADA FOI ENCONTRADO</div>
+          <div className="div-seminfo-relatorioItens">
+            *** NADA FOI ENCONTRADO ***
+          </div>
         )}
       </div>
     </div>
