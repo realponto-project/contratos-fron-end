@@ -29,7 +29,9 @@ export default class RelatorioCadastroContainer extends Component {
   componentDidMount = async () => {
     await this.getAllClient();
 
-    this.setState({ select: "cliente" });
+    this.setState({
+      select: "cliente"
+    });
   };
 
   getAllItens = async () => {
@@ -314,6 +316,7 @@ export default class RelatorioCadastroContainer extends Component {
               value={this.state.select}
               onChange={this.onChangeSelect}
               size="large"
+              value={this.state.select}
             >
               <Option value="cliente">CLIENTE</Option>
               <Option value="item">ITEM</Option>
