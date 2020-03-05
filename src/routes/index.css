@@ -22,6 +22,7 @@
   cursor: url("./mandrake.png"), help !important;
 }
 .div-footer-main {
+  height: 50px !important;
   cursor: url("./mickey.png"), help !important;
   width: 100%;
   display: flex;

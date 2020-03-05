@@ -68,6 +68,8 @@
 .div-line-contratos {
   width: 100%;
   margin: 0 25px 15px 0;
+  display: flex;
+  flex-direction: row;
 }
 .div-noItens-contratos {
   font-size: 16px;
@@ -82,7 +84,7 @@
   margin-left: 7px;
 }
 .input-item-contratos {
-  width: 50%;
+  width: 45%;
   height: 38px;
   color: #666;
   padding-left: 10px;
@@ -368,4 +370,26 @@
   color: #fff;
   cursor: not-allowed;
   outline: none;
+}
+
+.button-down {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+.div-block-button-donw {
+  width: 2%;
+  margin: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.div-block-button-donw:hover {
+  color: #2279c0;
 }

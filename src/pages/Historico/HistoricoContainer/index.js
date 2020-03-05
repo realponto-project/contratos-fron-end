@@ -211,6 +211,33 @@ class HistoricoContainer extends Component {
                             </label>
                           );
                         })}
+                        <strong>
+                          {logUpdateItem.item.name} {logUpdateItem.type}
+                        </strong>
+                      </div>
+                    </div>
+                  );
+                case "igpm":
+                  const logIgpm = JSON.parse(item.log);
+                  return (
+                    <div className="history-row">
+                      <div className="history-column-username">
+                        <label>{item.user.username} </label>
+                      </div>
+                      <div className="history-column-action">
+                        <label>{item.type}</label>
+                      </div>
+                      <div className="history-column-date">
+                        {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
+                      </div>
+                      <div className="history-column-log">
+                        <label>
+                          {logIgpm.oldPrice} -----> {logIgpm.newPrice}
+                          {", "}
+                          <strong>
+                            {logIgpm.igpm} %, {logIgpm.item.name} {logIgpm.type}
+                          </strong>
+                        </label>
                       </div>
                     </div>
                   );

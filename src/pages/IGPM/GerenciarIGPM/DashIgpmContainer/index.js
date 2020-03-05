@@ -5,7 +5,8 @@ import moment from "moment";
 import { connect } from "react-redux";
 import { Howl, Howler } from "howler";
 
-import { GetAllContractItem } from "../../../../services/contract";
+import { GetAllIgpm } from "../../../../services/igpm";
+// import { GetAllContractItem } from "../../../../services/contract";
 import { DeleteIGPM } from "../../../../services/igpm";
 
 import { Spin, Button, Modal, Icon, Tooltip } from "antd";
@@ -58,22 +59,23 @@ class DashIgmpContainer extends Component {
   };
 
   componentDidMount = async () => {
-    await this.getAllContractItem();
+    await this.getAllIgpm();
   };
 
-  getAllContractItem = async () => {
+  getAllIgpm = async () => {
     const query = {
-      filters: {
-        item: {
-          specific: {
-            igpm: true
-          }
-        }
-      }
+      // filters: {
+      //   item: {
+      //     specific: {
+      //       igpm: true
+      //     }
+      //   }
+      // }
     };
-    GetAllContractItem(query).then(resp =>
-      this.setState({ contractItems: resp.data })
-    );
+    GetAllIgpm(query).then(resp => {
+      console.log(resp);
+      this.setState({ contractItems: resp.data });
+    });
   };
 
   onChange = e => {
@@ -175,27 +177,27 @@ class DashIgmpContainer extends Component {
         <div className="div-main-table">
           {this.state.contractItems.map(line => (
             <div className="div-line-table">
-              {/* {console.log(line)} */}
-              <label className="label-nome-igpm">
-                {line.contract.client.razaosocial}
-              </label>
+              {console.log(line)}
+              <label className="label-nome-igpm">{line.razaosocial}</label>
               <label
                 className={`label-data-igpm ${this.props.login.user.troll &&
                   "cursor"}`}
-                onClick={() =>
-                  this.setState({
-                    igpm: line.item.igpms[0],
-                    visible: true
-                  })
-                }
+                // onClick={() =>
+                //   this.setState({
+                //     igpm: line.item.igpms[0],
+                //     visible: true
+                //   })
+                // }
                 onMouseEnter={
-                  this.props.login.user.troll ? () => this.soundPlay() : null
+                  // null
+                  () => this.soundPlay()
+                  // this.props.login.user.troll ? () => this.soundPlay() : null
                 }
               >
-                {line.item.name}
+                {`${line.type} ${line.month}/${line.year}`}
               </label>
               <label className="label-nContrato-igpm">
-                {line.contract.code}
+                {line.contractCode}
               </label>
             </div>
           ))}
@@ -294,6 +296,7 @@ class DashIgmpContainer extends Component {
   );
 
   render() {
+    console.log(this.state);
     Howler.volume(1);
     return (
       <div className="card-main">

@@ -3,7 +3,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import "../../../../global.css";
 import "./index.css";
-import { Icon, Select, message, Modal, DatePicker } from "antd";
+import { Icon, Select, message, Modal, DatePicker, Button } from "antd";
+
+import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import * as R from "ramda";
 import { Redirect } from "react-router-dom";
 
@@ -23,6 +25,7 @@ const { Option } = Select;
 
 class NewContratosContainer extends Component {
   state = {
+    indexIgpm: -1,
     index: "",
     redirect: false,
     visible: false,
@@ -72,6 +75,8 @@ class NewContratosContainer extends Component {
 
   clearState = () => {
     this.setState({
+      priceMonthly: 0,
+      priceYearly: 0,
       visible: false,
       search: "",
       razaosocial: "",
@@ -193,7 +198,6 @@ class NewContratosContainer extends Component {
 
     if (name === "codigo") {
       const { status, data } = await GetContractByParams({ code: value });
-      console.log(status, data);
       if (status === 200 && data) {
         const {
           code: contractCode,
@@ -281,10 +285,10 @@ class NewContratosContainer extends Component {
 
   removeItem = async index => {
     const oldItem = this.state.itens;
-    const newItens = oldItem.filter(indexx => index !== indexx);
+    oldItem.splice(index, 1);
 
     await this.setState({
-      itens: newItens
+      itens: oldItem
     });
   };
 
@@ -632,6 +636,8 @@ class NewContratosContainer extends Component {
       uf: state,
       complemento: complement,
       observacoes: observation,
+      tipo: type,
+      cnpjModal: cnpj,
       // contractCode,
       itemId,
       item: name,
@@ -659,7 +665,10 @@ class NewContratosContainer extends Component {
             city,
             state,
             complement,
-            observation
+            observation,
+            igpms: [],
+            type,
+            cnpj
           }
         ],
         itemId: "",
@@ -837,72 +846,129 @@ class NewContratosContainer extends Component {
             </div>
             {this.state.itens.length !== 0 ? (
               this.state.itens.map((item, index) => (
-                <div className="div-line-contratos">
-                  <Icon
-                    type="question-circle"
-                    className="icon-info"
-                    onClick={() => this.getModal(index)}
-                  />
-                  <input
-                    readOnly
-                    className="input-item-contratos"
-                    placeholder={item.name}
-                  ></input>
-                  <input
-                    step="0.01"
-                    min="0"
-                    max="99999"
-                    type="number"
-                    className="input-valor-contratos"
-                    placeholder="VALOR"
-                    onChange={e => {
-                      const { value } = e.target;
-                      const {
-                        itens
-                        // valorTotal = this.state.valorTotal
-                        // ? parseFloat(this.state.valorTotal, 10)
-                        // : 0
-                      } = this.state;
-                      itens[index].price =
-                        itens[index].price === undefined
-                          ? "0"
-                          : itens[index].price;
-                      this.setState({
-                        itens
-                      });
+                <>
+                  <div className="div-line-contratos">
+                    <Icon
+                      type="question-circle"
+                      className="icon-info"
+                      onClick={() => this.getModal(index)}
+                    />
+                    <input
+                      readOnly
+                      className="input-item-contratos"
+                      placeholder={item.name}
+                    ></input>
+                    <input
+                      step="0.01"
+                      min="0"
+                      max="99999"
+                      type="number"
+                      className="input-valor-contratos"
+                      placeholder="VALOR"
+                      onChange={e => {
+                        const { value } = e.target;
+                        const {
+                          itens,
+                          priceMonthly,
+                          priceYearly
+                          // valorTotal = this.state.valorTotal
+                          // ? parseFloat(this.state.valorTotal, 10)
+                          // : 0
+                        } = this.state;
+                        itens[index].price =
+                          itens[index].price === undefined
+                            ? "0"
+                            : itens[index].price;
+                        this.setState({
+                          itens
+                        });
 
-                      // this.setState({
-                      //   valorTotal:
-                      //     valorTotal +
-                      //     parseFloat(value.slice(0, 9), 10) -
-                      //     parseFloat(itens[index].price, 10)
-                      // });
+                        // console.log(priceMonthly);
+                        // console.log(parseFloat(value.slice(0, 9), 10));
+                        // console.log(parseFloat(itens[index].price, 10));
+                        // console.log(item.type);
+                        // console.log(
+                        //   priceMonthly +
+                        //     parseFloat(value.slice(0, 9), 10) -
+                        //     parseFloat(itens[index].price, 10)
+                        // );
 
-                      itens[index].price = value.slice(0, 9);
+                        this.setState({
+                          priceMonthly:
+                            item.type === "MENSAL"
+                              ? priceMonthly +
+                                parseFloat(value.slice(0, 9), 10) -
+                                parseFloat(itens[index].price, 10)
+                              : priceMonthly,
+                          priceYearly:
+                            item.type === "ANUAL"
+                              ? priceYearly +
+                                parseFloat(value.slice(0, 9), 10) -
+                                parseFloat(itens[index].price, 10)
+                              : priceYearly
+                        });
 
-                      this.setState({
-                        itens
-                      });
-                    }}
-                    value={item.price}
-                  ></input>
-                  <input
-                    className="input-data-contratos"
-                    value={moment(item.createdAt).format("L")}
-                  ></input>
-                  <button
-                    className="button-delete"
-                    onClick={() => {
-                      const price = item.price ? parseFloat(item.price, 10) : 0;
-                      // this.setState({
-                      //   valorTotal: parseFloat(this.state.valorTotal) - price
-                      // });
-                      this.removeItem(index);
-                    }}
-                  >
-                    <Icon type="delete" />
-                  </button>
-                </div>
+                        itens[index].price = value.slice(0, 9);
+
+                        this.setState({
+                          itens
+                        });
+                      }}
+                      value={item.price}
+                    ></input>
+                    <input
+                      className="input-data-contratos"
+                      value={moment(item.createdAt).format("L")}
+                    ></input>
+                    <div className="div-block-button-donw">
+                      {item.igpms.length !== 0 ? (
+                        <>
+                          {this.state.indexIgpm === index ? (
+                            <UpOutlined
+                              onClick={() => this.setState({ indexIgpm: -1 })}
+                            />
+                          ) : (
+                            <DownOutlined
+                              onClick={() =>
+                                this.setState({ indexIgpm: index })
+                              }
+                            />
+                          )}
+                        </>
+                      ) : null}
+                    </div>
+                    <button
+                      className="button-delete"
+                      onClick={() => {
+                        const { priceMonthly, priceYearly } = this.state;
+                        const price = item.price
+                          ? parseFloat(item.price, 10)
+                          : 0;
+                        this.setState({
+                          priceMonthly:
+                            item.type === "MENSAL"
+                              ? priceMonthly - price
+                              : priceMonthly,
+                          priceYearly:
+                            item.type === "ANUAL"
+                              ? priceYearly - price
+                              : priceYearly
+                        });
+                        this.removeItem(index);
+                      }}
+                    >
+                      <Icon type="delete" />
+                    </button>
+                  </div>
+                  {this.state.indexIgpm === index &&
+                    this.state.itens[this.state.indexIgpm].igpms.map(item => (
+                      <div className="div-line-contratos">
+                        <h1>{`${item.type} ${item.month}/${
+                          item.year
+                        }  ${item.value.toFixed(2)}%`}</h1>
+                      </div>
+                    ))}
+                </>
               ))
             ) : (
               <div className="div-noItens-contratos">
