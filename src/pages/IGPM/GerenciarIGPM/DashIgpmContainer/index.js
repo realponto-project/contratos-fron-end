@@ -205,7 +205,7 @@ class DashIgmpContainer extends Component {
       ) : (
         <div className="div-main-table">
           <h3 style={{ fontFamily: "Bebas", fontSize: "20px" }}>
-            *** NADA FOI ENCONTRADO ***
+            * NADA FOI ENCONTRADO *
           </h3>
         </div>
       )}
@@ -296,7 +296,7 @@ class DashIgmpContainer extends Component {
   );
 
   render() {
-    console.log(this.state);
+    console.log(this.state.contractItems);
     Howler.volume(1);
     return (
       <div className="card-main">

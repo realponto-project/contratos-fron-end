@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import "../../../../global.css";
 import "./index.css";
-import { Icon, Select, message, Modal, DatePicker, Button } from "antd";
+import { Icon, Select, message, Modal, DatePicker } from "antd";
 
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import * as R from "ramda";
@@ -54,8 +54,8 @@ class NewContratosContainer extends Component {
     contractCode: "",
     type: "",
     itemId: "",
-    priceMonthly: 0,
-    priceYearly: 0,
+    priceMonthly: "",
+    priceYearly: "",
     fieldErrors: {
       razaosocial: false,
       cnpj: false,
@@ -75,8 +75,8 @@ class NewContratosContainer extends Component {
 
   clearState = () => {
     this.setState({
-      priceMonthly: 0,
-      priceYearly: 0,
+      priceMonthly: "",
+      priceYearly: "",
       visible: false,
       search: "",
       razaosocial: "",
@@ -755,6 +755,8 @@ class NewContratosContainer extends Component {
             onBlur={this.onBlur}
             onFocus={this.onFocus}
           ></input>
+        </div>
+        <div className="div-inputs-flex-contratos">
           <input
             readOnly
             className="input-grupo-contratos"
@@ -763,28 +765,23 @@ class NewContratosContainer extends Component {
             name="grupo"
             value={this.state.grupo}
           ></input>
-        </div>
-        <div className="div-inputs-flex-contratos">
           <input
             readOnly
-            className="input-valor"
+            className="input-valor-contratos"
             placeholder="VALOR MENSAL"
             value={this.state.priceMonthly}
           ></input>
           <input
             readOnly
-            className="input-valor"
+            className="input-valor-contratos"
             placeholder="VALOR ANUAL"
             value={this.state.priceYearly}
           ></input>
-        </div>
-
-        <div className="div-inputs-flex-contratos">
           <DatePicker
             size="large"
             placeholder="DATA ATIVAÇÃO"
             className="data-contratos"
-            style={{ marginLeft: "25px" }}
+            style={{ margin: "0 25px 0 10px", width: "35%" }}
             name="dataAtivacao"
             value={this.state.dataAtivacao}
             format="DD/MM/YYYY"
@@ -792,10 +789,13 @@ class NewContratosContainer extends Component {
               this.setState({ dataAtivacao: e });
             }}
           />
+        </div>
+
+        <div className="div-inputs-flex-contratos">
           <DatePicker
             size="large"
             placeholder="DATA RESCISÃO"
-            style={{ marginLeft: "10px" }}
+            style={{ marginLeft: "25px", width: "35%" }}
             name="dataRescisao"
             value={this.state.dataRescisao}
             disabledDate={this.disabledDate}
@@ -809,7 +809,7 @@ class NewContratosContainer extends Component {
             value={this.state.status}
             size="large"
             onChange={this.onChangeStatus}
-            style={{ width: "15%", marginLeft: "10px" }}
+            style={{ width: "25%", marginLeft: "10px" }}
           >
             <Option value="ATIVO">ATIVO</Option>
             <Option value="DEBITO">EM DÉBITO</Option>
@@ -820,6 +820,7 @@ class NewContratosContainer extends Component {
             value={this.state.base}
             className="select-contratos"
             size="large"
+            style={{ marginLeft: "10px" }}
           >
             <Option value="REALPONTO">REALPONTO</Option>
             <Option value="NOVAREAL">NOVA REALPONTO</Option>
@@ -851,6 +852,7 @@ class NewContratosContainer extends Component {
                     <Icon
                       type="question-circle"
                       className="icon-info"
+                      style={{ margin: "0 2px 0 25px" }}
                       onClick={() => this.getModal(index)}
                     />
                     <input
@@ -962,10 +964,10 @@ class NewContratosContainer extends Component {
                   </div>
                   {this.state.indexIgpm === index &&
                     this.state.itens[this.state.indexIgpm].igpms.map(item => (
-                      <div className="div-line-contratos">
-                        <h1>{`${item.type} ${item.month}/${
-                          item.year
-                        }  ${item.value.toFixed(2)}%`}</h1>
+                      <div className="div-igpm-contratos">
+                        <h4 className="h4-contratos">{`${item.type} ${
+                          item.month
+                        }/${item.year}  ${item.value.toFixed(2)}%`}</h4>
                       </div>
                     ))}
                 </>

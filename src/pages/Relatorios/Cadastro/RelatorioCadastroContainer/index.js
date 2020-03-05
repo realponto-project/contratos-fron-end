@@ -312,11 +312,9 @@ export default class RelatorioCadastroContainer extends Component {
           <div className="div-buttons-search">
             <Select
               style={{ width: "25%", marginLeft: "25px" }}
-              // placeholder="TIPO DO CADASTRO"
               value={this.state.select}
               onChange={this.onChangeSelect}
               size="large"
-              value={this.state.select}
             >
               <Option value="cliente">CLIENTE</Option>
               <Option value="item">ITEM</Option>

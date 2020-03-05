@@ -223,19 +223,12 @@ class NewItemContainer extends Component {
             name="name"
             onFocus={onFocus}
           ></input>
-          {/* <input
-            className={`input-tipo-item ${fieldErrors.tipo && "input-error"}`}
-            onChange={this.onChange}
-            placeholder="TIPO"
-            value={this.state.tipo}
-            name="tipo"
-            onFocus={onFocus}
-          ></input> */}
           <Select
             value={this.state.tipo}
             className={`input-tipo-item ${fieldErrors.tipo && "input-error"}`}
             placeholder="TIPO"
             onChange={value => this.setState({ tipo: value })}
+            size="large"
           >
             <Option key="SOFTWARE" value="SOFTWARE">
               SOFTWARE
