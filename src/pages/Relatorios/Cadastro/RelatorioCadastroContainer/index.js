@@ -29,7 +29,9 @@ export default class RelatorioCadastroContainer extends Component {
   componentDidMount = async () => {
     await this.getAllClient();
 
-    this.setState({ select: "cliente" });
+    this.setState({
+      select: "cliente"
+    });
   };
 
   getAllItens = async () => {
@@ -310,7 +312,6 @@ export default class RelatorioCadastroContainer extends Component {
           <div className="div-buttons-search">
             <Select
               style={{ width: "25%", marginLeft: "25px" }}
-              // placeholder="TIPO DO CADASTRO"
               value={this.state.select}
               onChange={this.onChangeSelect}
               size="large"

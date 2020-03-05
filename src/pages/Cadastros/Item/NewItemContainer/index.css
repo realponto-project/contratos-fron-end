@@ -1,6 +1,6 @@
 .input-nome-item {
   width: 50%;
-  height: 35px;
+  height: 38px;
   margin-left: 25px;
   color: #666;
   padding-left: 10px;
@@ -11,18 +11,17 @@
 }
 .input-tipo-item {
   width: 25%;
-  height: 35px;
-  margin-left: 15px;
+  height: 38px;
+  margin-left: 15px !important;
   color: #666;
   padding-left: 10px;
-  border: 1px solid #ccc;
   font-size: 14px;
   border-radius: 2px;
   outline: none;
 }
 .input-codigo-item {
   width: 20%;
-  height: 35px;
+  height: 38px;
   margin: 0 25px 0 15px;
   color: #666;
   padding-left: 10px;

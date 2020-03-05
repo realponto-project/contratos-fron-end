@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Icon } from "antd";
+import { Icon } from "antd";
 
 import { PriceByContractType } from "../../services/grafic";
 import "./index.css";

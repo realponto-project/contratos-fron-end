@@ -413,7 +413,8 @@ class NewClientContainer extends Component {
         </div>
         <div className="div-inputs-flex">
           <input
-            className={`input-nome ${fieldErrors.razaosocial && "input-error"}`}
+            className={`input-nome-cliente ${fieldErrors.razaosocial &&
+              "input-error"}`}
             placeholder="RAZÃO SOCIAL / NOME"
             onChange={onChange}
             name="razaosocial"
@@ -422,7 +423,8 @@ class NewClientContainer extends Component {
             onBlur={onBlur}
           ></input>
           <input
-            className={`input-cnpj ${fieldErrors.cnpj && "input-error"}`}
+            className={`input-cnpj-cliente ${fieldErrors.cnpj &&
+              "input-error"}`}
             placeholder="CNPJ / CPF"
             onChange={onChange}
             name="cnpj"
@@ -430,21 +432,18 @@ class NewClientContainer extends Component {
             onFocus={onFocus}
             onBlur={onBlur}
           ></input>
-          {/* <input
-            name="grupo"
-            onFocus={onFocus}
-            onChange={onChange}
-            onBlur={onBlur}
-            ></input> */}
           <Select
             showSearch
             onSearch={grupo => this.setState({ grupo })}
             onChange={grupo => this.setState({ grupo })}
             onBlur={grupo => this.setState({ grupo: grupo.toUpperCase() })}
-            className={`input-grupo ${fieldErrors.grupo && "input-error"}`}
+            className={`input-grupo-cliente ${fieldErrors.grupo &&
+              "input-error"}`}
+            size="large"
             readOnly={deletedAt}
             value={state.grupo}
             placeholder="GRUPO"
+            style={{ marginLeft: "15px" }}
             getInputElement={() => (
               <input
                 style={{
@@ -461,7 +460,8 @@ class NewClientContainer extends Component {
           </Select>
           <input
             readOnly={deletedAt}
-            className={`input-codigo ${fieldErrors.codigo && "input-error"}`}
+            className={`input-codigo-cliente ${fieldErrors.codigo &&
+              "input-error"}`}
             placeholder="CÓDIGO"
             onChange={onChange}
             name="codigo"
