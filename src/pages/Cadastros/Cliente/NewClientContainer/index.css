@@ -25,6 +25,7 @@
   align-items: center;
 }
 .input-contato-cliente {
+  text-transform: uppercase;
   width: 90%;
   height: 35px;
   margin-top: 25px;
@@ -48,6 +49,7 @@
   align-items: flex-end;
 }
 .input-endereco-cliente {
+  text-transform: uppercase;
   width: 90%;
   height: 35px;
   margin-top: 15px;
@@ -70,6 +72,7 @@
   justify-content: space-between;
 }
 .input-bairro-cliente {
+  text-transform: uppercase;
   width: 55%;
   height: 35px;
   margin-top: 15px;
@@ -81,6 +84,7 @@
   outline: none;
 }
 .input-cep-cliente {
+  text-transform: uppercase;
   width: 40%;
   height: 35px;
   margin-top: 15px;
@@ -104,6 +108,7 @@
   border-bottom: 1px solid #001529;
 }
 .input-cidade-cliente {
+  text-transform: uppercase;
   width: 80%;
   height: 35px;
   margin-top: 15px;
@@ -115,6 +120,7 @@
   outline: none;
 }
 .input-uf-cliente {
+  text-transform: uppercase;
   width: 15%;
   height: 35px;
   margin-top: 15px;
@@ -156,6 +162,7 @@
   border-bottom: 1px solid #001529;
 }
 .input-codigo-cliente {
+  text-transform: uppercase;
   width: 15%;
   height: 38px;
   margin: 0 25px 0 15px;
@@ -167,6 +174,7 @@
   outline: none;
 }
 .input-nome-cliente {
+  text-transform: uppercase;
   width: 35%;
   height: 38px;
   margin-left: 25px;
@@ -178,6 +186,7 @@
   outline: none;
 }
 .input-cnpj-cliente {
+  text-transform: uppercase;
   width: 35%;
   height: 38px;
   margin-left: 10px;
@@ -189,6 +198,7 @@
   outline: none;
 }
 .input-grupo-cliente {
+  text-transform: uppercase;
   width: 15%;
   height: 38px;
   margin-left: 15px;

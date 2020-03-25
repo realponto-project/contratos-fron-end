@@ -41,6 +41,7 @@
   flex-direction: column;
 }
 .input-info-usuario {
+  text-transform: uppercase;
   height: 35px;
   font-size: 14px;
   color: #666;

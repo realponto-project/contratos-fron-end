@@ -12,6 +12,7 @@
   align-items: center;
 }
 .input-igpm {
+  text-transform: uppercase;
   width: 25%;
   height: 38px;
   margin-left: 10px;
@@ -29,6 +30,7 @@
   border-bottom: 1px solid #001529;
 }
 .input-igpm-direita {
+  text-transform: uppercase;
   width: 15% !important;
   height: 38px;
   margin: 0 25px 0 10px;
@@ -68,6 +70,7 @@
   margin-left: 15px !important;
 }
 .textArea-igpm {
+  text-transform: uppercase;
   margin: 25px 25px 0 25px;
   font-size: 14px;
   border-radius: 2px;

@@ -119,7 +119,6 @@ export const masks = (name, value) => {
       return { name, value };
 
     default:
-      value = value.toUpperCase();
       return { name, value };
   }
 };

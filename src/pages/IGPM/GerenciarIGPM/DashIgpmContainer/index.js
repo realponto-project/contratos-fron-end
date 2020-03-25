@@ -80,7 +80,7 @@ class DashIgmpContainer extends Component {
 
   onChange = e => {
     this.setState({
-      [e.target.name]: e.target.value.toUpperCase()
+      [e.target.name]: e.target.value
     });
   };
 
