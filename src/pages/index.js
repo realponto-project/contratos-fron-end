@@ -19,6 +19,7 @@ import DashConsultaRoute from "./Consulta/GerenciarConsulta";
 import HistoricoRoute from "./Historico";
 import RelatorioItensRoute from "./Relatorios/Itens";
 import RelatorioCadastroRoute from "./Relatorios/Cadastro";
+import RelatorioBasesRoute from "./Relatorios/Bases";
 import GerenciarUsuarioRoute from "./MOD/Usuario";
 
 import { VerifyTroll } from "../services/user";
@@ -58,28 +59,53 @@ class PagesRoute extends Component {
   };
 
   render() {
-    if (this.props.login.token) {
+    console.log(this.props);
+    console.log(this.props.login.token && !!this.props.login.user);
+    if (this.props.login.token && !!this.props.login.user) {
       return (
         <Switch>
           <Route exact path="/logged/dash" component={Dash} />
-          <Route exact path="/logged/user/dash" component={UserRoute} />
-          <Route
-            exact
-            path="/logged/newClient/add"
-            component={NewClientRoute}
-          />
-          <Route exact path="/logged/newItem/add" component={NewItemRoute} />
-          <Route
-            exact
-            path="/logged/newContrato/add"
-            component={NewContratosRoute}
-          />
+          {!!this.props.login.user &&
+            this.props.login.user.resource.addUser && (
+              <Route exact path="/logged/user/dash" component={UserRoute} />
+            )}
+          {!!this.props.login.user &&
+            this.props.login.user.resource.addClient && (
+              <Route
+                exact
+                path="/logged/newClient/add"
+                component={NewClientRoute}
+              />
+            )}
+          {!!this.props.login.user &&
+            this.props.login.user.resource.addItem && (
+              <Route
+                exact
+                path="/logged/newItem/add"
+                component={NewItemRoute}
+              />
+            )}
+          {!!this.props.login.user &&
+            this.props.login.user.resource.addContract && (
+              <Route
+                exact
+                path="/logged/newContrato/add"
+                component={NewContratosRoute}
+              />
+            )}
           <Route
             exact
             path="/logged/dashConsulta/dash"
             component={DashConsultaRoute}
           />
-          <Route exact path="/logged/newIgpm/add" component={NewIgpmRoute} />
+          {!!this.props.login.user &&
+            this.props.login.user.resource.addIgpm && (
+              <Route
+                exact
+                path="/logged/newIgpm/add"
+                component={NewIgpmRoute}
+              />
+            )}
           <Route exact path="/logged/dashIgpm/dash" component={DashIgpmRoute} />
           <Route exact path="/logged/history/dash" component={HistoricoRoute} />
           <Route
@@ -94,9 +120,15 @@ class PagesRoute extends Component {
           />
           <Route
             exact
+            path="/logged/relatorioBases/dash"
+            component={RelatorioBasesRoute}
+          />
+          <Route
+            exact
             path="/logged/dashUsuario/dash"
             component={GerenciarUsuarioRoute}
           />
+          <Redirect to="/logged/dash" />
         </Switch>
       );
     } else {

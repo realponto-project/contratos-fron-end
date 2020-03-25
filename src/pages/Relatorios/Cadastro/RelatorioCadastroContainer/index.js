@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import { Select, Row, Button, Col, Input } from "antd";
 import "./index.css";
-
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { Redirect } from "react-router-dom";
+import { EditOutlined } from "@ant-design/icons";
 import { GetAllClient } from "../../../../services/client";
 import { GetAllItens } from "../../../../services/item";
+import { setItem, setClient } from "../cadastroRedux/action";
 
 const { Option } = Select;
 
-export default class RelatorioCadastroContainer extends Component {
+class RelatorioCadastroContainer extends Component {
   state = {
     select: "",
     clientes: {},
@@ -23,7 +27,11 @@ export default class RelatorioCadastroContainer extends Component {
       name: "",
       type: "",
       code: ""
-    }
+    },
+    total: 10,
+    count: 0,
+    page: 1,
+    redirect: ""
   };
 
   componentDidMount = async () => {
@@ -47,12 +55,17 @@ export default class RelatorioCadastroContainer extends Component {
             igpm: false
           }
         }
-      }
+      },
+      total: this.state.total,
+      page: this.state.page,
+      paranoid: false
     };
 
     const { status, data: items } = await GetAllItens(query);
 
-    if (status === 200) await this.setState({ items });
+    const { count, show, page } = items;
+
+    if (status === 200) await this.setState({ items, count, show, page });
   };
 
   getAllClient = async () => {
@@ -68,12 +81,16 @@ export default class RelatorioCadastroContainer extends Component {
             group
           }
         }
-      }
+      },
+      total: this.state.total,
+      page: this.state.page
     };
 
     const { status, data: clientes } = await GetAllClient(query);
 
-    if (status === 200) await this.setState({ clientes });
+    const { count, show, page } = clientes;
+
+    if (status === 200) await this.setState({ clientes, count, show, page });
   };
 
   onChange = async e => {
@@ -112,7 +129,7 @@ export default class RelatorioCadastroContainer extends Component {
               <Col span={3}>
                 <div style={{ marginRight: "5px" }}>
                   <Input
-                    style={{ height: "38px" }}
+                    style={{ height: "40px" }}
                     value={searchClient.code}
                     name="searchClient code"
                     onChange={this.onChange}
@@ -120,13 +137,13 @@ export default class RelatorioCadastroContainer extends Component {
                   />
                 </div>
               </Col>
-              <Col span={10}>
+              <Col span={9}>
                 <div style={{ marginRight: "5px" }}>
                   <Input
                     value={searchClient.razaosocial}
                     name="searchClient razaosocial"
                     onChange={this.onChange}
-                    style={{ height: "38px" }}
+                    style={{ height: "40px" }}
                     placeholder="RAZÃO SOCIAL"
                   />
                 </div>
@@ -137,7 +154,7 @@ export default class RelatorioCadastroContainer extends Component {
                     value={searchClient.cnpj}
                     name="searchClient cnpj"
                     onChange={this.onChange}
-                    style={{ height: "38px" }}
+                    style={{ height: "40px" }}
                     placeholder="CNPJ"
                   />
                 </div>
@@ -148,11 +165,12 @@ export default class RelatorioCadastroContainer extends Component {
                     value={searchClient.group}
                     name="searchClient group"
                     onChange={this.onChange}
-                    style={{ height: "38px" }}
+                    style={{ height: "40px" }}
                     placeholder="GRUPO"
                   />
                 </div>
               </Col>
+              <Col span={1}></Col>
             </Row>
           </div>
         );
@@ -167,19 +185,42 @@ export default class RelatorioCadastroContainer extends Component {
                     value={searchItem.name}
                     name="searchItem name"
                     onChange={this.onChange}
-                    style={{ height: "38px" }}
+                    style={{ height: "40px" }}
                   />
                 </div>
               </Col>
               <Col span={6}>
                 <div style={{ marginRight: "5px" }}>
-                  <Input
+                  <Select
+                    style={{ width: "100%" }}
+                    size="large"
+                    placeholder="TIPO"
+                    name="searchItem type"
+                    onChange={async value => {
+                      await this.setState({
+                        searchItem: { ...this.state.searchItem, type: value }
+                      });
+                      await this.getAllItens();
+                    }}
+                    defaultValue="TODOS"
+                  >
+                    <Option key={1} value="SOFTWARE">
+                      SOFTWARE
+                    </Option>
+                    <Option key={2} value="EQUIPAMENTO">
+                      EQUIPAMENTO
+                    </Option>
+                    <Option key={3} value="">
+                      TODOS
+                    </Option>
+                  </Select>
+                  {/* <Input
                     placeholder="TIPO"
                     value={searchItem.type}
                     name="searchItem type"
                     onChange={this.onChange}
                     style={{ height: "38px" }}
-                  />
+                  /> */}
                 </div>
               </Col>
               <Col span={4}>
@@ -189,7 +230,7 @@ export default class RelatorioCadastroContainer extends Component {
                     value={searchItem.code}
                     name="searchItem code"
                     onChange={this.onChange}
-                    style={{ height: "38px" }}
+                    style={{ height: "40px" }}
                   />
                 </div>
               </Col>
@@ -199,6 +240,81 @@ export default class RelatorioCadastroContainer extends Component {
       default:
         return null;
     }
+  };
+
+  setItemRedux = item => {
+    const {
+      deletedAt,
+      id: itemId,
+      name,
+      costPriceMonthly: custoAnual,
+      costPriceYearly: custoMensal,
+      type: tipo,
+      code: codigo,
+      description: descricao
+    } = item;
+    this.props.setItem({
+      deletedAt: !!deletedAt,
+      itemId,
+      name,
+      custoAnual,
+      custoMensal,
+      tipo,
+      codigo,
+      descricao
+    });
+
+    this.setState({ redirect: "/logged/newItem/add" });
+  };
+
+  setClientRedux = client => {
+    console.log(client);
+
+    const {
+      deletedAt,
+      id: clientId,
+      razaosocial,
+      cnpj,
+      code: codigo,
+      address: {
+        street: rua,
+        neighborhood: bairro,
+        zipCode: cep,
+        city: cidade,
+        state: uf,
+        complement: complemento,
+        observation: observacoes
+      },
+      contact: {
+        email: emailContato,
+        name: nomeContato,
+        telphone: celularContato,
+        celular: telefoneContato
+      },
+      group: { group: grupo }
+    } = client;
+
+    this.props.setClient({
+      deletedAt: !!deletedAt,
+      clientId,
+      razaosocial,
+      cnpj,
+      codigo,
+      rua,
+      bairro,
+      cep,
+      cidade,
+      uf,
+      complemento,
+      observacoes,
+      emailContato,
+      nomeContato,
+      celularContato,
+      telefoneContato,
+      grupo
+    });
+
+    this.setState({ redirect: "/logged/newClient/add" });
   };
 
   Table = () => {
@@ -215,7 +331,7 @@ export default class RelatorioCadastroContainer extends Component {
               </Col>
               <Col
                 style={{ fontSize: "16px", margin: "0 5px 10px 0" }}
-                span={10}
+                span={9}
               >
                 <strong>RAZÃO SOCIAL</strong>
               </Col>
@@ -228,20 +344,28 @@ export default class RelatorioCadastroContainer extends Component {
               <Col style={{ fontSize: "16px", marginBottom: "0" }} span={4}>
                 <strong>GRUPO</strong>
               </Col>
+              <Col className="col-icon-edit" span={1}></Col>
             </Row>
             {this.state.clientes.rows.map(cliente => (
               <Row>
                 <Col style={{ margin: "0 5px 10px 0" }} span={3}>
                   {cliente.code}
                 </Col>
-                <Col style={{ margin: "0 5px 10px 0" }} span={10}>
+                <Col style={{ margin: "0 5px 10px 0" }} span={9}>
                   {cliente.razaosocial}
                 </Col>
                 <Col style={{ margin: "0 5px 10px 0" }} span={6}>
                   {cliente.cnpj}
                 </Col>
                 <Col style={{ marginBottom: "0" }} span={4}>
-                  {cliente.group}
+                  {cliente.group.group}
+                </Col>
+                <Col className="col-icon-edit" span={1}>
+                  <EditOutlined
+                    className="icon-edit"
+                    onClick={() => this.setClientRedux(cliente)}
+                    style={{ fontSize: "16px", color: "#001529" }}
+                  />
                 </Col>
               </Row>
             ))}
@@ -253,7 +377,7 @@ export default class RelatorioCadastroContainer extends Component {
             <Row>
               <Col
                 style={{ fontSize: "16px", margin: "0 5px 10px 0" }}
-                span={13}
+                span={12}
               >
                 <strong>NOME</strong>
               </Col>
@@ -266,10 +390,11 @@ export default class RelatorioCadastroContainer extends Component {
               <Col style={{ fontSize: "16px", marginBottom: "0" }} span={4}>
                 <strong>CÓDIGO</strong>
               </Col>
+              <Col className="col-icon-edit" span={1}></Col>
             </Row>
-            {this.state.items.map(item => (
+            {this.state.items.rows.map(item => (
               <Row>
-                <Col style={{ margin: "0 5px 10px 0" }} span={13}>
+                <Col style={{ margin: "0 5px 10px 0" }} span={12}>
                   {item.name}
                 </Col>
                 <Col style={{ margin: "0 5px 10px 0" }} span={6}>
@@ -277,6 +402,13 @@ export default class RelatorioCadastroContainer extends Component {
                 </Col>
                 <Col style={{ marginBottom: "10px" }} span={4}>
                   {item.code}
+                </Col>
+                <Col className="col-icon-edit" span={1}>
+                  <EditOutlined
+                    className="icon-edit"
+                    onClick={() => this.setItemRedux(item)}
+                    style={{ fontSize: "16px", color: "#001529" }}
+                  />
                 </Col>
               </Row>
             ))}
@@ -288,6 +420,11 @@ export default class RelatorioCadastroContainer extends Component {
   };
 
   onChangeSelect = async select => {
+    await this.setState({
+      total: 10,
+      count: 0,
+      page: 1
+    });
     switch (select) {
       case "cliente":
         await this.getAllClient();
@@ -301,6 +438,106 @@ export default class RelatorioCadastroContainer extends Component {
 
     this.setState({ select });
   };
+
+  changePages = async pages => {
+    await this.setState({
+      page: pages
+    });
+
+    switch (this.state.select) {
+      case "cliente":
+        await this.getAllClient();
+        break;
+      case "item":
+        await this.getAllItens();
+        break;
+      default:
+        return null;
+    }
+  };
+
+  Pages = () => (
+    <div className="div-pages">
+      {Math.ceil(this.state.count / this.state.total) >= 5 &&
+      Math.ceil(this.state.count / this.state.total) - this.state.page < 1 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 4)}
+        >
+          {this.state.page - 4}
+        </button>
+      ) : null}
+      {Math.ceil(this.state.count / this.state.total) >= 4 &&
+      Math.ceil(this.state.count / this.state.total) - this.state.page < 2 &&
+      this.state.page > 3 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 3)}
+        >
+          {this.state.page - 3}
+        </button>
+      ) : null}
+      {this.state.page >= 3 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 2)}
+        >
+          {this.state.page - 2}
+        </button>
+      ) : null}
+      {this.state.page >= 2 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 1)}
+        >
+          {this.state.page - 1}
+        </button>
+      ) : null}
+      <div className="div-teste">{this.state.page}</div>
+      {this.state.page < this.state.count / this.state.total ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 1)}
+        >
+          {this.state.page + 1}
+        </button>
+      ) : null}
+      {this.state.page + 1 < this.state.count / this.state.total ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 2)}
+        >
+          {this.state.page + 2}
+        </button>
+      ) : null}
+      {this.state.page + 2 < this.state.count / this.state.total &&
+      this.state.page < 3 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 3)}
+        >
+          {this.state.page + 3}
+        </button>
+      ) : null}
+      {this.state.page + 3 < this.state.count / this.state.total &&
+      this.state.page < 2 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 4)}
+        >
+          {this.state.page + 4}
+        </button>
+      ) : null}
+    </div>
+  );
 
   render() {
     return (
@@ -332,14 +569,35 @@ export default class RelatorioCadastroContainer extends Component {
           </div>
           <this.Search />
           {this.state.select !== "" ? (
-            <this.Table />
+            <>
+              <this.Table />
+              <div className="div-main-pages">
+                <this.Pages />
+              </div>
+            </>
           ) : (
             <div className="div-seminfo-relatorio">
               <p className="p-relatorio">NENHUM TIPO DE CADASTRO SELECIONADO</p>
             </div>
           )}
         </div>
+        {this.state.redirect && <Redirect to={this.state.redirect} />}
       </div>
     );
   }
 }
+
+function mapDispacthToProps(dispach) {
+  return bindActionCreators({ setItem, setClient }, dispach);
+}
+
+function mapStateToProps(state) {
+  return {
+    itemValue: state.itemValue
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(RelatorioCadastroContainer);

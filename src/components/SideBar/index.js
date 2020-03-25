@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./index.css";
+import { DatabaseOutlined } from "@ant-design/icons";
 
 import { Logout } from "../../pages/Login/LoginRedux/action";
 
@@ -51,6 +52,8 @@ class SideBar extends Component {
     if (this.state.redirect) {
       this.changeRedirectState();
       switch (this.state.current) {
+        case "logout":
+          return <Redirect to="/login" />;
         case "user_dash":
           return (
             <Redirect
@@ -132,6 +135,15 @@ class SideBar extends Component {
               }}
             />
           );
+        case "relatorioBases_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/relatorioBases/dash"
+              }}
+            />
+          );
         case "dashUsuario_dash":
           return (
             <Redirect
@@ -141,178 +153,205 @@ class SideBar extends Component {
               }}
             />
           );
-        case "logout":
-          return <Redirect to="/login" />;
         default:
           return <Redirect to="/logged/dash" />;
       }
     }
-    return (
-      <div>
-        <div className="menuIcon">
-          <Tooltip placement="bottom" title={"Contratos"}>
-            <Icon
-              className="menuIcon-icon"
-              type="file-add"
-              onClick={() =>
-                this.handleClickCompany("newContrato_add", "Cadastros")
-              }
-            />
-          </Tooltip>
-          <Tooltip placement="bottom" title={"Gráficos"}>
-            <Icon
-              type="pie-chart"
-              className="menuIcon-icon"
-              onClick={() => this.handleClickCompany("dash", "Gerenciar")}
-            />
-          </Tooltip>
-          <Tooltip placement="bottom" title={"Consulta"}>
-            <Icon
-              className="menuIcon-icon"
-              type="edit"
-              onClick={() =>
-                this.handleClickCompany("dashConsulta_dash", "Consulta")
-              }
-            />
-          </Tooltip>
-          <Tooltip placement="bottom" title={"IGPM"}>
-            <Icon
-              className="menuIcon-icon"
-              type="dollar"
-              onClick={() => this.handleClickCompany("dashIgpm_dash", "IGPM")}
-            />
-          </Tooltip>
-          <Tooltip placement="bottom" title={"Logout"}>
-            <Icon
-              key="logout"
-              className="menuIcon-icon"
-              type="logout"
-              onClick={() => this.props.Logout()}
-            />
-          </Tooltip>
-        </div>
+    if (this.props.login.user && this.props.login.user.resource) {
+      return (
+        <div>
+          <div className="menuIcon">
+            <Tooltip placement="bottom" title={"Contratos"}>
+              <Icon
+                className={
+                  this.props.login.user.resource.addContract
+                    ? "menuIcon-icon"
+                    : "menuIcon-icon-notPermission"
+                }
+                type="file-add"
+                onClick={() =>
+                  this.props.login.user.resource.addContract &&
+                  this.handleClickCompany("newContrato_add", "Cadastros")
+                }
+              />
+            </Tooltip>
+            <Tooltip placement="bottom" title={"Gráficos"}>
+              <Icon
+                type="pie-chart"
+                className="menuIcon-icon"
+                onClick={() => this.handleClickCompany("dash", "Gerenciar")}
+              />
+            </Tooltip>
+            <Tooltip placement="bottom" title={"Consulta"}>
+              <Icon
+                className="menuIcon-icon"
+                type="edit"
+                onClick={() =>
+                  this.handleClickCompany("dashConsulta_dash", "Consulta")
+                }
+              />
+            </Tooltip>
+            <Tooltip placement="bottom" title={"IGPM"}>
+              <Icon
+                className="menuIcon-icon"
+                type="dollar"
+                onClick={() => this.handleClickCompany("dashIgpm_dash", "IGPM")}
+              />
+            </Tooltip>
+            <Tooltip placement="bottom" title={"Logout"}>
+              <Icon
+                key="logout"
+                className="menuIcon-icon"
+                type="logout"
+                onClick={() => this.props.Logout()}
+              />
+            </Tooltip>
+          </div>
 
-        <Menu
-          className="menu"
-          theme="dark"
-          onClick={this.handleClick}
-          defaultOpenKeys={this.state.open}
-          selectedKeys={[this.state.current]}
-          mode="inline"
-        >
-          <SubMenu
-            key="Cadastros"
-            title={
-              <span>
-                <Icon type="plus" />
-                <span>Cadastros</span>
-              </span>
-            }
+          <Menu
+            className="menu"
+            theme="dark"
+            onClick={this.handleClick}
+            defaultOpenKeys={this.state.open}
+            selectedKeys={[this.state.current]}
+            mode="inline"
           >
-            <Menu.Item key="newClient_add">
-              <Icon type="user-add" />
-              Cliente
-            </Menu.Item>
-
-            <Menu.Item key="newItem_add">
-              <Icon type="tablet" />
-              Item
-            </Menu.Item>
-
-            <Menu.Item key="newContrato_add">
-              <Icon type="file-add" />
-              Contratos
-            </Menu.Item>
-          </SubMenu>
-          <SubMenu
-            key="Gerenciar"
-            title={
-              <span>
-                <Icon type="bar-chart" />
-                <span>Gerenciar</span>
-              </span>
-            }
-          >
-            <Menu.Item key="dash">
-              <Icon type="pie-chart" />
-              Gráficos
-            </Menu.Item>
-
-            <Menu.Item key="user_dash">
-              <Icon type="user-add" />
-              Usuário
-            </Menu.Item>
-          </SubMenu>
-          <SubMenu
-            key="Consulta"
-            title={
-              <span>
-                <Icon type="edit" />
-                <span>Consulta</span>
-              </span>
-            }
-          >
-            <Menu.Item key="dashConsulta_dash">
-              <Icon type="ordered-list" />
-              Gerenciar
-            </Menu.Item>
-          </SubMenu>
-          <SubMenu
-            key="IGPM"
-            title={
-              <span>
-                <Icon type="dollar" />
-                <span>IGPM</span>
-              </span>
-            }
-          >
-            <Menu.Item key="newIgpm_add">
-              <Icon type="user-add" />
-              Adicionar
-            </Menu.Item>
-            <Menu.Item key="dashIgpm_dash">
-              <Icon type="ordered-list" />
-              Gerenciar
-            </Menu.Item>
-          </SubMenu>
-          <SubMenu
-            key="Relatorios"
-            title={
-              <span>
-                <Icon type="file-pdf" />
-                <span>Relatórios</span>
-              </span>
-            }
-          >
-            <Menu.Item key="relatorioItens_dash">
-              <Icon type="ordered-list" />
-              Itens
-            </Menu.Item>
-
-            <Menu.Item key="relatorioCadastro_dash">
-              <Icon type="file-done" />
-              Cadastros
-            </Menu.Item>
-          </SubMenu>
-          {this.props.login.user.mod && (
             <SubMenu
-              key="MOD"
+              key="Cadastros"
               title={
                 <span>
-                  <Icon type="lock" />
-                  <span>MOD</span>
+                  <Icon type="plus" />
+                  <span>Cadastros</span>
                 </span>
               }
             >
-              <Menu.Item key="dashUsuario_dash">
-                <Icon type="user" />
+              <Menu.Item
+                key="newClient_add"
+                disabled={!this.props.login.user.resource.addClient}
+              >
+                <Icon type="user-add" />
+                Cliente
+              </Menu.Item>
+
+              <Menu.Item
+                key="newItem_add"
+                disabled={!this.props.login.user.resource.addItem}
+              >
+                <Icon type="tablet" />
+                Item
+              </Menu.Item>
+
+              <Menu.Item
+                key="newContrato_add"
+                disabled={!this.props.login.user.resource.addContract}
+              >
+                <Icon type="file-add" />
+                Contratos
+              </Menu.Item>
+            </SubMenu>
+            <SubMenu
+              key="Gerenciar"
+              title={
+                <span>
+                  <Icon type="bar-chart" />
+                  <span>Gerenciar</span>
+                </span>
+              }
+            >
+              <Menu.Item key="dash">
+                <Icon type="pie-chart" />
+                Gráficos
+              </Menu.Item>
+
+              <Menu.Item
+                key="user_dash"
+                disabled={!this.props.login.user.resource.addUser}
+              >
+                <Icon type="user-add" />
                 Usuário
               </Menu.Item>
             </SubMenu>
-          )}
-        </Menu>
-      </div>
-    );
+            <SubMenu
+              key="Consulta"
+              title={
+                <span>
+                  <Icon type="edit" />
+                  <span>Consulta</span>
+                </span>
+              }
+            >
+              <Menu.Item key="dashConsulta_dash">
+                <Icon type="ordered-list" />
+                Gerenciar
+              </Menu.Item>
+            </SubMenu>
+            <SubMenu
+              key="IGPM"
+              title={
+                <span>
+                  <Icon type="dollar" />
+                  <span>IGPM</span>
+                </span>
+              }
+            >
+              <Menu.Item
+                key="newIgpm_add"
+                disabled={!this.props.login.user.resource.addIgpm}
+              >
+                <Icon type="user-add" />
+                Adicionar
+              </Menu.Item>
+              <Menu.Item key="dashIgpm_dash">
+                <Icon type="ordered-list" />
+                Gerenciar
+              </Menu.Item>
+            </SubMenu>
+            <SubMenu
+              key="Relatorios"
+              title={
+                <span>
+                  <Icon type="file-pdf" />
+                  <span>Relatórios</span>
+                </span>
+              }
+            >
+              <Menu.Item key="relatorioItens_dash">
+                <Icon type="ordered-list" />
+                Itens
+              </Menu.Item>
+
+              <Menu.Item key="relatorioCadastro_dash">
+                <Icon type="file-done" />
+                Cadastros
+              </Menu.Item>
+
+              <Menu.Item key="relatorioBases_dash">
+                <DatabaseOutlined />
+                Bases
+              </Menu.Item>
+            </SubMenu>
+            {this.props.login.user.mod && (
+              <SubMenu
+                key="MOD"
+                title={
+                  <span>
+                    <Icon type="lock" />
+                    <span>MOD</span>
+                  </span>
+                }
+              >
+                <Menu.Item key="dashUsuario_dash">
+                  <Icon type="user" />
+                  Usuário
+                </Menu.Item>
+              </SubMenu>
+            )}
+          </Menu>
+        </div>
+      );
+    } else {
+      return <Redirect to="/login" />;
+    }
   }
 }
 

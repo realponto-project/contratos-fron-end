@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import "../../../../global.css";
 import "./index.css";
-import { Icon, Select, message, Modal, DatePicker } from "antd";
+import { Icon, Select, message, Modal, DatePicker, InputNumber } from "antd";
 
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import * as R from "ramda";
@@ -26,9 +26,11 @@ const { Option } = Select;
 class NewContratosContainer extends Component {
   state = {
     indexIgpm: -1,
-    index: "",
+    fine: 0,
+    index: NaN,
     redirect: false,
     visible: false,
+    modalInfo: false,
     modalAtualizada: false,
     search: "",
     razaosocial: "",
@@ -75,6 +77,7 @@ class NewContratosContainer extends Component {
 
   clearState = () => {
     this.setState({
+      fine: 0,
       priceMonthly: "",
       priceYearly: "",
       visible: false,
@@ -138,15 +141,17 @@ class NewContratosContainer extends Component {
             igpm: false
           }
         }
-      }
+      },
+      total: 500
     };
-    await this.setState({ allItens: (await GetAllItens(query)).data });
+    await this.setState({ allItens: (await GetAllItens(query)).data.rows });
   };
 
   onChange = e => {
     const { name, value } = masks(e.target.name, e.target.value);
     this.setState({
-      [name]: value.toUpperCase()
+      // [name]: value.toUpperCase()
+      [name]: value
     });
   };
 
@@ -208,7 +213,8 @@ class NewContratosContainer extends Component {
           dateActivation: dataAtivacao,
           dateTermination: dataRescisao,
           priceMonthly,
-          priceYearly
+          priceYearly,
+          fine
         } = data;
 
         this.setState({
@@ -217,6 +223,7 @@ class NewContratosContainer extends Component {
             cnpj: false,
             codigo: false
           },
+          fine,
           contractCode,
           status,
           dataAtivacao: moment(dataAtivacao),
@@ -307,6 +314,7 @@ class NewContratosContainer extends Component {
   };
 
   newContract = async () => {
+    // console.log(this.state);
     const {
       codigo: code,
       status,
@@ -317,16 +325,48 @@ class NewContratosContainer extends Component {
       dataAtivacao: dateActivation,
       dataRescisao: dateTermination,
       priceMonthly,
-      priceYearly
+      priceYearly,
+      fine
     } = this.state;
 
     let value = {
       status,
+      fine,
       stockBase,
       itens: itens.map(item => {
         if (R.has("id", item)) {
-          const { price, address, contractItemId, id: itemId, id } = item;
-          return { price, address, contractItemId, itemId, id };
+          const {
+            price,
+            address,
+            contractItemId,
+            id: itemId,
+            id,
+            zipCode,
+            street,
+            neighborhood,
+            city,
+            state,
+            complement,
+            observation
+          } = item;
+          return {
+            price,
+            address: zipCode
+              ? {
+                  ...address,
+                  zipCode,
+                  street,
+                  neighborhood,
+                  city,
+                  state,
+                  complement,
+                  observation
+                }
+              : address,
+            contractItemId,
+            itemId,
+            id
+          };
         }
         return item;
       }),
@@ -339,6 +379,8 @@ class NewContratosContainer extends Component {
 
     if (contractCode !== "") {
       value = { ...value, contractCode };
+
+      console.log(value);
 
       const response = await UpdateContract(value);
 
@@ -538,37 +580,54 @@ class NewContratosContainer extends Component {
   };
 
   getModal = index => {
+    // console.log(index);
     const {
-      id = null,
+      id: itemId,
+      contractItemId: id,
+      contractItem: { type: tipo, cnpj: cnpjModal },
       name: item,
       code: codigoModal,
-      itemId,
-      address
+      costPrice,
+      address,
+      zipCode
     } = this.state.itens[index];
 
-    const {
-      street: rua,
-      neighborhood: bairro,
-      zipCode: cep,
-      city: cidade,
-      state: uf,
-      complement: complemento,
-      observation: observacoes
-    } = id ? address : this.state.itens[index];
+    if ((id && address) || zipCode) {
+      const {
+        street: rua,
+        neighborhood: bairro,
+        zipCode: cep,
+        city: cidade,
+        state: uf,
+        complement: complemento,
+        observation: observacoes
+      } = id && !zipCode ? address : this.state.itens[index];
+
+      this.setState({
+        visible: true,
+        itemId,
+        item,
+        codigoModal,
+        rua,
+        bairro,
+        cep,
+        cidade,
+        uf,
+        complemento,
+        observacoes,
+        modalAtualizada: true
+      });
+    }
 
     this.setState({
+      index,
+      costPrice,
       visible: true,
       itemId,
       item,
       codigoModal,
-      rua,
-      bairro,
-      cep,
-      cidade,
-      uf,
-      complemento,
-      observacoes,
-      index,
+      tipo,
+      cnpjModal,
       modalAtualizada: true
     });
   };
@@ -585,12 +644,17 @@ class NewContratosContainer extends Component {
       itemId,
       item: name,
       itens,
+      costPrice,
       index
     } = this.state;
 
     const copyItens = itens;
 
+    // console.log(index, copyItens[index]);
+
     copyItens[index] = {
+      ...copyItens[index],
+      costPrice,
       street,
       neighborhood,
       zipCode,
@@ -712,14 +776,171 @@ class NewContratosContainer extends Component {
     return current && current < moment().startOf("day");
   };
 
+  ModalInfo = () => {
+    let address = {};
+    if (this.state.itens[this.state.index]) {
+      address = this.state.itens[this.state.index].address;
+      const {
+        zipCode,
+        street,
+        neighborhood,
+        city,
+        state,
+        complement,
+        observation
+      } = this.state.itens[this.state.index];
+      address = zipCode
+        ? {
+            ...address,
+            zipCode,
+            street,
+            neighborhood,
+            city,
+            state,
+            complement,
+            observation
+          }
+        : address;
+    }
+    return (
+      <Modal
+        width={700}
+        visible={this.state.modalInfo}
+        onOk={e => console.log(e)}
+        onCancel={() => this.setState({ modalInfo: false })}
+        cancelText="Cancelar"
+        okText="OK"
+      >
+        {this.state.itens[this.state.index] && (
+          <div className="card-modal-info">
+            <div className="rows-modal-info">
+              <div className="rows-block-modal-info" style={{ width: "75%" }}>
+                <strong>Item:</strong>
+                <label>{this.state.itens[this.state.index].name}</label>
+              </div>
+              <div className="rows-block-modal-info" style={{ width: "25%" }}>
+                <strong>Código:</strong>
+                <label>{this.state.itens[this.state.index].code}</label>
+              </div>
+            </div>
+
+            <div className="rows-modal-info">
+              <div className="rows-block-modal-info" style={{ width: "100%" }}>
+                <strong>Descrição:</strong>
+                <label>{this.state.itens[this.state.index].description}</label>
+              </div>
+            </div>
+
+            <div className="rows-modal-info">
+              <div className="rows-block-modal-info" style={{ width: "25%" }}>
+                <strong>Custo:</strong>
+                <label>
+                  {this.state.itens[this.state.index].costPrice.toLocaleString(
+                    "pt-BR",
+                    {
+                      style: "currency",
+                      currency: "BRL"
+                    }
+                  )}
+                </label>
+              </div>
+              <div className="rows-block-modal-info" style={{ width: "35%" }}>
+                <strong>Tipo:</strong>
+                <label>
+                  {this.state.itens[this.state.index].contractItem &&
+                    this.state.itens[this.state.index].contractItem.type}
+                </label>
+              </div>
+              <div className="rows-block-modal-info" style={{ width: "40%" }}>
+                <strong>CNPJ:</strong>
+                <label>
+                  {this.state.itens[this.state.index].contractItem &&
+                    this.state.itens[this.state.index].contractItem.cnpj}
+                </label>
+              </div>
+            </div>
+
+            {address && (
+              <>
+                <div className="rows-modal-info">
+                  <div
+                    className="rows-block-modal-info"
+                    style={{ width: "45%" }}
+                  >
+                    <strong>Rua:</strong>
+                    <label>{address.street}</label>
+                  </div>
+                  <div
+                    className="rows-block-modal-info"
+                    style={{ width: "45%" }}
+                  >
+                    <strong>Bairro:</strong>
+                    <label>{address.neighborhood}</label>
+                  </div>
+                </div>
+
+                <div className="rows-modal-info">
+                  <div
+                    className="rows-block-modal-info"
+                    style={{ width: "45%" }}
+                  >
+                    <strong>CEP:</strong>
+                    <label>{address.zipCode}</label>
+                  </div>
+                  <div
+                    className="rows-block-modal-info"
+                    style={{ width: "45%" }}
+                  >
+                    <strong>Cidade:</strong>
+                    <label>{address.city}</label>
+                  </div>
+                  <div
+                    className="rows-block-modal-info"
+                    style={{ width: "10%" }}
+                  >
+                    <strong>UF:</strong>
+                    <label>{address.state}</label>
+                  </div>
+                </div>
+
+                <div className="rows-modal-info">
+                  <div
+                    className="rows-block-modal-info"
+                    style={{ width: "45%" }}
+                  >
+                    <strong>Complemento:</strong>
+                    <label>{address.complement}</label>
+                  </div>
+                </div>
+
+                <div className="rows-modal-info">
+                  <div
+                    className="rows-block-modal-info"
+                    style={{ width: "45%" }}
+                  >
+                    <strong>Observacoes:</strong>
+                    <label>{address.observacoes}</label>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </Modal>
+    );
+  };
+
   render() {
     const { state } = this;
     const { fieldErrors } = state;
+
+    // console.log(state);
 
     return (
       <div className="card-main">
         {this.renderRedirect()}
         <this.ModalIncluir />
+        <this.ModalInfo />
         <div className="div-titulo">
           <h1 className="h1-titulo">Contratos</h1>
         </div>
@@ -738,6 +959,7 @@ class NewContratosContainer extends Component {
           <input
             className={`input-nome-contratos ${fieldErrors.razaosocial &&
               "input-error"}`}
+            style={{ textTransform: "uppercase" }}
             placeholder="RAZÃO SOCIAL / NOME"
             onChange={this.onChange}
             name="razaosocial"
@@ -840,6 +1062,13 @@ class NewContratosContainer extends Component {
           )}
         </div>
 
+        <InputNumber
+          value={this.state.fine}
+          step={0.01}
+          min={0}
+          onChange={fine => this.setState({ fine })}
+        />
+
         <div className="div-main-contratos">
           <div className="div-itens-contratos">
             <div className="div-h2-modal">
@@ -853,7 +1082,7 @@ class NewContratosContainer extends Component {
                       type="question-circle"
                       className="icon-info"
                       style={{ margin: "0 2px 0 25px" }}
-                      onClick={() => this.getModal(index)}
+                      onClick={() => this.setState({ modalInfo: true, index })}
                     />
                     <input
                       readOnly
@@ -869,14 +1098,7 @@ class NewContratosContainer extends Component {
                       placeholder="VALOR"
                       onChange={e => {
                         const { value } = e.target;
-                        const {
-                          itens,
-                          priceMonthly,
-                          priceYearly
-                          // valorTotal = this.state.valorTotal
-                          // ? parseFloat(this.state.valorTotal, 10)
-                          // : 0
-                        } = this.state;
+                        const { itens, priceMonthly, priceYearly } = this.state;
                         itens[index].price =
                           itens[index].price === undefined
                             ? "0"
@@ -884,16 +1106,6 @@ class NewContratosContainer extends Component {
                         this.setState({
                           itens
                         });
-
-                        // console.log(priceMonthly);
-                        // console.log(parseFloat(value.slice(0, 9), 10));
-                        // console.log(parseFloat(itens[index].price, 10));
-                        // console.log(item.type);
-                        // console.log(
-                        //   priceMonthly +
-                        //     parseFloat(value.slice(0, 9), 10) -
-                        //     parseFloat(itens[index].price, 10)
-                        // );
 
                         this.setState({
                           priceMonthly:
@@ -923,7 +1135,7 @@ class NewContratosContainer extends Component {
                       value={moment(item.createdAt).format("L")}
                     ></input>
                     <div className="div-block-button-donw">
-                      {item.igpms.length !== 0 ? (
+                      {item.igpms && item.igpms.length !== 0 ? (
                         <>
                           {this.state.indexIgpm === index ? (
                             <UpOutlined
@@ -939,28 +1151,34 @@ class NewContratosContainer extends Component {
                         </>
                       ) : null}
                     </div>
-                    <button
-                      className="button-delete"
-                      onClick={() => {
-                        const { priceMonthly, priceYearly } = this.state;
-                        const price = item.price
-                          ? parseFloat(item.price, 10)
-                          : 0;
-                        this.setState({
-                          priceMonthly:
-                            item.type === "MENSAL"
-                              ? priceMonthly - price
-                              : priceMonthly,
-                          priceYearly:
-                            item.type === "ANUAL"
-                              ? priceYearly - price
-                              : priceYearly
-                        });
-                        this.removeItem(index);
-                      }}
-                    >
-                      <Icon type="delete" />
-                    </button>
+                    <div className="div-block-icons-update-delete">
+                      <Icon
+                        type="edit"
+                        className="icon-edit"
+                        onClick={() => this.getModal(index)}
+                      />
+                      <Icon
+                        type="delete"
+                        className="icon-delete"
+                        onClick={() => {
+                          const { priceMonthly, priceYearly } = this.state;
+                          const price = item.price
+                            ? parseFloat(item.price, 10)
+                            : 0;
+                          this.setState({
+                            priceMonthly:
+                              item.type === "MENSAL"
+                                ? priceMonthly - price
+                                : priceMonthly,
+                            priceYearly:
+                              item.type === "ANUAL"
+                                ? priceYearly - price
+                                : priceYearly
+                          });
+                          this.removeItem(index);
+                        }}
+                      />
+                    </div>
                   </div>
                   {this.state.indexIgpm === index &&
                     this.state.itens[this.state.indexIgpm].igpms.map(item => (

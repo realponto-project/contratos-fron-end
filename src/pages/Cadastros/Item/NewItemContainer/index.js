@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import * as R from "ramda";
 import "../../../../global.css";
 import "./index.css";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { message, Modal, Icon, Select } from "antd";
 import {
   NewItem,
@@ -11,6 +13,7 @@ import {
   RestoreItem
 } from "../../../../services/item";
 import { validator } from "./validator";
+import { clearItem } from "../../../Relatorios/Cadastro/cadastroRedux/action";
 
 const { Option } = Select;
 
@@ -19,6 +22,8 @@ class NewItemContainer extends Component {
     search: "",
     itemId: "",
     name: "",
+    custoAnual: undefined,
+    custoMensal: undefined,
     tipo: undefined,
     codigo: "",
     descricao: "",
@@ -32,10 +37,38 @@ class NewItemContainer extends Component {
     deletedAt: false
   };
 
+  componentDidMount = async () => {
+    const {
+      itemId,
+      name,
+      custoAnual,
+      custoMensal,
+      tipo,
+      codigo,
+      descricao,
+      deletedAt
+    } = this.props.itemValue;
+
+    await this.setState({
+      deletedAt,
+      name,
+      itemId,
+      custoAnual,
+      custoMensal,
+      tipo,
+      codigo,
+      descricao
+    });
+
+    this.props.clearItem();
+  };
+
   clearState = () => {
     this.setState({
       itemId: "",
       name: "",
+      custoAnual: 0,
+      custoMensal: 0,
       tipo: undefined,
       codigo: "",
       descricao: "",
@@ -53,7 +86,7 @@ class NewItemContainer extends Component {
     const { name, value } = e.target;
 
     this.setState({
-      [name]: value.toUpperCase()
+      [name]: value
     });
   };
 
@@ -104,10 +137,19 @@ class NewItemContainer extends Component {
       tipo: type,
       codigo: code,
       descricao: description,
-      itemId
+      itemId,
+      custoMensal: costPriceMonthly,
+      custoAnual: costPriceYearly
     } = this.state;
 
-    const value = { name, type, code, description };
+    const value = {
+      name,
+      type,
+      code,
+      description,
+      costPriceMonthly,
+      costPriceYearly
+    };
 
     if (itemId) {
       const { status } = await UpdateItem({ ...value, id: itemId });
@@ -248,6 +290,31 @@ class NewItemContainer extends Component {
           ></input>
         </div>
 
+        <div className="div-inputs-flex">
+          <input
+            className="input-codigo-item"
+            onChange={this.onChange}
+            placeholder="CUSTO MENSAL"
+            value={this.state.custoMensal}
+            name="custoMensal"
+            onFocus={onFocus}
+            min="0"
+            max="99999"
+            type="number"
+          ></input>
+          <input
+            className="input-codigo-item"
+            onChange={this.onChange}
+            placeholder="CUSTO ANUAL"
+            value={this.state.custoAnual}
+            name="custoAnual"
+            onFocus={onFocus}
+            min="0"
+            max="99999"
+            type="number"
+          ></input>
+        </div>
+
         <div className="div-descricao-item">
           <label
             style={{
@@ -274,7 +341,7 @@ class NewItemContainer extends Component {
             <button
               className="button-salvar"
               onClick={async () => {
-                const { status } = await RestoreItem(this.state.clientId);
+                const { status } = await RestoreItem(this.state.itemId);
 
                 if (status === 200) this.setState({ deletedAt: false });
               }}
@@ -305,4 +372,14 @@ class NewItemContainer extends Component {
   }
 }
 
-export default NewItemContainer;
+function mapDispacthToProps(dispach) {
+  return bindActionCreators({ clearItem }, dispach);
+}
+
+function mapStateToProps(state) {
+  return {
+    itemValue: state.itemValue
+  };
+}
+
+export default connect(mapStateToProps, mapDispacthToProps)(NewItemContainer);

@@ -46,6 +46,11 @@ export const masks = (name, value) => {
 
       return { name, value };
 
+    case "senha":
+    case "email":
+      value = value.replace(/\s/, "");
+      return { name, value };
+
     default:
       return { name, value };
   }

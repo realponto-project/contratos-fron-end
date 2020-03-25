@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import "./index.css";
 import "../../../../global.css";
-import { Select, Icon } from "antd";
+import { Select, Icon, Checkbox } from "antd";
 import { GetAllContractItem } from "../../../../services/contract";
 import { GetAllItens } from "../../../../services/item";
+import { AllItems } from "../../../../services/grafic";
 import { pdfRelatorioItems } from "../../../../services/utils/pdf";
 
 const { Option } = Select;
@@ -11,16 +12,18 @@ const { Option } = Select;
 class RelatorioItens extends Component {
   state = {
     item: "SELECIONE UM ITEM",
-    rows: [],
+    contractItem: [],
+    items: [],
     codigo: "CÓDIGO",
     total: 10,
     count: 0,
     page: 1,
-    allItens: []
+    allItens: [],
+    checked: "contractItem"
   };
 
   componentDidMount = async () => {
-    await this.setState({ allItens: (await GetAllItens()).data });
+    await this.setState({ allItens: (await GetAllItens()).data.rows });
   };
 
   onChangeSelect = (value, option) => {
@@ -41,7 +44,7 @@ class RelatorioItens extends Component {
     GetAllContractItem(query)
       .then(resp => {
         console.log(resp);
-        this.setState({ rows: resp.data });
+        this.setState({ contractItem: resp.data });
       })
       .catch(err => console.error(err));
   };
@@ -51,6 +54,41 @@ class RelatorioItens extends Component {
       [e.target.name]: e.target.value
     });
   };
+
+  tableRelatorioAllItens = () => (
+    <div className="div-table">
+      <div className="div-main-table">
+        <div className="div-line-table">
+          <strong style={{ width: "40%" }}>Item</strong>
+          <strong style={{ width: "5%" }}>Qtnd</strong>
+          <strong style={{ width: "15%" }}>Custo</strong>
+          <strong style={{ width: "10%" }}>N Contratos</strong>
+          <strong style={{ width: "10%" }}>Total</strong>
+          <strong style={{ width: "20%" }}>Tipo</strong>
+        </div>
+        {this.state.items.map(item => (
+          <div className="div-line-table">
+            <strong style={{ width: "40%" }}>{item.item}</strong>
+            <strong style={{ width: "5%" }}>{item.quant}</strong>
+            <strong style={{ width: "15%" }}>
+              {item.cost.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+              })}
+            </strong>
+            <strong style={{ width: "10%" }}>{item.quantContract}</strong>
+            <strong style={{ width: "10%" }}>
+              {item.total.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+              })}
+            </strong>
+            <strong style={{ width: "20%" }}>{item.type}</strong>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 
   tableRelatorioItens = () => (
     <div className="div-table">
@@ -62,8 +100,8 @@ class RelatorioItens extends Component {
           <strong className="label-valor-table">PREÇO</strong>
           <strong className="label-tipo-table">TIPO</strong>
         </div>
-        {this.state.rows.length !== 0 ? (
-          this.state.rows.map(line => (
+        {this.state.contractItem.length !== 0 ? (
+          this.state.contractItem.map(line => (
             <div className="div-line-table">
               <label className="label-nContrato-table">
                 {line.contractCode}
@@ -183,6 +221,34 @@ class RelatorioItens extends Component {
     </div>
   );
 
+  Table = () => {
+    switch (this.state.checked) {
+      case "contractItem":
+        return <this.tableRelatorioItens />;
+      case "allItem":
+        return <this.tableRelatorioAllItens />;
+      default:
+        return null;
+    }
+  };
+
+  onChangeChecked = async e => {
+    const { name } = e.target;
+    await this.setState({ checked: name });
+
+    switch (this.state.checked) {
+      case "contractItem":
+        this.setState({ contractItem: [] });
+        break;
+      case "allItem":
+        // console.log(await AllItems());
+        await this.setState({ items: (await AllItems()).data });
+        break;
+      default:
+        return null;
+    }
+  };
+
   render() {
     return (
       <div className="card-main">
@@ -196,6 +262,31 @@ class RelatorioItens extends Component {
             type="printer"
             onClick={() => pdfRelatorioItems()}
           />
+        </div>
+
+        <div
+          style={{
+            marginLeft: "50px",
+            marginTop: "20px",
+            display: "flex",
+            alignItems: "center",
+            width: "100%"
+          }}
+        >
+          <Checkbox
+            checked={this.state.checked === "contractItem"}
+            name="contractItem"
+            onChange={this.onChangeChecked}
+          >
+            Item no contrato
+          </Checkbox>
+          <Checkbox
+            checked={this.state.checked === "allItem"}
+            name="allItem"
+            onChange={this.onChangeChecked}
+          >
+            Todos itens
+          </Checkbox>
         </div>
 
         <div className="div-inputs-flex">
@@ -217,6 +308,7 @@ class RelatorioItens extends Component {
               <input style={{ textTransform: "uppercase" }} />
             )}
           >
+            {console.log(this.state.allItens)}
             {this.state.allItens.map(value => (
               <Option key={value.id} value={value.name} item={value}>
                 {value.name}
@@ -250,8 +342,7 @@ class RelatorioItens extends Component {
             ))}
           </Select>
         </div>
-
-        <this.tableRelatorioItens />
+        <this.Table />
         <div className="div-main-pages">
           <this.Pages />
         </div>

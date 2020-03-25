@@ -2,10 +2,16 @@ import { combineReducers } from "redux";
 
 import { login } from "../pages/Login/LoginRedux/reduce";
 import { contractCode } from "../pages/Cadastros/Contratos/ContratosRedux/reduce";
+import {
+  itemValue,
+  clientValue
+} from "../pages/Relatorios/Cadastro/cadastroRedux/reduce";
 
 const appReducer = combineReducers({
   login,
-  contractCode
+  contractCode,
+  itemValue,
+  clientValue
   // auth,
 });
 

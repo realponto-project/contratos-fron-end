@@ -4,5 +4,13 @@ export default {
     AUTH: "LOGIN_AUTH",
     LOGOUT: "LOGOUT_AUTH"
   },
-  CONTRACTCODE: "CONTRACTCODE"
+  CONTRACTCODE: "CONTRACTCODE",
+  SET: {
+    ITEM: "SET_ITEM",
+    CLIENT: "SET_CLIENT"
+  },
+  CLEAR: {
+    ITEM: "CLEAR_ITEM",
+    CLIENT: "CLEAR_CLIENT"
+  }
 };

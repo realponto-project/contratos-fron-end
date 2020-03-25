@@ -32,7 +32,8 @@
 .menuIcon-icon-notPermission {
   margin: 10px;
   padding: 3px !important;
-  cursor: not-allowed;
+  cursor: not-allowed !important;
+  color: #666;
 }
 
 .menuIcon-icon-notf {

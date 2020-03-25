@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import * as R from "ramda";
 import "../../../../global.css";
 import "./index.css";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import {
   NewClient,
   UpdateClient,
@@ -12,6 +14,7 @@ import {
 } from "../../../../services/client";
 import { getAddressByZipCode } from "../../../../services/utils/viacep";
 import { validator, masks } from "./validator";
+import { clearClient } from "../../../Relatorios/Cadastro/cadastroRedux/action";
 import { message, Modal, Select } from "antd";
 
 const { Option } = Select;
@@ -99,12 +102,56 @@ class NewClientContainer extends Component {
     await GetAllGroups()
       .then(resp => this.setState({ groups: resp.data }))
       .catch(err => console.error(err));
+
+    console.log(this.props.clientValue);
+
+    const {
+      deletedAt,
+      clientId,
+      razaosocial,
+      cnpj,
+      grupo,
+      codigo,
+      nomeContato,
+      celularContato,
+      telefoneContato,
+      emailContato,
+      rua,
+      bairro,
+      cep,
+      cidade,
+      uf,
+      complemento,
+      observacoes
+    } = this.props.clientValue;
+
+    await this.setState({
+      deletedAt,
+      clientId,
+      razaosocial,
+      cnpj,
+      grupo,
+      codigo,
+      nomeContato,
+      celularContato,
+      telefoneContato,
+      emailContato,
+      rua,
+      bairro,
+      cep,
+      cidade,
+      uf,
+      complemento,
+      observacoes
+    });
+
+    this.props.clearClient();
   };
 
   onChange = e => {
     const { name, value } = masks(e.target.name, e.target.value);
     this.setState({
-      [name]: value.toUpperCase()
+      [name]: value
     });
   };
 
@@ -130,7 +177,9 @@ class NewClientContainer extends Component {
       razaosocial,
       grupo: group,
       codigo: code,
-      cnpj
+      cnpj,
+      complemento: complement,
+      observacoes: observation
     } = this.state;
 
     const value = {
@@ -146,7 +195,9 @@ class NewClientContainer extends Component {
       razaosocial,
       group,
       code,
-      cnpj
+      cnpj,
+      complement,
+      observation
     };
 
     if (clientId) {
@@ -227,11 +278,12 @@ class NewClientContainer extends Component {
       });
 
       if (status === 200 && data) {
+        console.log(data);
         const {
           id: clientId,
           razaosocial,
           cnpj,
-          group: grupo,
+          group: { group: grupo },
           code: codigo,
           contact: {
             name: nomeContato,
@@ -452,11 +504,13 @@ class NewClientContainer extends Component {
               />
             )}
           >
-            {this.state.groups.map((group, index) => (
-              <Option key={index} value={group}>
-                {group}
-              </Option>
-            ))}
+            {console.log(this.state.groups)}
+            {this.state.groups.length !== 0 &&
+              this.state.groups.map((group, index) => (
+                <Option key={index} value={group}>
+                  {group}
+                </Option>
+              ))}
           </Select>
           <input
             readOnly={deletedAt}
@@ -512,6 +566,7 @@ class NewClientContainer extends Component {
               readOnly={deletedAt}
               className={`input-contato-cliente ${fieldErrors.emailContato &&
                 "input-error"}`}
+              style={{ textTransform: "none" }}
               placeholder="E-MAIL"
               onChange={this.onChangeEmail}
               name="emailContato"
@@ -637,4 +692,14 @@ class NewClientContainer extends Component {
   }
 }
 
-export default NewClientContainer;
+function mapDispacthToProps(dispach) {
+  return bindActionCreators({ clearClient }, dispach);
+}
+
+function mapStateToProps(state) {
+  return {
+    clientValue: state.clientValue
+  };
+}
+
+export default connect(mapStateToProps, mapDispacthToProps)(NewClientContainer);

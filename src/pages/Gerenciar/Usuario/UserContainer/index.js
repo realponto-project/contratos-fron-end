@@ -18,14 +18,19 @@ class UserContainer extends Component {
       senha: false,
       email: false,
       telefone: false
-    }
+    },
+    addClient: false,
+    addItem: false,
+    addContract: false,
+    addUser: false,
+    addIgpm: false
   };
 
   onChange = e => {
     const { name, value } = masks(e.target.name, e.target.value);
 
     this.setState({
-      [name]: value.toUpperCase()
+      [name]: value
     });
   };
 
@@ -49,7 +54,12 @@ class UserContainer extends Component {
         senha: false,
         email: false,
         telefone: false
-      }
+      },
+      addClient: false,
+      addItem: false,
+      addContract: false,
+      addUser: false,
+      addIgpm: false
     });
   };
 
@@ -58,14 +68,26 @@ class UserContainer extends Component {
       nome: username,
       senha: password,
       telefone: telphone,
-      email
+      email,
+      addClient,
+      addItem,
+      addContract,
+      addUser,
+      addIgpm
     } = this.state;
 
     const value = {
       username,
       password,
       telphone,
-      email
+      email,
+      resources: {
+        addClient,
+        addItem,
+        addContract,
+        addUser,
+        addIgpm
+      }
     };
 
     const { status, data } = await NewUser(value);
@@ -101,6 +123,11 @@ class UserContainer extends Component {
     this.setState({
       fieldErrors: { ...fieldErrors, [name]: validator(name, value) }
     });
+  };
+
+  onChengeCheckbox = e => {
+    const { name, checked } = e.target;
+    this.setState({ [name]: checked });
   };
 
   render() {
@@ -145,6 +172,7 @@ class UserContainer extends Component {
             <input
               className={`input-info-usuario ${fieldErrors.senha &&
                 "input-error"}`}
+              style={{ textTransform: "none" }}
               onChange={this.onChange}
               placeholder="SENHA"
               value={state.senha}
@@ -157,6 +185,7 @@ class UserContainer extends Component {
             <input
               className={`input-info-usuario ${fieldErrors.email &&
                 "input-error"}`}
+              style={{ textTransform: "none" }}
               onChange={this.onChangeEmail}
               placeholder="E-MAIL"
               value={state.email}
@@ -182,9 +211,41 @@ class UserContainer extends Component {
               Permissoes
             </label>
             <div className="div-permissoes-usuario">
-              <Checkbox value="B">B</Checkbox>
-              <Checkbox value="B">B</Checkbox>
-              <Checkbox value="B">B</Checkbox>
+              <Checkbox
+                name="addClient"
+                onChange={this.onChengeCheckbox}
+                checked={this.state.addClient}
+              >
+                Adicionar Cliente
+              </Checkbox>
+              <Checkbox
+                name="addItem"
+                onChange={this.onChengeCheckbox}
+                checked={this.state.addItem}
+              >
+                Adicionar Item
+              </Checkbox>
+              <Checkbox
+                name="addContract"
+                onChange={this.onChengeCheckbox}
+                checked={this.state.addContract}
+              >
+                Adicionar Contrato
+              </Checkbox>
+              <Checkbox
+                name="addUser"
+                onChange={this.onChengeCheckbox}
+                checked={this.state.addUser}
+              >
+                Adicionar Usuário
+              </Checkbox>
+              <Checkbox
+                name="addIgpm"
+                onChange={this.onChengeCheckbox}
+                checked={this.state.addIgpm}
+              >
+                Adicionar Igpm
+              </Checkbox>
             </div>
           </div>
         </div>

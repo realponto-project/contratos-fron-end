@@ -8,6 +8,21 @@ div .div-main-relatorio-cadastro h1 {
   justify-content: center;
 }
 
+.col-icon-edit {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+.icon-edit {
+  font-size: 20px !important;
+  color: rgba(0, 15, 29, 0.5) !important;
+  /* color: #001529 !important; */
+}
+
+.icon-edit:hover {
+  color: #42a5f6 !important;
+}
+
 .div-container-block {
   width: 100%;
   display: flex;
