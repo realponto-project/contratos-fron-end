@@ -26,7 +26,7 @@ class NewClientContainer extends Component {
     clientId: "",
     razaosocial: "",
     cnpj: "",
-    grupo: "",
+    grupo: "GRUPO",
     codigo: "",
     nomeContato: "",
     celularContato: "",
