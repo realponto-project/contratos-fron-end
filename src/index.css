@@ -18,8 +18,8 @@ code {
   background-color: white;
   /* pointer-events: none; */
   /* visibility: visible; */
+  transition: width 2s;
   display: flex;
-  transition: background-color width display 5s;
   /* display: none; */
 }
 
@@ -27,5 +27,4 @@ code {
   background-color: #001529;
   width: 190px;
   display: block;
-  transition: background-color width display 5s;
 }
