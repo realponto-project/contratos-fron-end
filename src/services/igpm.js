@@ -1,20 +1,20 @@
 import api from "./api";
-import store from "../store";
+import { store } from "../store";
 
-export const NewIGPM = async value => {
+export const NewIGPM = async (value) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .post("/igpm", value, { headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -25,20 +25,20 @@ export const NewIGPM = async value => {
   return response;
 };
 
-export const DeleteIGPM = async id => {
+export const DeleteIGPM = async (id) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .delete("/igpm", { headers, params: { id } })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -49,20 +49,20 @@ export const DeleteIGPM = async id => {
   return response;
 };
 
-export const GetAllIgpm = async query => {
+export const GetAllIgpm = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .get("/igpm", { headers, params: query })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {

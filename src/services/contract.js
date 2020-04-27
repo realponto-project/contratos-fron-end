@@ -1,20 +1,20 @@
 import api from "./api";
-import store from "../store";
+import { store } from "../store";
 
-export const NewContract = async value => {
+export const NewContract = async (value) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .post("/contract", value, { headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -25,20 +25,20 @@ export const NewContract = async value => {
   return response;
 };
 
-export const UpdateContract = async value => {
+export const UpdateContract = async (value) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .put("/contract", value, { headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -49,20 +49,20 @@ export const UpdateContract = async value => {
   return response;
 };
 
-export const GetContractByParams = async query => {
+export const GetContractByParams = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .get("/contract", { headers, params: query })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -73,20 +73,20 @@ export const GetContractByParams = async query => {
   return response;
 };
 
-export const GetAllContract = async query => {
+export const GetAllContract = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .get("/contract/getAll", { headers, params: query })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -97,20 +97,20 @@ export const GetAllContract = async query => {
   return response;
 };
 
-export const GetLogsByCode = async query => {
+export const GetLogsByCode = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .get("/contract/getLogsByCode", { headers, params: query })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -121,20 +121,20 @@ export const GetLogsByCode = async query => {
   return response;
 };
 
-export const GetAllContractItem = async query => {
+export const GetAllContractItem = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .get("/contract/contractItem/getAll", { headers, params: query })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {

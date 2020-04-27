@@ -1,20 +1,20 @@
 import api from "./api";
-import store from "../store";
+import { store } from "../store";
 
 export const PriceByContractType = async () => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .get("/grafic/priceByContractType", { headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -29,16 +29,16 @@ export const RelatorioBasesService = async () => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .get("/grafic/relatorioBases", { headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -53,16 +53,16 @@ export const AllItems = async () => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .get("/grafic/allItems", { headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {

@@ -1,20 +1,20 @@
 import api from "./api";
-import store from "../store";
+import { store } from "../store";
 
-export const NewUser = async value => {
+export const NewUser = async (value) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .post("/user", value, { headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -25,20 +25,20 @@ export const NewUser = async value => {
   return response;
 };
 
-export const UpdateUserTroll = async value => {
+export const UpdateUserTroll = async (value) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .put("/user/troll", value, { headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -49,20 +49,20 @@ export const UpdateUserTroll = async value => {
   return response;
 };
 
-export const GetAllUsers = async query => {
+export const GetAllUsers = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .get("/user", { headers, params: query })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -73,20 +73,20 @@ export const GetAllUsers = async query => {
   return response;
 };
 
-export const VerifyTroll = async query => {
+export const VerifyTroll = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .get("/user/verifyTroll", { headers, params: query })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {

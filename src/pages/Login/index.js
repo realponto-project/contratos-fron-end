@@ -16,18 +16,18 @@ class LoginPage extends Component {
     email: "",
     password: "",
     message: "",
-    fieldError: ""
+    fieldError: "",
   };
 
-  onChange = e => {
+  onChange = (e) => {
     const { name, value } = e.target;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
 
-  enterKey = async e => {
+  enterKey = async (e) => {
     if (e.which === 13 || e.keyCode === 13) {
       const { email, password } = this.state;
 
@@ -58,10 +58,11 @@ class LoginPage extends Component {
       this.setState(data);
     }
   };
+
   onFocus = () => {
     this.setState({
       message: "",
-      fieldError: ""
+      fieldError: "",
     });
   };
   render() {
@@ -99,7 +100,7 @@ class LoginPage extends Component {
                       style={{
                         color: "red",
                         marginRight: "5px",
-                        fontSize: "18px"
+                        fontSize: "18px",
                       }}
                     />
                     {this.state.message}
@@ -132,7 +133,7 @@ class LoginPage extends Component {
                       style={{
                         color: "red",
                         marginRight: "5px",
-                        fontSize: "18px"
+                        fontSize: "18px",
                       }}
                     />
                     {this.state.message}
@@ -158,7 +159,7 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    login: state.login
+    login: state.login,
   };
 }
 

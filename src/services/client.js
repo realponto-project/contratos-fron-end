@@ -1,20 +1,20 @@
 import api from "./api";
-import store from "../store";
+import { store } from "../store";
 
-export const NewClient = async value => {
+export const NewClient = async (value) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .post("/client", value, { headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -25,20 +25,20 @@ export const NewClient = async value => {
   return response;
 };
 
-export const UpdateClient = async value => {
+export const UpdateClient = async (value) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .put("/client", value, { headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -49,20 +49,20 @@ export const UpdateClient = async value => {
   return response;
 };
 
-export const DeleteClient = async id => {
+export const DeleteClient = async (id) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .delete("/client", { headers, params: { id } })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -73,20 +73,20 @@ export const DeleteClient = async id => {
   return response;
 };
 
-export const RestoreClient = async id => {
+export const RestoreClient = async (id) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .put("/client/restore", { id }, { headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -97,20 +97,20 @@ export const RestoreClient = async id => {
   return response;
 };
 
-export const GetClientByParams = async query => {
+export const GetClientByParams = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .get("/client/getByParams", { headers, params: query })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -121,20 +121,20 @@ export const GetClientByParams = async query => {
   return response;
 };
 
-export const GetAllClient = async query => {
+export const GetAllClient = async (query) => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .get("/client", { headers, params: query })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
@@ -149,16 +149,16 @@ export const GetAllGroups = async () => {
   const storeObject = store.getState();
 
   const headers = {
-    authorization: `Bearer ${storeObject.login.token}`
+    authorization: `Bearer ${storeObject.login.token}`,
   };
 
   let response = {};
   await api
     .get("/client/getAllGroups", { headers })
-    .then(resp => {
+    .then((resp) => {
       response = resp;
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         response = err.response;
       } else {
