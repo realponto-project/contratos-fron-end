@@ -26,7 +26,7 @@ const { Option } = Select;
 class NewContratosContainer extends Component {
   state = {
     indexIgpm: -1,
-    fine: 0,
+    fine: "",
     index: NaN,
     redirect: false,
     visible: false,
@@ -999,11 +999,20 @@ class NewContratosContainer extends Component {
             placeholder="VALOR ANUAL"
             value={this.state.priceYearly}
           ></input>
+          <InputNumber
+            placeholder="MULTA"
+            size="large"
+            style={{ marginLeft: "10px", width: "10%" }}
+            value={this.state.fine}
+            step={0.01}
+            min={0}
+            onChange={fine => this.setState({ fine })}
+          />
           <DatePicker
             size="large"
             placeholder="DATA ATIVAÇÃO"
             className="data-contratos"
-            style={{ margin: "0 25px 0 10px", width: "35%" }}
+            style={{ margin: "0 25px 0 10px", width: "27%" }}
             name="dataAtivacao"
             value={this.state.dataAtivacao}
             format="DD/MM/YYYY"
@@ -1061,13 +1070,6 @@ class NewContratosContainer extends Component {
             </button>
           )}
         </div>
-
-        <InputNumber
-          value={this.state.fine}
-          step={0.01}
-          min={0}
-          onChange={fine => this.setState({ fine })}
-        />
 
         <div className="div-main-contratos">
           <div className="div-itens-contratos">
