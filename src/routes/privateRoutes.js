@@ -10,7 +10,7 @@ import SideBar from "../components/SideBar";
 
 class PrivateRoute extends Component {
   state = {
-    display: "none"
+    display: "none",
   };
 
   render() {
@@ -28,7 +28,7 @@ class PrivateRoute extends Component {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <RightOutlined style={{ fontSize: "20px" }} />
@@ -37,9 +37,9 @@ class PrivateRoute extends Component {
         </div>
         <div className="div-main-body">
           <div
-            className={`div-bSMTPyarn ody ${this.props.login.user &&
-              this.props.login.user.troll &&
-              "troll"}`}
+            className={`div-bSMTPyarn ody ${
+              this.props.login.user && this.props.login.user.troll && "troll"
+            }`}
           >
             <Switch>
               <Route path="/logged" component={PagesRoute} />
@@ -56,7 +56,7 @@ class PrivateRoute extends Component {
 
 function mapStateToProps(state) {
   return {
-    login: state.login
+    login: state.login,
   };
 }
 

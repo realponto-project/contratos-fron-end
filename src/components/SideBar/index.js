@@ -159,7 +159,7 @@ class SideBar extends Component {
     }
     if (this.props.login.user && this.props.login.user.resource) {
       return (
-        <div>
+        <div className="div-sidebar-teste">
           <div className="menuIcon">
             <Tooltip placement="bottom" title={"Contratos"}>
               <Icon

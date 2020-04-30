@@ -1,7 +1,7 @@
 .menu {
   height: calc(100vh - 40px);
   width: 190px !important;
-  position: fixed !important;
+  /* position: fixed !important; */
   top: 40px;
   overflow-y: auto;
 }
@@ -16,8 +16,8 @@
   background-color: #000c17;
   border-bottom: 1px solid rgb(90, 91, 92);
   color: white;
-  width: 190px !important;
-  position: fixed;
+  max-width: 190px !important;
+  /* position: fixed; */
   height: 40px;
   display: flex;
   align-items: center;
@@ -67,4 +67,10 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #003063;
+}
+
+.div-sidebar-teste {
+  position: absolute;
+  left: 0;
+  top: 0;
 }
