@@ -463,66 +463,68 @@ class NewClientContainer extends Component {
         <div className="div-titulo">
           <h1 className="h1-titulo">Cliente</h1>
         </div>
-        <div className="div-inputs-flex">
-          <input
-            className={`input-nome-cliente ${fieldErrors.razaosocial &&
-              "input-error"}`}
-            placeholder="RAZÃO SOCIAL / NOME"
-            onChange={onChange}
-            name="razaosocial"
-            value={state.razaosocial}
-            onFocus={onFocus}
-            onBlur={onBlur}
-          ></input>
-          <input
-            className={`input-cnpj-cliente ${fieldErrors.cnpj &&
-              "input-error"}`}
-            placeholder="CNPJ / CPF"
-            onChange={onChange}
-            name="cnpj"
-            value={state.cnpj}
-            onFocus={onFocus}
-            onBlur={onBlur}
-          ></input>
-          <Select
-            showSearch
-            onSearch={grupo => this.setState({ grupo })}
-            onChange={grupo => this.setState({ grupo })}
-            onBlur={grupo => this.setState({ grupo: grupo.toUpperCase() })}
-            className={`input-grupo-cliente ${fieldErrors.grupo &&
-              "input-error"}`}
-            size="large"
-            readOnly={deletedAt}
-            value={state.grupo}
-            placeholder="GRUPO"
-            style={{ marginLeft: "15px" }}
-            getInputElement={() => (
-              <input
-                style={{
-                  textTransform: "uppercase"
-                }}
-              />
-            )}
-          >
-            {console.log(this.state.groups)}
-            {this.state.groups.length !== 0 &&
-              this.state.groups.map((group, index) => (
-                <Option key={index} value={group}>
-                  {group}
-                </Option>
-              ))}
-          </Select>
-          <input
-            readOnly={deletedAt}
-            className={`input-codigo-cliente ${fieldErrors.codigo &&
-              "input-error"}`}
-            placeholder="CÓDIGO"
-            onChange={onChange}
-            name="codigo"
-            value={state.codigo}
-            onFocus={onFocus}
-            onBlur={onBlur}
-          ></input>
+        <div className="div-inputs-flex-hor">
+          <div className="div-inputs-flex-cliente">
+            <input
+              className={`input-nome-cliente ${fieldErrors.razaosocial &&
+                "input-error"}`}
+              placeholder="RAZÃO SOCIAL / NOME"
+              onChange={onChange}
+              name="razaosocial"
+              value={state.razaosocial}
+              onFocus={onFocus}
+              onBlur={onBlur}
+            ></input>
+            <input
+              className={`input-cnpj-cliente ${fieldErrors.cnpj &&
+                "input-error"}`}
+              placeholder="CNPJ / CPF"
+              onChange={onChange}
+              name="cnpj"
+              value={state.cnpj}
+              onFocus={onFocus}
+              onBlur={onBlur}
+            ></input>
+            <Select
+              showSearch
+              onSearch={grupo => this.setState({ grupo })}
+              onChange={grupo => this.setState({ grupo })}
+              onBlur={grupo => this.setState({ grupo: grupo.toUpperCase() })}
+              className={`input-grupo-cliente ${fieldErrors.grupo &&
+                "input-error"}`}
+              size="large"
+              readOnly={deletedAt}
+              value={state.grupo}
+              placeholder="GRUPO"
+              style={{ marginLeft: "15px" }}
+              getInputElement={() => (
+                <input
+                  style={{
+                    textTransform: "uppercase"
+                  }}
+                />
+              )}
+            >
+              {console.log(this.state.groups)}
+              {this.state.groups.length !== 0 &&
+                this.state.groups.map((group, index) => (
+                  <Option key={index} value={group}>
+                    {group}
+                  </Option>
+                ))}
+            </Select>
+            <input
+              readOnly={deletedAt}
+              className={`input-codigo-cliente ${fieldErrors.codigo &&
+                "input-error"}`}
+              placeholder="CÓDIGO"
+              onChange={onChange}
+              name="codigo"
+              value={state.codigo}
+              onFocus={onFocus}
+              onBlur={onBlur}
+            ></input>
+          </div>
         </div>
         <div className="div-main-cliente">
           <div className="div-contato-cliente">
@@ -702,4 +704,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(NewClientContainer);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(NewClientContainer);
