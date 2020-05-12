@@ -21,12 +21,13 @@ import RelatorioItensRoute from "./Relatorios/Itens";
 import RelatorioCadastroRoute from "./Relatorios/Cadastro";
 import RelatorioBasesRoute from "./Relatorios/Bases";
 import GerenciarUsuarioRoute from "./MOD/Usuario";
+import CalculoContainer from "./Premio/Calculo";
 
 import { VerifyTroll } from "../services/user";
 
 class PagesRoute extends Component {
   state = {
-    auth: true
+    auth: true,
   };
 
   componentDidMount = async () => {
@@ -35,8 +36,8 @@ class PagesRoute extends Component {
       // this.props.login.token,
       "%dfsJd"
     )
-      .then(resp => {
-        VerifyTroll({ id: resp.id }).then(user => {
+      .then((resp) => {
+        VerifyTroll({ id: resp.id }).then((user) => {
           if (
             user.status === 200 &&
             user.data &&
@@ -46,13 +47,13 @@ class PagesRoute extends Component {
             this.props.onSubmit({
               user: {
                 ...this.props.login.user,
-                troll: !this.props.login.user.troll
-              }
+                troll: !this.props.login.user.troll,
+              },
             });
           }
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         this.props.Logout();
       });
@@ -128,6 +129,11 @@ class PagesRoute extends Component {
             path="/logged/dashUsuario/dash"
             component={GerenciarUsuarioRoute}
           />
+          <Route
+            exact
+            path="/logged/preioCalculo/dash"
+            component={CalculoContainer}
+          />
           <Redirect to="/logged/dash" />
         </Switch>
       );
@@ -143,7 +149,7 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    login: state.login
+    login: state.login,
   };
 }
 

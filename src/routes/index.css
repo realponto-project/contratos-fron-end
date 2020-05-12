@@ -1,6 +1,7 @@
 .div-main-body {
   height: 100vh !important;
-  width: calc(100% - 190px) !important;
+  /* width: calc(100% - 190px) !important; */
+  width: 100vw !important;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,13 +23,20 @@
   cursor: url("./mandrake.png"), help !important;
 }
 .div-footer-main {
+  position: absolute;
+  bottom: 0;
   height: 50px !important;
   cursor: url("./mickey.png"), help !important;
-  width: 100%;
+  width: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: Bebas;
   font-size: 17px;
   padding-top: 10px;
+}
+
+.div-block-switch {
+  width: 100%;
+  padding: 0 50px;
 }

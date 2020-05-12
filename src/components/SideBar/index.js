@@ -5,7 +5,11 @@ import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./index.css";
-import { DatabaseOutlined } from "@ant-design/icons";
+import {
+  DatabaseOutlined,
+  CalculatorOutlined,
+  TrophyOutlined,
+} from "@ant-design/icons";
 
 import { Logout } from "../../pages/Login/LoginRedux/action";
 
@@ -150,6 +154,15 @@ class SideBar extends Component {
               push
               to={{
                 pathname: "/logged/dashUsuario/dash",
+              }}
+            />
+          );
+        case "preioCalculo_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/preioCalculo/dash",
               }}
             />
           );
@@ -346,6 +359,21 @@ class SideBar extends Component {
                 </Menu.Item>
               </SubMenu>
             )}
+            <SubMenu
+              key="Premio"
+              title={
+                <span>
+                  <TrophyOutlined />
+
+                  <span>Premio</span>
+                </span>
+              }
+            >
+              <Menu.Item key="preioCalculo_dash">
+                <CalculatorOutlined />
+                Calculo
+              </Menu.Item>
+            </SubMenu>
           </Menu>
         </div>
       );

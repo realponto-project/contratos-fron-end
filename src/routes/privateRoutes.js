@@ -37,7 +37,7 @@ class PrivateRoute extends Component {
         </div>
         <div className="div-main-body">
           <div
-            className={`div-bSMTPyarn ody ${
+            className={`div-block-switch ${
               this.props.login.user && this.props.login.user.troll && "troll"
             }`}
           >
