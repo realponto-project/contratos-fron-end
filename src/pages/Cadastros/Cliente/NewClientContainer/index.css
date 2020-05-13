@@ -4,7 +4,9 @@
   justify-content: space-between;
   margin-top: 50px;
 }
-.div-contato-cliente {
+.div-contato-cliente,
+.div-endereco-cliente {
+  /* padding: 10px 0; */
   width: 45%;
   margin-left: 25px;
   height: 305px;
@@ -13,8 +15,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* background-color: white;
+  border: solid #aaa 1px;
+  border-radius: 10px;
+  box-shadow: 4px 4px 5px #999; */
 }
-.div-endereco-cliente {
+/* .div-endereco-cliente {
   width: 45%;
   margin-right: 25px;
   height: 305px;
@@ -23,7 +29,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */
 .input-contato-cliente {
   text-transform: uppercase;
   width: 90%;
@@ -148,10 +154,15 @@
   border-radius: 2px;
 }
 .div-inputs-flex-cliente {
+  /* padding: 10px; */
   width: 100%;
   height: 50px;
   display: flex;
   align-items: center;
+  /* background-color: white;
+  border: solid #aaa 1px;
+  border-radius: 5px !important;
+  box-shadow: 2px 2px 5px #999; */
 }
 .input-uf-cliente:focus {
   border-bottom: 1px solid #001529;

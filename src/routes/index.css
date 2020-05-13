@@ -6,6 +6,7 @@
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  /* background-color: #f5f5f5; */
 }
 .div-body {
   height: 96vh !important;
