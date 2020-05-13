@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Input, Button, Tooltip, message } from "antd";
+import { Input, Button, Tooltip, Select, message } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { NewPremission } from "../../../services/primiacao";
 import { validator, masks } from "./validator";
+import { GetAllContract, GetAllContractItem } from "../../../services/contract";
+
+const { Option } = Select;
 
 export default class CalculoContainer extends Component {
   state = {
@@ -13,12 +16,45 @@ export default class CalculoContainer extends Component {
       grupo: false,
       equacao: false,
     },
+    contracts: [],
+    contractItems: [],
+    code: undefined,
+  };
+
+  componentDidMount = async () => {
+    await this.getAllContract();
+  };
+
+  getAllContractItem = async () => {
+    const query = {
+      contractCode: this.state.code,
+      filters: {
+        contractItem: {
+          specific: {
+            contractCode: this.state.code,
+          },
+        },
+      },
+      attributes: {
+        contractItem: ["id", "contractCode", "itemId"],
+      },
+    };
+    const { status, data } = await GetAllContractItem(query);
+
+    if (status === 200) this.setState({ contractItems: data });
+  };
+
+  getAllContract = async () => {
+    const { status, data } = await GetAllContract();
+    if (status === 200) {
+      this.setState({ contracts: data.rows });
+    }
   };
 
   newPremission = async () => {
     const { grupo: group, equacao: equation } = this.state;
 
-    const { status, data } = await NewPremission({ group, equation });
+    const { status } = await NewPremission({ group, equation });
 
     if (status === 200) {
       this.setState({
@@ -62,7 +98,6 @@ export default class CalculoContainer extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div className="div-main-premio">
         <h1
@@ -119,7 +154,39 @@ export default class CalculoContainer extends Component {
 
           <div className="div-card-premio">
             <h2>Calculo</h2>
-            <Input />
+            <div className="div-block-input-premio">
+              <label>Contrato</label>
+              <Select
+                onChange={async (value) => {
+                  await this.setState({ code: value });
+                  await this.getAllContractItem();
+                }}
+                // placeholder="TIPO"
+                // value={this.state.tipo}
+                // size="large"
+                style={{ width: "100%" }}
+              >
+                {this.state.contracts.map((contract) => (
+                  <Option value={contract.code}>{contract.code}</Option>
+                ))}
+              </Select>
+            </div>
+            <div className="div-block-input-premio">
+              <label>Item</label>
+              <Select
+                // onChange={value => this.setState({ tipo: value })}
+                // placeholder="TIPO"
+                // value={this.state.tipo}
+                // size="large"
+                style={{ width: "100%" }}
+              >
+                {this.state.contractItems.map((contractItem) => (
+                  <Option value={contractItem.id}>
+                    {contractItem.item.name}
+                  </Option>
+                ))}
+              </Select>
+            </div>
           </div>
         </div>
       </div>
