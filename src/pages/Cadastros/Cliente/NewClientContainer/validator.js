@@ -52,6 +52,50 @@ export const validator = (name, value) => {
 export const masks = (name, value) => {
   let length = NaN;
   switch (name) {
+    case "nomeContato":
+    case "razaosocial":
+      value = value.replace(/\W/gi, "");
+      value = value.slice(0, 50);
+
+      return { name, value };
+
+    case "rua":
+    case "cidade":
+    case "observacoes":
+      value = value.replace(/\W/gi, "");
+      value = value.slice(0, 40);
+
+      return { name, value };
+
+    case "bairro":
+      value = value.replace(/\W/gi, "");
+      value = value.slice(0, 30);
+
+      return { name, value };
+
+    case "complemento":
+      value = value.replace(/\W/gi, "");
+      value = value.slice(0, 20);
+
+      return { name, value };
+
+    case "emailContato":
+      // value = value.replace(/\W/gi, "");
+      value = value.slice(0, 40);
+
+      return { name, value };
+
+    case "grupo":
+      value = value.replace(/\W/gi, "");
+      value = value.slice(0, 10);
+
+      return { name, value };
+
+    case "codigo":
+      value = value.replace(/\D/gi, "");
+      value = value.slice(0, 5);
+
+      return { name, value };
     case "telefoneContato":
       value = value.replace(/\D/gi, "");
       value = value.slice(0, 10);
