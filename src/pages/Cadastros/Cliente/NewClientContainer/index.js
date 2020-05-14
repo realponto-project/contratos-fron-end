@@ -460,10 +460,10 @@ class NewClientContainer extends Component {
     const { fieldErrors, deletedAt } = state;
     return (
       <div className="card-main">
-        <div className="div-titulo">
-          <h1 className="h1-titulo">Cliente</h1>
-        </div>
         <div className="div-inputs-flex-hor">
+          <div className="div-h2-cliente">
+            <h2 style={{ fontFamily: "Bebas", margin: 0 }}>Cliente</h2>
+          </div>
           <div className="div-inputs-flex-cliente">
             <input
               className={`input-nome-cliente ${fieldErrors.razaosocial &&

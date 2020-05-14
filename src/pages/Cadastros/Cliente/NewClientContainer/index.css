@@ -2,39 +2,35 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-top: 50px;
+  margin-top: 20px;
 }
-.div-contato-cliente,
-.div-endereco-cliente {
-  /* padding: 10px 0; */
-  width: 45%;
+.div-contato-cliente {
+  width: 46%;
   margin-left: 25px;
   height: 305px;
-  border-radius: 2px;
+  border-radius: 5px;
   border: 1px solid #ccc;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-color: white;
-  border: solid #aaa 1px;
-  border-radius: 10px;
-  box-shadow: 4px 4px 5px #999; */
+  background-color: white;
 }
-/* .div-endereco-cliente {
-  width: 45%;
+.div-endereco-cliente {
+  width: 46%;
   margin-right: 25px;
   height: 305px;
-  border-radius: 2px;
+  border-radius: 5px;
   border: 1px solid #ccc;
   display: flex;
   flex-direction: column;
   align-items: center;
-} */
+  background-color: white;
+}
 .input-contato-cliente {
   text-transform: uppercase;
   width: 90%;
   height: 35px;
-  margin-top: 25px;
+  margin-top: 15px;
   color: #666;
   padding-left: 10px;
   border: 1px solid #ccc;
@@ -148,10 +144,12 @@
 }
 .div-inputs-flex-hor {
   width: calc(100% - 50px);
-  height: 50px;
+  padding: 0 10px 10px 10px;
+  height: 100px;
   margin-top: 50px;
   border: 1px solid #cccccc;
-  border-radius: 2px;
+  border-radius: 5px;
+  background-color: white;
 }
 .div-inputs-flex-cliente {
   /* padding: 10px; */
@@ -201,7 +199,6 @@
   text-transform: uppercase;
   width: 35%;
   height: 38px;
-  margin-left: 5px;
   color: #666;
   padding-left: 10px;
   border: 1px solid #ccc;
