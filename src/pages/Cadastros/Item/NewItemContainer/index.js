@@ -238,117 +238,106 @@ class NewItemContainer extends Component {
 
     return (
       <div className="card-main">
-        <div className="div-titulo-usuario">
-          <h1 className="h1-titulo">Itens</h1>
-          <div className="div-search-usuario">
-            <input
-              className="input-search-usuario"
-              onChange={this.onChange}
-              placeholder="PESQUISAR"
-              value={this.state.search}
-              name="search"
-            ></input>
-            <Icon
-              type="search"
-              style={{ fontSize: "18px", marginRight: "5px" }}
-              onBlur={onBlur}
-            />
+        <div className="div-card-item">
+          <div className="div-titulo-usuario">
+            <h1 className="h1-titulo" style={{ margin: "0" }}>
+              Itens
+            </h1>
           </div>
-        </div>
+          <div className="div-inputs-flex">
+            <input
+              className={`input-nome-item ${fieldErrors.name && "input-error"}`}
+              onChange={this.onChange}
+              placeholder="NOME"
+              value={this.state.name}
+              name="name"
+              onFocus={onFocus}
+            ></input>
+            <Select
+              value={this.state.tipo}
+              className={`input-tipo-item ${fieldErrors.tipo && "input-error"}`}
+              placeholder="TIPO"
+              onChange={(value) => this.setState({ tipo: value })}
+              size="large"
+            >
+              <Option key="SOFTWARE" value="SOFTWARE">
+                SOFTWARE
+              </Option>
+              <Option key="EQUIPAMENTO" value="EQUIPAMENTO">
+                EQUIPAMENTO
+              </Option>
+            </Select>
+          </div>
 
-        <div className="div-inputs-flex">
-          <input
-            className={`input-nome-item ${fieldErrors.name && "input-error"}`}
-            onChange={this.onChange}
-            placeholder="NOME"
-            value={this.state.name}
-            name="name"
-            onFocus={onFocus}
-          ></input>
-          <Select
-            value={this.state.tipo}
-            className={`input-tipo-item ${fieldErrors.tipo && "input-error"}`}
-            placeholder="TIPO"
-            onChange={(value) => this.setState({ tipo: value })}
-            size="large"
-          >
-            <Option key="SOFTWARE" value="SOFTWARE">
-              SOFTWARE
-            </Option>
-            <Option key="EQUIPAMENTO" value="EQUIPAMENTO">
-              EQUIPAMENTO
-            </Option>
-          </Select>
-          <input
-            className={`input-codigo-item  ${
-              fieldErrors.codigo && "input-error"
-            }`}
-            onChange={this.onChange}
-            placeholder="CÓDIGO"
-            value={this.state.codigo}
-            name="codigo"
-            onFocus={onFocus}
-          ></input>
-        </div>
+          <div className="div-inputs-flex">
+            <input
+              className={`input-codigo-item  ${
+                fieldErrors.codigo && "input-error"
+              }`}
+              onChange={this.onChange}
+              placeholder="CÓDIGO"
+              value={this.state.codigo}
+              name="codigo"
+              onFocus={onFocus}
+            ></input>
+            <input
+              className="input-codigo-item"
+              onChange={this.onChange}
+              placeholder="CUSTO MENSAL"
+              value={this.state.custoMensal}
+              name="custoMensal"
+              onFocus={onFocus}
+              min="0"
+              max="99999"
+              type="number"
+              step={0.01}
+              onBlur={() =>
+                this.setState({
+                  custoMensal: parseFloat(this.state.custoMensal).toFixed(2),
+                })
+              }
+            ></input>
+            <input
+              className="input-codigo-item"
+              onChange={this.onChange}
+              placeholder="CUSTO ANUAL"
+              value={this.state.custoAnual}
+              name="custoAnual"
+              onFocus={onFocus}
+              min="0"
+              max="99999"
+              type="number"
+              step={0.01}
+              onBlur={() =>
+                this.setState({
+                  custoAnual: parseFloat(this.state.custoAnual).toFixed(2),
+                })
+              }
+            ></input>
+          </div>
 
-        <div className="div-inputs-flex">
-          <input
-            className="input-codigo-item"
-            onChange={this.onChange}
-            placeholder="CUSTO MENSAL"
-            value={this.state.custoMensal}
-            name="custoMensal"
-            onFocus={onFocus}
-            min="0"
-            max="99999"
-            type="number"
-            step={0.01}
-            onBlur={() =>
-              this.setState({
-                custoMensal: parseFloat(this.state.custoMensal).toFixed(2),
-              })
-            }
-          ></input>
-          <input
-            className="input-codigo-item"
-            onChange={this.onChange}
-            placeholder="CUSTO ANUAL"
-            value={this.state.custoAnual}
-            name="custoAnual"
-            onFocus={onFocus}
-            min="0"
-            max="99999"
-            type="number"
-            step={0.01}
-            onBlur={() =>
-              this.setState({
-                custoAnual: parseFloat(this.state.custoAnual).toFixed(2),
-              })
-            }
-          ></input>
-        </div>
-
-        <div className="div-descricao-item">
-          <label
-            style={{
-              fontFamily: "Bebas",
-              fontSize: "20px",
-              margin: "50px 0 0 25px",
-            }}
-          >
-            Descricao
-          </label>
-          <textarea
-            className={`textArea-descricao-item ${
-              fieldErrors.descricao && "input-error"
-            }`}
-            value={this.state.descricao}
-            placeholder="DIGITE A DESCRIÇÃO"
-            name="descricao"
-            rows="4"
-            onChange={this.onChange}
-            onFocus={onFocus}
-          ></textarea>
+          <div className="div-descricao-item">
+            <label
+              style={{
+                fontFamily: "Bebas",
+                fontSize: "20px",
+                margin: "20px 0 10px",
+              }}
+            >
+              Descricao
+            </label>
+            <textarea
+              className={`textArea-descricao-item ${
+                fieldErrors.descricao && "input-error"
+              }`}
+              value={this.state.descricao}
+              placeholder="DIGITE A DESCRIÇÃO"
+              name="descricao"
+              rows="4"
+              onChange={this.onChange}
+              onFocus={onFocus}
+            ></textarea>
+          </div>
         </div>
         <div className="div-buttons-usuario">
           {deletedAt ? (
