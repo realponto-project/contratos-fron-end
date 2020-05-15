@@ -46,9 +46,26 @@ export const masks = (name, value) => {
 
       return { name, value };
 
+    case "nome":
+      value = value.replace(/\W/gi, "");
+      value = value.slice(0, 30);
+
+      return { name, value };
+
     case "senha":
+      value = value.replace(/\W/gi, "");
+      value = value.slice(0, 10);
+
+      return { name, value };
+
+    case "descricao":
+      value = value.replace(/\W/gi, "");
+      value = value.slice(0, 50);
+
+      return { name, value };
     case "email":
       value = value.replace(/\s/, "");
+      value = value.slice(0, 40);
       return { name, value };
 
     default:

@@ -1,12 +1,14 @@
 .div-main-body {
   height: 100vh !important;
   /* width: calc(100% - 190px) !important; */
-  width: 100vw !important;
+  width: 100% !important;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  /* background-color: #f5f5f5; */
+  background-color: #f5f5f5;
+  overflow: auto;
+  /* position: relative; */
 }
 .div-body {
   height: 96vh !important;
