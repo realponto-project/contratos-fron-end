@@ -68,6 +68,16 @@ export const masks = (name, value) => {
       value = value.slice(0, 40);
       return { name, value };
 
+    case "equacao":
+      value = value.replace(/[^(X|\d|*|/|\-\.|+|(|)\s))]/gi, "");
+
+      return { name, value };
+
+    case "grupo":
+      value = value.replace(/\W/, "");
+      value = value.slice(0, 40);
+      return { name, value };
+
     default:
       return { name, value };
   }

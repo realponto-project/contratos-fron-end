@@ -1,10 +1,17 @@
 import React, { Component } from "react";
-import { Icon, Checkbox, message, Input } from "antd";
+import { Input, Checkbox, message, Modal, Select, Tooltip } from "antd";
 import * as R from "ramda";
 import "../../../../global.css";
 import "./index.css";
 import { validator, masks } from "./validator";
 import { NewUser } from "../../../../services/user";
+import {
+  NewTypeAccount,
+  GetAllTypeAccounts,
+} from "../../../../services/typeAccount";
+import { PlusOutlined, InfoCircleOutlined } from "@ant-design/icons";
+
+const { Option } = Select;
 
 class UserContainer extends Component {
   state = {
@@ -25,6 +32,21 @@ class UserContainer extends Component {
     addContract: false,
     addUser: false,
     addIgpm: false,
+    typeAccounts: [],
+    visible: false,
+    grupo: "",
+    equacao: "",
+    typeAccountId: "",
+  };
+
+  componentDidMount = async () => {
+    await this.getAllTypeAccounts();
+  };
+
+  getAllTypeAccounts = async () => {
+    const { status, data } = await GetAllTypeAccounts();
+
+    if (status === 200) this.setState({ typeAccounts: data.rows });
   };
 
   onChange = (e) => {
@@ -62,6 +84,9 @@ class UserContainer extends Component {
       addContract: false,
       addUser: false,
       addIgpm: false,
+      grupo: "",
+      equacao: "",
+      typeAccountId: "",
     });
   };
 
@@ -71,6 +96,7 @@ class UserContainer extends Component {
       senha: password,
       telefone: telphone,
       descricao: description,
+      typeAccountId,
       email,
       addClient,
       addItem,
@@ -85,6 +111,7 @@ class UserContainer extends Component {
       telphone,
       email,
       description,
+      typeAccountId,
       resources: {
         addClient,
         addItem,
@@ -132,6 +159,85 @@ class UserContainer extends Component {
   onChengeCheckbox = (e) => {
     const { name, checked } = e.target;
     this.setState({ [name]: checked });
+  };
+
+  onChangeSelect = (typeAccountId) => {
+    this.setState({ typeAccountId });
+  };
+
+  ModalNewTypeAccount = () => (
+    <Modal
+      title="Novo Tipo de Conta"
+      visible={this.state.visible}
+      onOk={this.newTypeAccount}
+      onCancel={this.handleCancel}
+    >
+      <div className="div-block-input-premio" style={{ marginTop: "0" }}>
+        <label>Grupo</label>
+        <Input
+          name="grupo"
+          className={`${this.state.fieldErrors.grupo ? "input-error" : null}`}
+          value={this.state.grupo}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
+        />
+      </div>
+      <div className="div-block-input-premio">
+        <label>
+          Equeção{" "}
+          <Tooltip
+            mouseEnterDelay={0.2}
+            trigger={["click"]}
+            placement="right"
+            title={`São aceitos apenas numeros, "+" para soma, "-" para subtração, "*" para multiplicação, "/" para divisão, "^" para exponeciação, "(" e ")" para indicar a importância da operação e "x" para representar o valor do item`}
+          >
+            <InfoCircleOutlined style={{ fontSize: "10px" }} />
+          </Tooltip>
+        </label>
+        <Input
+          name="equacao"
+          className={`${this.state.fieldErrors.equacao ? "input-error" : null}`}
+          value={this.state.equacao}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
+        />
+      </div>
+    </Modal>
+  );
+
+  newTypeAccount = async () => {
+    const { grupo: group, equacao: equation } = this.state;
+    const value = { group, equation };
+    const { status } = await NewTypeAccount(value);
+    if (status === 200) {
+      this.setState({
+        grupo: "",
+        equacao: "",
+        fieldErrors: {
+          grupo: false,
+          equacao: false,
+        },
+        visible: false,
+      });
+      message.success("sucesso");
+      await this.getAllTypeAccounts();
+    } else {
+      message.error("erro");
+    }
+  };
+
+  handleCancel = (e) => {
+    this.setState({
+      visible: false,
+    });
+  };
+
+  openModal = () => {
+    this.setState({
+      visible: true,
+    });
   };
 
   render() {
@@ -211,9 +317,27 @@ class UserContainer extends Component {
           </div>
 
           <div className="div-permissoes-main-usuario">
-            <label style={{ fontFamily: "Bebas", fontSize: "20px" }}>
-              Permissoes
-            </label>
+            <div className="div-block-subtitulo-permissoes">
+              <label style={{ fontFamily: "Bebas", fontSize: "20px" }}>
+                Permissoes
+              </label>
+
+              <div style={{ display: "flex" }}>
+                <button className="button-plus" onClick={this.openModal}>
+                  <PlusOutlined style={{ fontSize: "16px" }} />
+                </button>
+                <Select
+                  style={{
+                    width: "200px",
+                  }}
+                  onChange={this.onChangeSelect}
+                >
+                  {this.state.typeAccounts.map((typeAccount) => (
+                    <Option value={typeAccount.id}>{typeAccount.group}</Option>
+                  ))}
+                </Select>
+              </div>
+            </div>
             <div className="div-permissoes-usuario">
               <Checkbox
                 name="addClient"
@@ -259,6 +383,8 @@ class UserContainer extends Component {
             Salvar
           </button>
         </div>
+
+        <this.ModalNewTypeAccount />
       </div>
     );
   }

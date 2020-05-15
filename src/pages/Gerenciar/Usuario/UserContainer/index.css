@@ -132,3 +132,8 @@
 .ant-checkbox-wrapper {
   margin: 0 !important;
 }
+
+.div-block-subtitulo-permissoes {
+  display: flex;
+  justify-content: space-between;
+}

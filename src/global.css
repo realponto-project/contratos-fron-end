@@ -127,3 +127,21 @@
   border: red !important;
   background: rgba(255, 0, 0, 0.2) !important;
 }
+
+.button-plus {
+  border-radius: 3px;
+  background-color: #001529;
+  color: white;
+  border: none;
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-plus:hover {
+  cursor: pointer;
+}

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./index.css";
 import { Input, Button, Tooltip, Select, message } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { NewPremission } from "../../../services/primiacao";
+import { NewTypeAccount } from "../../../services/typeAccount";
 import { validator, masks } from "./validator";
 import { GetAllContract, GetAllContractItem } from "../../../services/contract";
 
@@ -54,7 +54,7 @@ export default class CalculoContainer extends Component {
   newPremission = async () => {
     const { grupo: group, equacao: equation } = this.state;
 
-    const { status } = await NewPremission({ group, equation });
+    const { status } = await NewTypeAccount({ group, equation });
 
     if (status === 200) {
       this.setState({
