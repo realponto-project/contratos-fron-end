@@ -11,6 +11,7 @@ export const validator = (name, value) => {
       break;
 
     case "senha":
+    case "confirmarSenha":
       if (value === "") return true;
       if (value.length < 5) return true;
       break;
@@ -53,6 +54,7 @@ export const masks = (name, value) => {
       return { name, value };
 
     case "senha":
+    case "confirmarSenha":
       value = value.replace(/\W/gi, "");
       value = value.slice(0, 10);
 

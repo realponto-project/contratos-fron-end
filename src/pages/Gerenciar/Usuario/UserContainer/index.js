@@ -26,6 +26,7 @@ class UserContainer extends Component {
       senha: false,
       email: false,
       telefone: false,
+      confirmarSenha: false,
     },
     addClient: false,
     addItem: false,
@@ -78,6 +79,7 @@ class UserContainer extends Component {
         senha: false,
         email: false,
         telefone: false,
+        confirmarSenha: false,
       },
       addClient: false,
       addItem: false,
@@ -93,6 +95,7 @@ class UserContainer extends Component {
   newUser = async () => {
     const {
       nome: username,
+      confirmarSenha,
       senha: password,
       telefone: telphone,
       descricao: description,
@@ -104,6 +107,11 @@ class UserContainer extends Component {
       addUser,
       addIgpm,
     } = this.state;
+
+    if (confirmarSenha !== password) {
+      message.error("senha incompatível");
+      return;
+    }
 
     const value = {
       username,
@@ -149,7 +157,11 @@ class UserContainer extends Component {
 
   onBlur = (e) => {
     let { name, value } = e.target;
-    const { fieldErrors } = this.state;
+    const { fieldErrors, senha, confirmarSenha } = this.state;
+
+    if (name === "confirmarSenha") {
+      fieldErrors.confirmarSenha = senha !== confirmarSenha;
+    }
 
     this.setState({
       fieldErrors: { ...fieldErrors, [name]: validator(name, value) },
@@ -288,19 +300,34 @@ class UserContainer extends Component {
               onBlur={this.onBlur}
             ></input>
 
-            <input
-              className={`input-info-usuario ${
-                fieldErrors.senha && "input-error"
-              }`}
-              style={{ textTransform: "none" }}
-              onChange={this.onChange}
-              placeholder="SENHA"
-              value={state.senha}
-              name="senha"
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
-              // type="password"
-            ></input>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <input
+                className={`input-info-usuario ${
+                  fieldErrors.senha && "input-error"
+                }`}
+                style={{ textTransform: "none", width: "45%" }}
+                onChange={this.onChange}
+                placeholder="SENHA"
+                value={state.senha}
+                name="senha"
+                onFocus={this.onFocus}
+                onBlur={this.onBlur}
+                // type="password"
+              ></input>
+              <input
+                className={`input-info-usuario ${
+                  fieldErrors.confirmarSenha && "input-error"
+                }`}
+                style={{ textTransform: "none", width: "45%" }}
+                onChange={this.onChange}
+                placeholder="CONFIRMAR SENHA"
+                value={state.confirmarSenha}
+                name="confirmarSenha"
+                onFocus={this.onFocus}
+                onBlur={this.onBlur}
+                // type="password"
+              ></input>
+            </div>
 
             <textarea
               className={`textArea-descricao-item ${
