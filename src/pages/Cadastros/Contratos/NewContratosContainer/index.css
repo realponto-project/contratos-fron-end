@@ -3,50 +3,14 @@
   height: 50px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 .select-contratos {
   width: 30% !important;
   margin-left: 10px !important;
 }
-.input-valor-contratos {
-  width: 15%;
-  height: 35px;
-  margin: 0 25px 0 10px;
-  color: #666;
-  padding-left: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  border-radius: 2px;
-  outline: none;
-}
-.input-data {
-  width: 20%;
-  height: 38px;
-  margin: 0 0 0 10px;
-  color: #666;
-  padding-left: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  border-radius: 2px;
-  outline: none;
-}
-.button-historico-contratos {
-  width: 10%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 38px;
-  margin: 0 25px 0 10px;
-  background-color: #42a5f6;
-  border: none;
-  border-radius: 2px;
-  padding: 5px 20px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff;
-  cursor: pointer;
-  outline: none;
-}
+
 .button-historico-contratos:active {
   background: #2279c0;
 }
@@ -56,6 +20,7 @@
   display: flex;
   align-items: center;
 }
+
 .div-itens-contratos {
   margin: 10px 25px 10px 25px;
   display: flex;
@@ -89,31 +54,47 @@
   width: 100%;
   margin: 0 25px 15px 25px;
 }
-.input-item-contratos {
-  text-transform: uppercase;
-  width: 45%;
-  height: 38px;
+
+.input-valor-contratos,
+.input-data,
+.input-item-contratos,
+.input-codigo-contratos,
+.input-grupo-contratos,
+.input-cnpj-contratos,
+.input-nome-contratos,
+.input-valor-contratos {
+  height: 40px;
   color: #666;
-  padding-left: 10px;
   border: 1px solid #ccc;
   font-size: 14px;
-  border-radius: 2px;
+  border-radius: 4px;
   outline: none;
+}
+
+.input-valor-contratos {
+  width: 15%;
+  margin: 0 25px 0 10px;
+  padding-left: 10px;
+}
+
+.input-data {
+  width: 20%;
+  margin: 0 0 0 10px;
+  padding-left: 10px;
+}
+.input-item-contratos {
+  width: 45%;
+  padding-left: 10px;
+  font-size: 14px;
   margin-left: 5px;
 }
 .input-valor-contratos {
   width: 16%;
-  height: 38px;
   margin: 0 0 0 10px;
-  color: #666;
   padding-left: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  border-radius: 2px;
-  outline: none;
 }
 .input-data-contratos {
-  width: 18%;
+  width: 30% !important;
   height: 38px;
   margin: 0 0 0 10px;
   color: #666;
@@ -123,11 +104,28 @@
   border-radius: 2px;
   outline: none;
 }
+.button-cancelar {
+  height: 35px;
+  border: 0;
+  background: #666;
+  border-radius: 4px;
+  padding: 5px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  margin-right: 10px;
+}
+.button-cancelar:active {
+  background: #2279c0;
+}
+
 .button-incluir {
   height: 35px;
   border: 0;
   background: #42a5f6;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 5px 20px;
   font-size: 14px;
   font-weight: bold;
@@ -140,51 +138,25 @@
   background: #2279c0;
 }
 .input-codigo-contratos {
-  text-transform: uppercase;
   width: 20%;
-  height: 35px;
   margin: 0 10px 0 25px;
-  color: #666;
   padding-left: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  border-radius: 2px;
-  outline: none;
 }
 .input-nome-contratos {
-  text-transform: uppercase;
-  width: 50%;
-  height: 35px;
+  width: 45%;
   margin-left: 0;
-  color: #666;
   padding-left: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  border-radius: 2px;
-  outline: none;
 }
 .input-grupo-contratos {
-  text-transform: uppercase;
-  width: 35%;
+  width: 30%;
   margin-left: 25px;
-  height: 35px;
-  color: #666;
   padding-left: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  border-radius: 2px;
-  outline: none;
 }
+
 .input-cnpj-contratos {
   width: 30%;
-  height: 35px;
   margin: 0 25px 0 10px;
-  color: #666;
   padding-left: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  border-radius: 2px;
-  outline: none;
 }
 /* .ant-modal-content {
   width: 700px;
@@ -375,22 +347,28 @@
 .button-delete:active {
   background: rgb(185, 23, 23);
 }
+
+.button-historico-contratos,
 .button-historico-contratos-disable {
-  width: 10%;
+  width: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 38px;
-  margin: 0 25px 0 10px;
-  background-color: #666 !important;
+  height: 40px;
+  margin-left: 5%;
+  background-color: #42a5f6;
   border: none;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 5px 20px;
   font-size: 14px;
   font-weight: bold;
   color: #fff;
-  cursor: not-allowed;
+  cursor: pointer;
   outline: none;
+}
+.button-historico-contratos-disable {
+  background-color: #666 !important;
+  cursor: not-allowed;
 }
 
 .button-down {
@@ -471,4 +449,92 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis !important;
+}
+
+.div-card-contratos-1 {
+  padding: 20px 20px;
+  width: 100%;
+  height: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  align-items: center;
+  margin-top: 50px;
+  box-shadow: 0 0 5px #666;
+  transition: height 1s;
+}
+
+.icon-plus-contratos {
+  /* color: red !important; */
+  color: #42a5f6 !important;
+  font-size: 20px;
+}
+
+.icon-plus-contratos:hover {
+  font-size: 21px;
+}
+
+.div-block-title-contractItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  margin: 7px 0;
+}
+
+.div-block-header-contractItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.h4-title-contractItem {
+  color: #888;
+}
+
+.div-codico-title-contractItem {
+  width: 5%;
+}
+
+.div-nome-title-contractItem {
+  width: 45%;
+}
+.div-valor-title-contractItem {
+  width: 10%;
+}
+.div-acoes-title-contractItem {
+  display: flex;
+  justify-content: space-evenly;
+  width: 10%;
+  overflow: hidden;
+  align-items: center;
+}
+
+.div-tipo-title-contractItem {
+  width: 18%;
+}
+
+.icon-edit-contractItem {
+  font-size: 18px;
+  color: rgba(127, 255, 0, 0.6) !important;
+}
+.icon-edit-contractItem:hover {
+  font-size: 20px;
+  color: rgb(127, 255, 0) !important;
+  cursor: pointer;
+}
+
+.icon-close {
+  font-size: 18px;
+  color: rgba(255, 0, 0, 0.5) !important;
+}
+
+.icon-close:hover {
+  font-size: 20px;
+  color: red !important;
+  cursor: pointer;
+}
+
+.div-block-row {
+  display: flex;
+  width: 30%;
 }
