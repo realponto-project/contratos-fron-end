@@ -11,7 +11,7 @@ import {
   CloseOutlined,
   EditOutlined,
   PlusOutlined,
-  MinusOutlined,
+  MinusOutlined
 } from "@ant-design/icons";
 import * as R from "ramda";
 import { Redirect } from "react-router-dom";
@@ -23,7 +23,7 @@ import { getAddressByZipCode } from "../../../../services/utils/viacep";
 import {
   NewContract,
   UpdateContract,
-  GetContractByParams,
+  GetContractByParams
 } from "../../../../services/contract";
 import moment from "moment";
 import { setContractCode } from "../ContratosRedux/action";
@@ -77,11 +77,11 @@ class NewContratosContainer extends Component {
       cidade: false,
       uf: false,
       complemento: false,
-      observacoes: false,
+      observacoes: false
     },
     itens: [],
     allItens: [],
-    clientList: [],
+    clientList: []
   };
 
   clearState = () => {
@@ -123,9 +123,9 @@ class NewContratosContainer extends Component {
         cidade: false,
         uf: false,
         complemento: false,
-        observacoes: false,
+        observacoes: false
       },
-      itens: [],
+      itens: []
     });
   };
 
@@ -133,7 +133,7 @@ class NewContratosContainer extends Component {
     this.props.setContractCode(this.state.codigo);
 
     this.setState({
-      redirect: true,
+      redirect: true
     });
   };
   renderRedirect = () => {
@@ -147,35 +147,35 @@ class NewContratosContainer extends Component {
       filters: {
         item: {
           specific: {
-            igpm: false,
-          },
-        },
+            igpm: false
+          }
+        }
       },
-      total: 500,
+      total: 500
     };
     await this.setState({ allItens: (await GetAllItens(query)).data.rows });
 
     await this.getAllClient();
   };
 
-  onChange = (e) => {
+  onChange = e => {
     const { name, value } = masks(e.target.name, e.target.value);
     this.setState({
       // [name]: value.toUpperCase()
-      [name]: value,
+      [name]: value
     });
   };
 
-  getAllClient = async (cnpj) => {
+  getAllClient = async cnpj => {
     const query = {
       filters: {
         client: {
           specific: {
-            cnpj,
-          },
-        },
+            cnpj
+          }
+        }
       },
-      total: 50,
+      total: 50
     };
     const { status, data } = await GetAllClient(query);
     if (status === 200) {
@@ -186,8 +186,8 @@ class NewContratosContainer extends Component {
   getClientByParams = async (name, value, fieldErrors) => {
     const { status, data } = await GetClientByParams({
       where: {
-        [name]: name === "cnpj" ? value.replace(/\D/gi, "") : value,
-      },
+        [name]: name === "cnpj" ? value.replace(/\D/gi, "") : value
+      }
     });
     if (status === 200) {
       if (data) {
@@ -195,7 +195,7 @@ class NewContratosContainer extends Component {
           id: clientId,
           razaosocial,
           cnpj,
-          group: { group: grupo },
+          group: { group: grupo }
         } = data;
         const cnpjFormated = masks("cnpj", cnpj);
         this.setState({
@@ -206,23 +206,23 @@ class NewContratosContainer extends Component {
           fieldErrors: {
             ...fieldErrors,
             razaosocial: false,
-            cnpj: false,
-          },
+            cnpj: false
+          }
         });
       } else {
         this.setState({
-          fieldErrors: { ...fieldErrors, [name]: true },
+          fieldErrors: { ...fieldErrors, [name]: true }
         });
       }
     }
   };
 
-  onBlur = async (e) => {
+  onBlur = async e => {
     const { name, value } = e.target;
     const { fieldErrors } = this.state;
 
     this.setState({
-      fieldErrors: { ...fieldErrors, [name]: validator(name, value) },
+      fieldErrors: { ...fieldErrors, [name]: validator(name, value) }
     });
 
     if (name === "codigo") {
@@ -238,14 +238,14 @@ class NewContratosContainer extends Component {
           dateTermination: dataRescisao,
           priceMonthly,
           priceYearly,
-          fine,
+          fine
         } = data;
 
         this.setState({
           fieldErrors: {
             razaosocial: false,
             cnpj: false,
-            codigo: false,
+            codigo: false
           },
           fine,
           contractCode,
@@ -259,7 +259,7 @@ class NewContratosContainer extends Component {
           grupo,
           itens,
           priceMonthly,
-          priceYearly,
+          priceYearly
         });
       } else {
         this.setState({
@@ -274,7 +274,7 @@ class NewContratosContainer extends Component {
           contractCode: "",
           itens: [],
           priceMonthly: 0,
-          priceYearly: 0,
+          priceYearly: 0
         });
       }
     }
@@ -284,7 +284,7 @@ class NewContratosContainer extends Component {
       if (status === 200) {
         if (R.has("erro", data)) {
           this.setState({
-            fieldErrors: { ...fieldErrors, [name]: true },
+            fieldErrors: { ...fieldErrors, [name]: true }
           });
         } else {
           const { logradouro: rua, bairro, localidade: cidade, uf } = data;
@@ -298,15 +298,15 @@ class NewContratosContainer extends Component {
               rua: false,
               bairro: false,
               cidade: false,
-              uf: false,
-            },
+              uf: false
+            }
           });
         }
       }
     }
   };
 
-  onFocus = (e) => {
+  onFocus = e => {
     const { name } = e.target;
 
     const { fieldErrors } = this.state;
@@ -314,26 +314,26 @@ class NewContratosContainer extends Component {
     this.setState({ fieldErrors: { ...fieldErrors, [name]: false } });
   };
 
-  removeItem = async (index) => {
+  removeItem = async index => {
     const oldItem = this.state.itens;
     oldItem.splice(index, 1);
 
     await this.setState({
-      itens: oldItem,
+      itens: oldItem
     });
   };
 
-  onChangeStatus = (value) => {
+  onChangeStatus = value => {
     const { status, dataRescisao } = this.state;
     this.setState({
       dataRescisao: status !== "CANCELADO" ? dataRescisao : null,
-      status: value,
+      status: value
     });
   };
 
-  onChangeBase = (value) => {
+  onChangeBase = value => {
     this.setState({
-      base: value,
+      base: value
     });
   };
 
@@ -350,14 +350,14 @@ class NewContratosContainer extends Component {
       dataRescisao: dateTermination,
       priceMonthly,
       priceYearly,
-      fine,
+      fine
     } = this.state;
 
     let value = {
       status,
       fine,
       stockBase,
-      itens: itens.map((item) => {
+      itens: itens.map(item => {
         if (R.has("id", item)) {
           const {
             price,
@@ -371,7 +371,7 @@ class NewContratosContainer extends Component {
             city,
             state,
             complement,
-            observation,
+            observation
           } = item;
           return {
             price,
@@ -384,12 +384,12 @@ class NewContratosContainer extends Component {
                   city,
                   state,
                   complement,
-                  observation,
+                  observation
                 }
               : address,
             contractItemId,
             itemId,
-            id,
+            id
           };
         }
         return item;
@@ -398,7 +398,7 @@ class NewContratosContainer extends Component {
       dateTermination,
       userId: this.props.login.user.id,
       priceMonthly,
-      priceYearly,
+      priceYearly
     };
 
     if (contractCode !== "") {
@@ -420,12 +420,12 @@ class NewContratosContainer extends Component {
         this.clearState();
         message.success("Contrato cadatrado com sucesso");
       } else if (response.status === 422) {
-        R.keys(response.data.errors[0].field).map((key) =>
+        R.keys(response.data.errors[0].field).map(key =>
           this.setState({
             fieldErrors: {
               ...this.state.fieldErrors,
-              [key]: response.data.errors[0].field,
-            },
+              [key]: response.data.errors[0].field
+            }
           })
         );
       }
@@ -437,7 +437,7 @@ class NewContratosContainer extends Component {
       item: option.props.item.name,
       codigoModal: option.props.item.code,
       type: option.props.item.type,
-      itemId: option.key,
+      itemId: option.key
     });
   };
 
@@ -454,7 +454,7 @@ class NewContratosContainer extends Component {
         style={{
           fontFamily: "Bebas",
           fontSize: "20px",
-          margin: "10px 0 0 0",
+          margin: "10px 0 0 0"
         }}
       >
         Item
@@ -463,7 +463,7 @@ class NewContratosContainer extends Component {
         <Select
           style={{
             width: "75%",
-            marginRight: "10px",
+            marginRight: "10px"
           }}
           size="large"
           showSearch
@@ -478,12 +478,12 @@ class NewContratosContainer extends Component {
           getInputElement={() => (
             <input
               style={{
-                textTransform: "uppercase",
+                textTransform: "uppercase"
               }}
             />
           )}
         >
-          {this.state.allItens.map((value) => (
+          {this.state.allItens.map(value => (
             <Option key={value.id} value={value.name} item={value}>
               {value.name}
             </Option>
@@ -502,7 +502,7 @@ class NewContratosContainer extends Component {
             0
           }
         >
-          {this.state.allItens.map((value) => (
+          {this.state.allItens.map(value => (
             <Option key={value.id} value={value.code} item={value}>
               {value.code}
             </Option>
@@ -511,7 +511,7 @@ class NewContratosContainer extends Component {
       </div>
       <div className="div-line-modal">
         <Select
-          onChange={(value) => this.setState({ tipo: value })}
+          onChange={value => this.setState({ tipo: value })}
           placeholder="TIPO"
           value={this.state.tipo}
           size="large"
@@ -521,9 +521,8 @@ class NewContratosContainer extends Component {
           <Option value="ANUAL">ANUAL</Option>
         </Select>
         <input
-          className={`input-cnpj-contratos ${
-            this.state.fieldErrors.cnpjModal && "input-error"
-          }`}
+          className={`input-cnpj-contratos ${this.state.fieldErrors.cnpjModal &&
+            "input-error"}`}
           style={{ width: "40%" }}
           placeholder="CNPJ / CPF"
           onChange={this.onChange}
@@ -535,9 +534,8 @@ class NewContratosContainer extends Component {
       </div>
       <div className="div-twoInfo-modal">
         <input
-          className={`input-cep-modal ${
-            this.state.fieldErrors.cep && "input-error"
-          }`}
+          className={`input-cep-modal ${this.state.fieldErrors.cep &&
+            "input-error"}`}
           placeholder="CEP"
           onChange={this.onChange}
           name="cep"
@@ -562,9 +560,8 @@ class NewContratosContainer extends Component {
       ></input>
       <div className="div-twoInfo-modal">
         <input
-          className={`input-cidade-modal ${
-            this.state.fieldErrors.cidade && "input-error"
-          }`}
+          className={`input-cidade-modal ${this.state.fieldErrors.cidade &&
+            "input-error"}`}
           placeholder="CIDADE"
           onChange={this.onChange}
           name="cidade"
@@ -573,9 +570,8 @@ class NewContratosContainer extends Component {
           onBlur={this.onBlur}
         ></input>
         <input
-          className={`input-uf-modal ${
-            this.state.fieldErrors.uf && "input-error"
-          }`}
+          className={`input-uf-modal ${this.state.fieldErrors.uf &&
+            "input-error"}`}
           placeholder="UF"
           onChange={this.onChange}
           name="uf"
@@ -601,13 +597,13 @@ class NewContratosContainer extends Component {
     </Modal>
   );
 
-  showModal = (e) => {
+  showModal = e => {
     this.setState({
-      visible: true,
+      visible: true
     });
   };
 
-  getModal = (index) => {
+  getModal = index => {
     // console.log(index);
     const {
       id: itemId,
@@ -617,7 +613,7 @@ class NewContratosContainer extends Component {
       code: codigoModal,
       costPrice,
       address,
-      zipCode,
+      zipCode
     } = this.state.itens[index];
 
     if ((id && address) || zipCode) {
@@ -628,7 +624,7 @@ class NewContratosContainer extends Component {
         city: cidade,
         state: uf,
         complement: complemento,
-        observation: observacoes,
+        observation: observacoes
       } = id && !zipCode ? address : this.state.itens[index];
 
       this.setState({
@@ -643,7 +639,7 @@ class NewContratosContainer extends Component {
         uf,
         complemento,
         observacoes,
-        modalAtualizada: true,
+        modalAtualizada: true
       });
     }
 
@@ -656,7 +652,7 @@ class NewContratosContainer extends Component {
       codigoModal,
       tipo,
       cnpjModal,
-      modalAtualizada: true,
+      modalAtualizada: true
     });
   };
 
@@ -673,7 +669,7 @@ class NewContratosContainer extends Component {
       item: name,
       itens,
       costPrice,
-      index,
+      index
     } = this.state;
 
     const copyItens = itens;
@@ -691,7 +687,7 @@ class NewContratosContainer extends Component {
       complement,
       observation,
       itemId,
-      name,
+      name
     };
 
     if (
@@ -712,7 +708,7 @@ class NewContratosContainer extends Component {
         complemento: "",
         observacoes: "",
         visible: false,
-        modalAtualizada: false,
+        modalAtualizada: false
       });
     } else {
       message.error("Verifique se não falta nada para ser preenchido.");
@@ -733,7 +729,7 @@ class NewContratosContainer extends Component {
       // contractCode,
       itemId,
       item: name,
-      itens,
+      itens
     } = this.state;
 
     if (
@@ -760,8 +756,8 @@ class NewContratosContainer extends Component {
             observation,
             igpms: [],
             type,
-            cnpj,
-          },
+            cnpj
+          }
         ],
         itemId: "",
         item: "NÃO SELECIONADO",
@@ -775,7 +771,7 @@ class NewContratosContainer extends Component {
         complemento: "",
         observacoes: "",
         visible: false,
-        modalAtualizada: false,
+        modalAtualizada: false
       });
     } else {
       message.error("Verifique se não falta nada para ser preenchido.");
@@ -796,11 +792,11 @@ class NewContratosContainer extends Component {
       observacoes: "",
       contractCode: "",
       itemId: "",
-      modalAtualizada: false,
+      modalAtualizada: false
     });
   };
 
-  disabledDate = (current) => {
+  disabledDate = current => {
     return current && current < moment().startOf("day");
   };
 
@@ -815,7 +811,7 @@ class NewContratosContainer extends Component {
         city,
         state,
         complement,
-        observation,
+        observation
       } = this.state.itens[this.state.index];
       address = zipCode
         ? {
@@ -826,7 +822,7 @@ class NewContratosContainer extends Component {
             city,
             state,
             complement,
-            observation,
+            observation
           }
         : address;
     }
@@ -834,7 +830,7 @@ class NewContratosContainer extends Component {
       <Modal
         width={700}
         visible={this.state.modalInfo}
-        onOk={(e) => console.log(e)}
+        onOk={e => console.log(e)}
         onCancel={() => this.setState({ modalInfo: false })}
         cancelText="Cancelar"
         okText="OK"
@@ -867,7 +863,7 @@ class NewContratosContainer extends Component {
                     "pt-BR",
                     {
                       style: "currency",
-                      currency: "BRL",
+                      currency: "BRL"
                     }
                   )}
                 </label>
@@ -976,9 +972,8 @@ class NewContratosContainer extends Component {
         <div className="div-card-contratos-1">
           <div className="div-inputs-flex">
             <input
-              className={`input-codigo-contratos ${
-                fieldErrors.codigo && "input-error"
-              }`}
+              className={`input-codigo-contratos ${fieldErrors.codigo &&
+                "input-error"}`}
               placeholder="Nº CONTRATO"
               onChange={this.onChange}
               name="codigo"
@@ -991,18 +986,18 @@ class NewContratosContainer extends Component {
               //   fieldErrors.cnpj && "input-error"
               // }`}
               style={{ width: "25%" }}
-              onChange={(id) => {
+              onChange={id => {
                 const { clientList } = this.state;
                 const index = R.findIndex(R.propEq("id", id))(clientList);
 
                 this.setState({
                   razaosocial: clientList[index].razaosocial,
                   cnpj: clientList[index].cnpj,
-                  grupo: clientList[index].group.group,
+                  grupo: clientList[index].group.group
                 });
               }}
               showSearch
-              onSearch={(cnpj) => this.getAllClient(cnpj)}
+              onSearch={cnpj => this.getAllClient(cnpj)}
               placeholder="cnpj"
               optionFilterProp="children"
               filterOption={(input, option) =>
@@ -1012,20 +1007,20 @@ class NewContratosContainer extends Component {
               }
               size="large"
             >
-              {this.state.clientList.map((client) => (
+              {this.state.clientList.map(client => (
                 <Option
                   value={client.id}
                   onMouseEnter={() =>
                     this.setState({
                       razaosocial: client.razaosocial,
-                      grupo: client.group.group,
+                      grupo: client.group.group
                     })
                   }
                   onMouseLeave={() => {
                     if (this.state.cnpj === "")
                       this.setState({
                         razaosocial: "",
-                        grupo: "",
+                        grupo: ""
                       });
                   }}
                 >
@@ -1034,9 +1029,8 @@ class NewContratosContainer extends Component {
               ))}
             </Select>
             <input
-              className={`input-nome-contratos ${
-                fieldErrors.razaosocial && "input-error"
-              }`}
+              className={`input-nome-contratos ${fieldErrors.razaosocial &&
+                "input-error"}`}
               style={{ textTransform: "uppercase" }}
               placeholder="RAZÃO SOCIAL / NOME"
               onChange={this.onChange}
@@ -1076,7 +1070,7 @@ class NewContratosContainer extends Component {
               name="dataAtivacao"
               value={this.state.dataAtivacao}
               format="DD/MM/YYYY"
-              onChange={(e) => {
+              onChange={e => {
                 this.setState({ dataAtivacao: e });
               }}
             />
@@ -1092,7 +1086,7 @@ class NewContratosContainer extends Component {
                 value={this.state.dataRescisao}
                 disabledDate={this.disabledDate}
                 format="DD/MM/YYYY"
-                onChange={(e) => {
+                onChange={e => {
                   this.setState({ dataRescisao: e });
                 }}
               />
@@ -1115,7 +1109,7 @@ class NewContratosContainer extends Component {
                   value={this.state.fine}
                   step={0.01}
                   min={0}
-                  onChange={(fine) => this.setState({ fine })}
+                  onChange={fine => this.setState({ fine })}
                 />
                 <button
                   onClick={() =>
@@ -1138,7 +1132,7 @@ class NewContratosContainer extends Component {
             style={{
               display: "flex",
               justifyContent: "flex-end",
-              marginTop: "10px",
+              marginTop: "10px"
             }}
           >
             {!this.state.divOculta ? (
@@ -1215,7 +1209,7 @@ class NewContratosContainer extends Component {
                       <label>
                         {item.price.toLocaleString("pt-BR", {
                           style: "currency",
-                          currency: "BRL",
+                          currency: "BRL"
                         })}
                       </label>
                     </div>
@@ -1258,7 +1252,7 @@ class NewContratosContainer extends Component {
                             priceYearly:
                               item.type === "ANUAL"
                                 ? priceYearly - price
-                                : priceYearly,
+                                : priceYearly
                           });
                           this.removeItem(index);
                         }}
@@ -1266,7 +1260,7 @@ class NewContratosContainer extends Component {
                     </div>
                   </div>
                   {this.state.indexIgpm === index &&
-                    this.state.itens[this.state.indexIgpm].igpms.map((item) => (
+                    this.state.itens[this.state.indexIgpm].igpms.map(item => (
                       <div className="div-igpm-contratos">
                         <h4 className="h4-contratos">{`${item.type} ${
                           item.month
@@ -1408,7 +1402,7 @@ class NewContratosContainer extends Component {
         </div> */}
         <div className="div-buttons-usuario">
           <button className="button-cancelar" onClick={this.clearState}>
-            cancelar
+            Cancelar
           </button>
           <button className="button-salvar-cliente" onClick={this.newContract}>
             Salvar
@@ -1425,7 +1419,7 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    login: state.login,
+    login: state.login
   };
 }
 

@@ -7,7 +7,7 @@ import { validator, masks } from "./validator";
 import { NewUser } from "../../../../services/user";
 import {
   NewTypeAccount,
-  GetAllTypeAccounts,
+  GetAllTypeAccounts
 } from "../../../../services/typeAccount";
 import { PlusOutlined, InfoCircleOutlined } from "@ant-design/icons";
 
@@ -26,7 +26,7 @@ class UserContainer extends Component {
       senha: false,
       email: false,
       telefone: false,
-      confirmarSenha: false,
+      confirmarSenha: false
     },
     addClient: false,
     addItem: false,
@@ -37,7 +37,7 @@ class UserContainer extends Component {
     visible: false,
     grupo: "",
     equacao: "",
-    typeAccountId: "",
+    typeAccountId: ""
   };
 
   componentDidMount = async () => {
@@ -50,19 +50,19 @@ class UserContainer extends Component {
     if (status === 200) this.setState({ typeAccounts: data.rows });
   };
 
-  onChange = (e) => {
+  onChange = e => {
     const { name, value } = masks(e.target.name, e.target.value);
 
     this.setState({
-      [name]: value,
+      [name]: value
     });
   };
 
-  onChangeEmail = (e) => {
+  onChangeEmail = e => {
     const { name, value } = masks(e.target.name, e.target.value);
 
     this.setState({
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -79,7 +79,7 @@ class UserContainer extends Component {
         senha: false,
         email: false,
         telefone: false,
-        confirmarSenha: false,
+        confirmarSenha: false
       },
       addClient: false,
       addItem: false,
@@ -88,7 +88,7 @@ class UserContainer extends Component {
       addIgpm: false,
       grupo: "",
       equacao: "",
-      typeAccountId: "",
+      typeAccountId: ""
     });
   };
 
@@ -105,7 +105,7 @@ class UserContainer extends Component {
       addItem,
       addContract,
       addUser,
-      addIgpm,
+      addIgpm
     } = this.state;
 
     if (confirmarSenha !== password) {
@@ -125,8 +125,8 @@ class UserContainer extends Component {
         addItem,
         addContract,
         addUser,
-        addIgpm,
-      },
+        addIgpm
+      }
     };
 
     const { status, data } = await NewUser(value);
@@ -135,27 +135,27 @@ class UserContainer extends Component {
       this.clearState();
       message.success("Usuario cadatrado com sucesso");
     } else if (status === 422) {
-      R.keys(data.errors[0].field).map((key) =>
+      R.keys(data.errors[0].field).map(key =>
         this.setState({
           fieldErrors: {
             ...this.state.fieldErrors,
-            [key]: data.errors[0].field,
-          },
+            [key]: data.errors[0].field
+          }
         })
       );
     }
   };
 
-  onFocus = (e) => {
+  onFocus = e => {
     const { name } = e.target;
     const { fieldErrors } = this.state;
 
     this.setState({
-      fieldErrors: { ...fieldErrors, [name]: false },
+      fieldErrors: { ...fieldErrors, [name]: false }
     });
   };
 
-  onBlur = (e) => {
+  onBlur = e => {
     let { name, value } = e.target;
     const { fieldErrors, senha, confirmarSenha } = this.state;
 
@@ -164,16 +164,16 @@ class UserContainer extends Component {
     }
 
     this.setState({
-      fieldErrors: { ...fieldErrors, [name]: validator(name, value) },
+      fieldErrors: { ...fieldErrors, [name]: validator(name, value) }
     });
   };
 
-  onChengeCheckbox = (e) => {
+  onChengeCheckbox = e => {
     const { name, checked } = e.target;
     this.setState({ [name]: checked });
   };
 
-  onChangeSelect = (typeAccountId) => {
+  onChangeSelect = typeAccountId => {
     this.setState({ typeAccountId });
   };
 
@@ -229,9 +229,9 @@ class UserContainer extends Component {
         equacao: "",
         fieldErrors: {
           grupo: false,
-          equacao: false,
+          equacao: false
         },
-        visible: false,
+        visible: false
       });
       message.success("sucesso");
       await this.getAllTypeAccounts();
@@ -240,15 +240,15 @@ class UserContainer extends Component {
     }
   };
 
-  handleCancel = (e) => {
+  handleCancel = e => {
     this.setState({
-      visible: false,
+      visible: false
     });
   };
 
   openModal = () => {
     this.setState({
-      visible: true,
+      visible: true
     });
   };
 
@@ -257,16 +257,14 @@ class UserContainer extends Component {
     const { fieldErrors } = state;
     return (
       <div className="card-main">
-        <div className="div-titulo-usuario">
-          <h1 className="h1-titulo">Usuario</h1>
-        </div>
-
         <div className="div-main-usuario">
           <div className="div-info-usuario">
+            <label style={{ fontFamily: "Bebas", fontSize: "20px" }}>
+              Usuario
+            </label>
             <input
-              className={`input-info-usuario ${
-                fieldErrors.nome && "input-error"
-              }`}
+              className={`input-info-usuario ${fieldErrors.nome &&
+                "input-error"}`}
               onChange={this.onChange}
               placeholder="NOME"
               value={state.nome}
@@ -276,9 +274,8 @@ class UserContainer extends Component {
             ></input>
 
             <input
-              className={`input-info-usuario ${
-                fieldErrors.email && "input-error"
-              }`}
+              className={`input-info-usuario ${fieldErrors.email &&
+                "input-error"}`}
               style={{ textTransform: "none" }}
               onChange={this.onChangeEmail}
               placeholder="E-MAIL"
@@ -289,9 +286,8 @@ class UserContainer extends Component {
             ></input>
 
             <input
-              className={`input-info-usuario ${
-                fieldErrors.telefone && "input-error"
-              }`}
+              className={`input-info-usuario ${fieldErrors.telefone &&
+                "input-error"}`}
               onChange={this.onChange}
               placeholder="TELEFONE"
               value={state.telefone}
@@ -302,9 +298,8 @@ class UserContainer extends Component {
 
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <input
-                className={`input-info-usuario ${
-                  fieldErrors.senha && "input-error"
-                }`}
+                className={`input-info-usuario ${fieldErrors.senha &&
+                  "input-error"}`}
                 style={{ textTransform: "none", width: "45%" }}
                 onChange={this.onChange}
                 placeholder="SENHA"
@@ -315,9 +310,8 @@ class UserContainer extends Component {
                 // type="password"
               ></input>
               <input
-                className={`input-info-usuario ${
-                  fieldErrors.confirmarSenha && "input-error"
-                }`}
+                className={`input-info-usuario ${fieldErrors.confirmarSenha &&
+                  "input-error"}`}
                 style={{ textTransform: "none", width: "45%" }}
                 onChange={this.onChange}
                 placeholder="CONFIRMAR SENHA"
@@ -330,9 +324,8 @@ class UserContainer extends Component {
             </div>
 
             <textarea
-              className={`textArea-descricao-item ${
-                fieldErrors.descricao && "input-error"
-              }`}
+              className={`textArea-descricao-item ${fieldErrors.descricao &&
+                "input-error"}`}
               style={{ marginTop: "20px" }}
               value={this.state.descricao}
               placeholder="DIGITE A DESCRIÇÃO"
@@ -355,11 +348,11 @@ class UserContainer extends Component {
                 </button>
                 <Select
                   style={{
-                    width: "200px",
+                    width: "200px"
                   }}
                   onChange={this.onChangeSelect}
                 >
-                  {this.state.typeAccounts.map((typeAccount) => (
+                  {this.state.typeAccounts.map(typeAccount => (
                     <Option value={typeAccount.id}>{typeAccount.group}</Option>
                   ))}
                 </Select>
