@@ -8,7 +8,7 @@ import "./index.css";
 import {
   DatabaseOutlined,
   CalculatorOutlined,
-  TrophyOutlined,
+  TrophyOutlined
 } from "@ant-design/icons";
 
 import { Logout } from "../../pages/Login/LoginRedux/action";
@@ -19,20 +19,20 @@ class SideBar extends Component {
   state = {
     current: "0",
     redirect: false,
-    open: [""],
+    open: [""]
   };
 
   handleClickCompany = async (current, keyPath) => {
     this.setState({
       current,
       redirect: true,
-      open: [keyPath],
+      open: [keyPath]
     });
   };
 
   changeRedirectState = () => {
     this.setState({
-      redirect: false,
+      redirect: false
     });
   };
 
@@ -40,15 +40,15 @@ class SideBar extends Component {
     this.setState({
       current,
       redirect: true,
-      open: [keyPath],
+      open: [keyPath]
     });
   };
 
-  handleClick = async (e) => {
+  handleClick = async e => {
     this.setState({
       current: e.key,
       redirect: true,
-      open: [e.keyPath[1]],
+      open: [e.keyPath[1]]
     });
   };
 
@@ -63,7 +63,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: "/logged/user/dash",
+                pathname: "/logged/user/dash"
               }}
             />
           );
@@ -72,7 +72,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: "/logged/dashConsulta/dash",
+                pathname: "/logged/dashConsulta/dash"
               }}
             />
           );
@@ -81,7 +81,16 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: "/logged/newClient/add",
+                pathname: "/logged/newClient/add"
+              }}
+            />
+          );
+        case "newPremiacao_add":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/newPremiacao/add"
               }}
             />
           );
@@ -90,7 +99,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: "/logged/newItem/add",
+                pathname: "/logged/newItem/add"
               }}
             />
           );
@@ -99,7 +108,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: "/logged/newContrato/add",
+                pathname: "/logged/newContrato/add"
               }}
             />
           );
@@ -108,7 +117,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: "/logged/newIgpm/add",
+                pathname: "/logged/newIgpm/add"
               }}
             />
           );
@@ -117,7 +126,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: "/logged/dashIgpm/dash",
+                pathname: "/logged/dashIgpm/dash"
               }}
             />
           );
@@ -126,7 +135,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: "/logged/relatorioItens/dash",
+                pathname: "/logged/relatorioItens/dash"
               }}
             />
           );
@@ -135,7 +144,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: "/logged/relatorioCadastro/dash",
+                pathname: "/logged/relatorioCadastro/dash"
               }}
             />
           );
@@ -144,7 +153,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: "/logged/relatorioBases/dash",
+                pathname: "/logged/relatorioBases/dash"
               }}
             />
           );
@@ -153,7 +162,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: "/logged/dashUsuario/dash",
+                pathname: "/logged/dashUsuario/dash"
               }}
             />
           );
@@ -162,7 +171,7 @@ class SideBar extends Component {
             <Redirect
               push
               to={{
-                pathname: "/logged/preioCalculo/dash",
+                pathname: "/logged/preioCalculo/dash"
               }}
             />
           );
@@ -261,7 +270,16 @@ class SideBar extends Component {
                 <Icon type="file-add" />
                 Contratos
               </Menu.Item>
+
+              <Menu.Item
+                key="newPremiacao_add"
+                disabled={!this.props.login.user.resource.addContract}
+              >
+                <Icon type="file-add" />
+                Premiaçao
+              </Menu.Item>
             </SubMenu>
+
             <SubMenu
               key="Gerenciar"
               title={
@@ -389,8 +407,11 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    login: state.login,
+    login: state.login
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(SideBar);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(SideBar);

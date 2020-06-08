@@ -24,10 +24,11 @@ import GerenciarUsuarioRoute from "./MOD/Usuario";
 import CalculoContainer from "./Premio/Calculo";
 
 import { VerifyTroll } from "../services/user";
+import NewPremiacaoRoute from "./Cadastros/Premiacao";
 
 class PagesRoute extends Component {
   state = {
-    auth: true,
+    auth: true
   };
 
   componentDidMount = async () => {
@@ -36,8 +37,8 @@ class PagesRoute extends Component {
       // this.props.login.token,
       "%dfsJd"
     )
-      .then((resp) => {
-        VerifyTroll({ id: resp.id }).then((user) => {
+      .then(resp => {
+        VerifyTroll({ id: resp.id }).then(user => {
           if (
             user.status === 200 &&
             user.data &&
@@ -47,13 +48,13 @@ class PagesRoute extends Component {
             this.props.onSubmit({
               user: {
                 ...this.props.login.user,
-                troll: !this.props.login.user.troll,
-              },
+                troll: !this.props.login.user.troll
+              }
             });
           }
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         this.props.Logout();
       });
@@ -84,6 +85,14 @@ class PagesRoute extends Component {
                 exact
                 path="/logged/newItem/add"
                 component={NewItemRoute}
+              />
+            )}
+          {!!this.props.login.user &&
+            this.props.login.user.resource.addItem && (
+              <Route
+                exact
+                path="/logged/newPremiacao/add"
+                component={NewPremiacaoRoute}
               />
             )}
           {!!this.props.login.user &&
@@ -149,8 +158,11 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    login: state.login,
+    login: state.login
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(PagesRoute);
