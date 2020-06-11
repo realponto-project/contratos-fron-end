@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Checkbox, message, Modal, Select, Tooltip } from "antd";
+import { Input, Checkbox, message, Modal, Select, Tooltip, Switch } from "antd";
 import * as R from "ramda";
 import "../../../../global.css";
 import "./index.css";
@@ -21,6 +21,7 @@ class UserContainer extends Component {
     telefone: "",
     search: "",
     descricao: "",
+    premiacao: false,
     fieldErrors: {
       nome: false,
       senha: false,
@@ -300,7 +301,7 @@ class UserContainer extends Component {
               <input
                 className={`input-info-usuario ${fieldErrors.senha &&
                   "input-error"}`}
-                style={{ textTransform: "none", width: "45%" }}
+                style={{ textTransform: "none", width: "30%" }}
                 onChange={this.onChange}
                 placeholder="SENHA"
                 value={state.senha}
@@ -312,7 +313,7 @@ class UserContainer extends Component {
               <input
                 className={`input-info-usuario ${fieldErrors.confirmarSenha &&
                   "input-error"}`}
-                style={{ textTransform: "none", width: "45%" }}
+                style={{ textTransform: "none", width: "30%" }}
                 onChange={this.onChange}
                 placeholder="CONFIRMAR SENHA"
                 value={state.confirmarSenha}
@@ -321,6 +322,17 @@ class UserContainer extends Component {
                 onBlur={this.onBlur}
                 // type="password"
               ></input>
+
+              <div className="div-switch">
+                <label style={{ color: "#C8C8C8", marginTop: "20px" }}>
+                  PREMIAÇÃO:
+                </label>
+                <Switch
+                  className="switch-info-usuario"
+                  value={this.state.premiacao}
+                  onChange={value => this.setState({ premiacao: value })}
+                />
+              </div>
             </div>
 
             <textarea
