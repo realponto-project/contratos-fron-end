@@ -57,6 +57,22 @@
   border-radius: 2px;
   outline: none;
 }
+.switch-info-usuario {
+  height: 35px;
+  font-size: 14px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  margin-top: 20px !important;
+  border-radius: 2px;
+  outline: none;
+}
+.div-switch {
+  width: 20%;
+  height: 35px;
+  display: flex;
+  justify-content: space-between;
+}
 .input-info-usuario::placeholder {
   color: rgb(177, 177, 177);
 }
