@@ -1518,6 +1518,7 @@ class NewContratosContainer extends Component {
           <input
             readOnly
             className="input-valor-contratos"
+            style={{ margin: "0" }}
             placeholder="VALOR MENSAL"
             value={this.state.priceMonthly}
           ></input>
