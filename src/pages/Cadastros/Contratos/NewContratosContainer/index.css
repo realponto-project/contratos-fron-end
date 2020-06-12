@@ -62,6 +62,7 @@
 .input-grupo-contratos,
 .input-cnpj-contratos,
 .input-nome-contratos,
+.input-quantidade-contratos,
 .input-valor-contratos {
   height: 40px;
   color: #666;
@@ -69,6 +70,9 @@
   font-size: 14px;
   border-radius: 4px;
   outline: none;
+}
+.input-quantidade-contratos {
+  padding: 0 0 0 10px;
 }
 
 .input-valor-contratos {
@@ -137,6 +141,9 @@
 .button-incluir:active {
   background: #2279c0;
 }
+.button-incluir:disabled {
+  background: #666666;
+}
 .input-codigo-contratos {
   width: 20%;
   margin: 0 10px 0 25px;
@@ -154,9 +161,13 @@
 }
 
 .input-cnpj-contratos {
-  width: 30%;
-  margin: 0 25px 0 10px;
+  width: 47%;
+  /* margin: 0 10px 0 0px; */
   padding-left: 10px;
+}
+
+.input-cnpj-contratos:disabled {
+  background-color: #f5f5f5;
 }
 /* .ant-modal-content {
   width: 700px;
@@ -166,7 +177,6 @@
   flex-direction: column;
 }
 .input-item-modal {
-  text-transform: uppercase;
   width: 75%;
   height: 35px;
   margin: 10px 10px 0 0;
@@ -178,7 +188,6 @@
   outline: none;
 }
 .input-codigo-modal {
-  text-transform: uppercase;
   width: 25%;
   height: 35px;
   margin: 10px 0 0 0;
@@ -189,147 +198,79 @@
   border-radius: 2px;
   outline: none;
 }
-.input-valor::placeholder {
-  color: rgb(177, 177, 177);
-}
-.input-valor-contratos::placeholder {
-  color: rgb(177, 177, 177);
-}
-.input-valor:focus {
-  border-bottom: 1px solid #001529;
-}
-.input-cnpj-contratos::placeholder {
-  color: rgb(177, 177, 177);
-}
-.input-grupo-contratos::placeholder {
-  color: rgb(177, 177, 177);
-}
-.input-cnpj-contratos:focus {
-  border-bottom: 1px solid #001529;
-}
-.input-nome-contratos::placeholder {
-  color: rgb(177, 177, 177);
-}
-.input-nome-contratos:focus {
-  border-bottom: 1px solid #001529;
-}
-.input-codigo-contratos::placeholder {
-  color: rgb(177, 177, 177);
-}
-.input-codigo-contratos:focus {
-  border-bottom: 1px solid #001529;
-}
-.input-item-modal::placeholder {
-  color: rgb(177, 177, 177);
-}
-.input-item-modal:focus {
-  border-bottom: 1px solid #001529;
-}
-.input-codigo-modal::placeholder {
-  color: rgb(177, 177, 177);
-}
-.input-codigo-modal:focus {
-  border-bottom: 1px solid #001529;
-}
 .div-line-modal {
   width: 100%;
   display: flex;
   margin: 5px 0 20px 0;
+  justify-content: space-between;
 }
-.input-endereco-modal {
-  text-transform: uppercase;
-  width: 100%;
-  height: 35px;
-  margin-top: 15px;
-  color: #666;
-  padding-left: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  border-radius: 2px;
-  outline: none;
-}
-.input-endereco-modal::placeholder {
+.input-valor::placeholder,
+.input-valor-contratos::placeholder,
+.input-grupo-contratos::placeholder,
+.input-cnpj-contratos::placeholder,
+.input-nome-contratos::placeholder,
+.input-codigo-contratos::placeholder,
+.input-quantidade-contratos::placeholder,
+.input-item-modal::placeholder,
+.input-codigo-modal::placeholder,
+.input-endereco-modal::placeholder,
+.input-bairro-modal::placeholder,
+.input-cep-modal::placeholder,
+.input-cidade-modal::placeholder,
+.input-uf-modal::placeholder {
   color: rgb(177, 177, 177);
 }
-.input-endereco-modal:focus {
+
+.input-valor:focus,
+.input-cnpj-contratos:focus,
+.input-nome-contratos:focus,
+.input-codigo-contratos:focus,
+.input-quantidade-contratos:focus,
+.input-item-modal:focus,
+.input-codigo-modal:focus,
+.input-endereco-modal:focus,
+.input-bairro-modal:focus,
+.input-cep-modal:focus,
+.input-cidade-modal:focus,
+.input-uf-modal:focus {
   border-bottom: 1px solid #001529;
 }
+
 .div-twoInfo-modal {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
-.input-bairro-modal {
-  text-transform: uppercase;
-  width: 55%;
+.input-bairro-modal,
+.input-cep-modal,
+.input-cidade-modal,
+.input-uf-modal,
+.input-endereco-modal {
   height: 35px;
   margin-top: 15px;
   color: #666;
   padding-left: 10px;
   border: 1px solid #ccc;
   font-size: 14px;
-  border-radius: 2px;
+  border-radius: 4px;
   outline: none;
+}
+
+.input-endereco-modal {
+  width: 100%;
+}
+
+.input-bairro-modal {
+  width: 55%;
 }
 .input-cep-modal {
-  text-transform: uppercase;
   width: 40%;
-  height: 35px;
-  margin-top: 15px;
-  color: #666;
-  padding-left: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  border-radius: 2px;
-  outline: none;
-}
-.input-bairro-modal::placeholder {
-  color: rgb(177, 177, 177);
-}
-.input-cep-modal::placeholder {
-  color: rgb(177, 177, 177);
-}
-.input-bairro-modal:focus {
-  border-bottom: 1px solid #001529;
-}
-.input-cep-modal:focus {
-  border-bottom: 1px solid #001529;
 }
 .input-cidade-modal {
-  text-transform: uppercase;
   width: 80%;
-  height: 35px;
-  margin-top: 15px;
-  color: #666;
-  padding-left: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  border-radius: 2px;
-  outline: none;
 }
 .input-uf-modal {
-  text-transform: uppercase;
   width: 15%;
-  height: 35px;
-  margin-top: 15px;
-  color: #666;
-  padding-left: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  border-radius: 2px;
-  outline: none;
-}
-.input-cidade-modal::placeholder {
-  color: rgb(177, 177, 177);
-}
-.input-uf-modal::placeholder {
-  color: rgb(177, 177, 177);
-}
-.input-cidade-modal:focus {
-  border-bottom: 1px solid #001529;
-}
-.input-uf-modal:focus {
-  border-bottom: 1px solid #001529;
 }
 .button-delete {
   height: 38px;
@@ -536,4 +477,10 @@
 .div-block-row {
   display: flex;
   width: 30%;
+}
+
+.label-title-modal {
+  font-family: Bebas;
+  font-size: 25px;
+  margin: 10px 0;
 }

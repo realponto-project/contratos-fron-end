@@ -3,7 +3,17 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import "../../../../global.css";
 import "./index.css";
-import { Icon, Select, message, Modal, DatePicker, InputNumber } from "antd";
+import {
+  Switch,
+  Button,
+  Icon,
+  Select,
+  message,
+  Modal,
+  DatePicker,
+  InputNumber,
+  Steps,
+} from "antd";
 
 import {
   DownOutlined,
@@ -11,7 +21,7 @@ import {
   CloseOutlined,
   EditOutlined,
   PlusOutlined,
-  MinusOutlined
+  MinusOutlined,
 } from "@ant-design/icons";
 import * as R from "ramda";
 import { Redirect } from "react-router-dom";
@@ -23,37 +33,43 @@ import { getAddressByZipCode } from "../../../../services/utils/viacep";
 import {
   NewContract,
   UpdateContract,
-  GetContractByParams
+  GetContractByParams,
 } from "../../../../services/contract";
 import moment from "moment";
 import { setContractCode } from "../ContratosRedux/action";
 
-const { Option } = Select;
+const { Option } = Select,
+  { Step } = Steps;
 
 class NewContratosContainer extends Component {
   state = {
-    indexIgpm: -1,
-    fine: "",
+    base: undefined,
+    clientId: "",
+    item: undefined,
+    codigoModal: undefined,
+    tipo: undefined,
+    dataRescisao: null,
     index: NaN,
+    indexIgpm: -1,
+    progressModalItem: 0,
+    quantidade: 1,
+    priceCostModal: undefined,
+    priceSaleModal: undefined,
     redirect: false,
-    visible: false,
+    empresaAtual: true,
     divOculta: false,
     modalInfo: false,
     modalAtualizada: false,
+    visible: false,
     search: "",
+    fine: "",
     razaosocial: "",
-    cnpj: "",
+    razaosocialModal: "",
+    cnpjModal: "",
+    cnpj: undefined,
     codigo: "",
     grupo: "",
     dataAtivacao: "",
-    dataRescisao: null,
-    status: "ATIVO",
-    base: undefined,
-    clientId: "",
-    item: "NÃO SELECIONADO",
-    codigoModal: "CÓDIGO",
-    cnpjModal: "",
-    tipo: undefined,
     rua: "",
     bairro: "",
     cep: "",
@@ -66,6 +82,7 @@ class NewContratosContainer extends Component {
     itemId: "",
     priceMonthly: "",
     priceYearly: "",
+    status: "ATIVO",
     fieldErrors: {
       razaosocial: false,
       cnpj: false,
@@ -77,11 +94,11 @@ class NewContratosContainer extends Component {
       cidade: false,
       uf: false,
       complemento: false,
-      observacoes: false
+      observacoes: false,
     },
     itens: [],
     allItens: [],
-    clientList: []
+    clientList: [],
   };
 
   clearState = () => {
@@ -123,9 +140,9 @@ class NewContratosContainer extends Component {
         cidade: false,
         uf: false,
         complemento: false,
-        observacoes: false
+        observacoes: false,
       },
-      itens: []
+      itens: [],
     });
   };
 
@@ -133,7 +150,7 @@ class NewContratosContainer extends Component {
     this.props.setContractCode(this.state.codigo);
 
     this.setState({
-      redirect: true
+      redirect: true,
     });
   };
   renderRedirect = () => {
@@ -147,47 +164,47 @@ class NewContratosContainer extends Component {
       filters: {
         item: {
           specific: {
-            igpm: false
-          }
-        }
+            igpm: false,
+          },
+        },
       },
-      total: 500
+      total: 500,
     };
     await this.setState({ allItens: (await GetAllItens(query)).data.rows });
 
     await this.getAllClient();
   };
 
-  onChange = e => {
+  onChange = (e) => {
     const { name, value } = masks(e.target.name, e.target.value);
     this.setState({
-      // [name]: value.toUpperCase()
-      [name]: value
+      [name]: value,
     });
   };
 
-  getAllClient = async cnpj => {
+  getAllClient = async (cnpj) => {
     const query = {
       filters: {
         client: {
           specific: {
-            cnpj
-          }
-        }
+            cnpj,
+          },
+        },
       },
-      total: 50
+      total: 50,
     };
     const { status, data } = await GetAllClient(query);
     if (status === 200) {
       this.setState({ clientList: data.rows });
     }
+    console.log(data);
   };
 
   getClientByParams = async (name, value, fieldErrors) => {
     const { status, data } = await GetClientByParams({
       where: {
-        [name]: name === "cnpj" ? value.replace(/\D/gi, "") : value
-      }
+        [name]: name === "cnpj" ? value.replace(/\D/gi, "") : value,
+      },
     });
     if (status === 200) {
       if (data) {
@@ -195,7 +212,7 @@ class NewContratosContainer extends Component {
           id: clientId,
           razaosocial,
           cnpj,
-          group: { group: grupo }
+          group: { group: grupo },
         } = data;
         const cnpjFormated = masks("cnpj", cnpj);
         this.setState({
@@ -206,23 +223,23 @@ class NewContratosContainer extends Component {
           fieldErrors: {
             ...fieldErrors,
             razaosocial: false,
-            cnpj: false
-          }
+            cnpj: false,
+          },
         });
       } else {
         this.setState({
-          fieldErrors: { ...fieldErrors, [name]: true }
+          fieldErrors: { ...fieldErrors, [name]: true },
         });
       }
     }
   };
 
-  onBlur = async e => {
+  onBlur = async (e) => {
     const { name, value } = e.target;
     const { fieldErrors } = this.state;
 
     this.setState({
-      fieldErrors: { ...fieldErrors, [name]: validator(name, value) }
+      fieldErrors: { ...fieldErrors, [name]: validator(name, value) },
     });
 
     if (name === "codigo") {
@@ -238,14 +255,14 @@ class NewContratosContainer extends Component {
           dateTermination: dataRescisao,
           priceMonthly,
           priceYearly,
-          fine
+          fine,
         } = data;
 
         this.setState({
           fieldErrors: {
             razaosocial: false,
             cnpj: false,
-            codigo: false
+            codigo: false,
           },
           fine,
           contractCode,
@@ -259,7 +276,7 @@ class NewContratosContainer extends Component {
           grupo,
           itens,
           priceMonthly,
-          priceYearly
+          priceYearly,
         });
       } else {
         this.setState({
@@ -274,7 +291,7 @@ class NewContratosContainer extends Component {
           contractCode: "",
           itens: [],
           priceMonthly: 0,
-          priceYearly: 0
+          priceYearly: 0,
         });
       }
     }
@@ -284,7 +301,7 @@ class NewContratosContainer extends Component {
       if (status === 200) {
         if (R.has("erro", data)) {
           this.setState({
-            fieldErrors: { ...fieldErrors, [name]: true }
+            fieldErrors: { ...fieldErrors, [name]: true },
           });
         } else {
           const { logradouro: rua, bairro, localidade: cidade, uf } = data;
@@ -298,15 +315,15 @@ class NewContratosContainer extends Component {
               rua: false,
               bairro: false,
               cidade: false,
-              uf: false
-            }
+              uf: false,
+            },
           });
         }
       }
     }
   };
 
-  onFocus = e => {
+  onFocus = (e) => {
     const { name } = e.target;
 
     const { fieldErrors } = this.state;
@@ -314,26 +331,26 @@ class NewContratosContainer extends Component {
     this.setState({ fieldErrors: { ...fieldErrors, [name]: false } });
   };
 
-  removeItem = async index => {
+  removeItem = async (index) => {
     const oldItem = this.state.itens;
     oldItem.splice(index, 1);
 
     await this.setState({
-      itens: oldItem
+      itens: oldItem,
     });
   };
 
-  onChangeStatus = value => {
+  onChangeStatus = (value) => {
     const { status, dataRescisao } = this.state;
     this.setState({
       dataRescisao: status !== "CANCELADO" ? dataRescisao : null,
-      status: value
+      status: value,
     });
   };
 
-  onChangeBase = value => {
+  onChangeBase = (value) => {
     this.setState({
-      base: value
+      base: value,
     });
   };
 
@@ -350,14 +367,14 @@ class NewContratosContainer extends Component {
       dataRescisao: dateTermination,
       priceMonthly,
       priceYearly,
-      fine
+      fine,
     } = this.state;
 
     let value = {
       status,
       fine,
       stockBase,
-      itens: itens.map(item => {
+      itens: itens.map((item) => {
         if (R.has("id", item)) {
           const {
             price,
@@ -371,7 +388,7 @@ class NewContratosContainer extends Component {
             city,
             state,
             complement,
-            observation
+            observation,
           } = item;
           return {
             price,
@@ -384,12 +401,12 @@ class NewContratosContainer extends Component {
                   city,
                   state,
                   complement,
-                  observation
+                  observation,
                 }
               : address,
             contractItemId,
             itemId,
-            id
+            id,
           };
         }
         return item;
@@ -398,7 +415,7 @@ class NewContratosContainer extends Component {
       dateTermination,
       userId: this.props.login.user.id,
       priceMonthly,
-      priceYearly
+      priceYearly,
     };
 
     if (contractCode !== "") {
@@ -420,12 +437,12 @@ class NewContratosContainer extends Component {
         this.clearState();
         message.success("Contrato cadatrado com sucesso");
       } else if (response.status === 422) {
-        R.keys(response.data.errors[0].field).map(key =>
+        R.keys(response.data.errors[0].field).map((key) =>
           this.setState({
             fieldErrors: {
               ...this.state.fieldErrors,
-              [key]: response.data.errors[0].field
-            }
+              [key]: response.data.errors[0].field,
+            },
           })
         );
       }
@@ -437,102 +454,368 @@ class NewContratosContainer extends Component {
       item: option.props.item.name,
       codigoModal: option.props.item.code,
       type: option.props.item.type,
-      itemId: option.key
+      itemId: option.key,
+      tipo: undefined,
+      priceCostModal: undefined,
+      priceSaleModal: undefined,
     });
+  };
+
+  ContentModalIncluir = () => {
+    switch (this.state.progressModalItem) {
+      case 0:
+        return (
+          <>
+            {/* <label className="label-title-modal">Item</label> */}
+            <div className="div-line-modal">
+              <Select
+                style={{
+                  width: "100%",
+                  // marginRight: "10px",
+                }}
+                size="large"
+                showSearch
+                placeholder="NÃO SELECIONADO"
+                optionFilterProp="children"
+                value={this.state.item}
+                onChange={this.onChangeSelect}
+                filterOption={(input, option) =>
+                  option.props.children
+                    .toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
+                }
+                getInputElement={() => (
+                  <input
+                    style={{
+                      textTransform: "uppercase",
+                    }}
+                  />
+                )}
+              >
+                {this.state.allItens.map((value) => (
+                  <Option key={value.id} value={value.name} item={value}>
+                    {value.name}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+            <div className="div-line-modal">
+              <Select
+                style={{ width: "45%" }}
+                size="large"
+                showSearch
+                placeholder="CÓDIGO"
+                optionFilterProp="children"
+                value={this.state.codigoModal}
+                onChange={this.onChangeSelect}
+                filterOption={(input, option) =>
+                  option.props.children
+                    .toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                {this.state.allItens.map((value) => (
+                  <Option key={value.id} value={value.code} item={value}>
+                    {value.code}
+                  </Option>
+                ))}
+              </Select>
+              <Select
+                onChange={(value) => {
+                  const { itemId, allItens } = this.state,
+                    item = R.find(R.propEq("id", itemId))(allItens);
+                  this.setState({
+                    tipo: value,
+                    priceCostModal:
+                      value === "MENSAL"
+                        ? item.costPriceMonthly
+                        : item.costPriceYearly,
+                    priceSaleModal:
+                      value === "MENSAL"
+                        ? item.costPriceMonthly
+                        : item.costPriceYearly,
+                  });
+                }}
+                placeholder="TIPO"
+                value={this.state.tipo}
+                size="large"
+                style={{ width: "50%" }}
+              >
+                <Option value="MENSAL">MENSAL</Option>
+                <Option value="ANUAL">ANUAL</Option>
+              </Select>
+            </div>
+            <div className="div-line-modal">
+              <InputNumber
+                size="large"
+                style={{ width: "20%" }}
+                placeholder="quantidade"
+                onChange={(value) => this.setState({ quantidade: value })}
+                min="1"
+                max="99"
+                value={this.state.quantidade}
+                onBlur={this.onBlur}
+                onFocus={this.onFocus}
+              ></InputNumber>
+              <InputNumber
+                disabled={!this.state.tipo}
+                size="large"
+                style={{ width: "35%" }}
+                placeholder="venda"
+                value={this.state.priceSaleModal}
+                onChange={(value) => this.setState({ priceSaleModal: value })}
+                step={0.1}
+              />
+              <InputNumber
+                disabled
+                size="large"
+                style={{ width: "35%" }}
+                placeholder="custo"
+                value={this.state.priceCostModal}
+                step={0.1}
+              />
+            </div>
+          </>
+        );
+      case 1:
+        return (
+          <>
+            {/* <label className="label-title-modal">Endereco</label> */}
+            <div className="div-twoInfo-modal">
+              <input
+                className={`input-cep-modal ${
+                  this.state.fieldErrors.cep && "input-error"
+                }`}
+                placeholder="CEP"
+                onChange={this.onChange}
+                name="cep"
+                value={this.state.cep}
+                onFocus={this.onFocus}
+                onBlur={this.onBlur}
+              ></input>
+              <input
+                className="input-bairro-modal"
+                placeholder="BAIRRO"
+                onChange={this.onChange}
+                name="bairro"
+                value={this.state.bairro}
+              ></input>
+            </div>
+            <input
+              className="input-endereco-modal"
+              placeholder="RUA"
+              onChange={this.onChange}
+              name="rua"
+              value={this.state.rua}
+            ></input>
+            <div className="div-twoInfo-modal">
+              <input
+                className={`input-cidade-modal ${
+                  this.state.fieldErrors.cidade && "input-error"
+                }`}
+                placeholder="CIDADE"
+                onChange={this.onChange}
+                name="cidade"
+                value={this.state.cidade}
+                onFocus={this.onFocus}
+                onBlur={this.onBlur}
+              ></input>
+              <input
+                className={`input-uf-modal ${
+                  this.state.fieldErrors.uf && "input-error"
+                }`}
+                placeholder="UF"
+                onChange={this.onChange}
+                name="uf"
+                value={this.state.uf}
+                onFocus={this.onFocus}
+                onBlur={this.onBlur}
+              ></input>
+            </div>
+            <input
+              className="input-endereco-modal"
+              placeholder="COMPLEMENTO"
+              onChange={this.onChange}
+              name="complemento"
+              value={this.state.complemento}
+            ></input>
+            <input
+              className="input-endereco-modal"
+              placeholder="OBSERVAÇÕES"
+              onChange={this.onChange}
+              name="observacoes"
+              value={this.state.observacoes}
+            ></input>
+          </>
+        );
+      case 2:
+        return (
+          <>
+            {/* <label className="label-title-modal">Empresa</label> */}
+            <div className="div-twoInfo-modal" style={{ margin: "20px 0" }}>
+              <div style={{ display: "flex" }}>
+                <Switch
+                  checked={this.state.empresaAtual}
+                  onChange={(e) => this.setState({ empresaAtual: e })}
+                />
+                <h3 style={{ marginLeft: "10px" }}>Empresa atual</h3>
+              </div>
+              <input
+                disabled={this.state.empresaAtual}
+                className={`input-cnpj-contratos ${
+                  !this.state.empresaAtual &&
+                  this.state.fieldErrors.cnpjModal &&
+                  "input-error"
+                }`}
+                placeholder="CNPJ / CPF"
+                onChange={this.onChange}
+                name="cnpjModal"
+                value={
+                  this.state.empresaAtual
+                    ? this.state.cnpj
+                    : this.state.cnpjModal
+                }
+                onBlur={this.onBlur}
+                onFocus={this.onFocus}
+              ></input>
+            </div>
+            <input
+              disabled={this.state.empresaAtual}
+              className={`input-cnpj-contratos ${
+                !this.state.empresaAtual &&
+                this.state.fieldErrors.razaosocialModal &&
+                "input-error"
+              }`}
+              style={{ width: "100%" }}
+              placeholder="razão social"
+              onChange={this.onChange}
+              name="razaosocialModal"
+              value={
+                this.state.empresaAtual
+                  ? this.state.razaosocial
+                  : this.state.razaosocialModal
+              }
+              onBlur={this.onBlur}
+              onFocus={this.onFocus}
+            ></input>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
+  FooterModalIncluir = () => {
+    const {
+      progressModalItem,
+      itemId,
+      tipo,
+      quantidade,
+      empresaAtual,
+      razaosocialModal,
+      cnpjModal,
+    } = this.state;
+    switch (progressModalItem) {
+      case 0:
+        return (
+          <Button
+            onClick={() =>
+              this.setState({ progressModalItem: progressModalItem + 1 })
+            }
+            type="primary"
+            disabled={!itemId || !tipo || !quantidade}
+          >
+            Proximo
+          </Button>
+        );
+      case 1:
+        return (
+          <>
+            <Button
+              onClick={() =>
+                this.setState({ progressModalItem: progressModalItem - 1 })
+              }
+            >
+              Anterior
+            </Button>
+            <Button
+              type="primary"
+              onClick={() =>
+                this.setState({ progressModalItem: progressModalItem + 1 })
+              }
+            >
+              Proximo
+            </Button>
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <Button
+              onClick={() =>
+                this.setState({ progressModalItem: progressModalItem - 1 })
+              }
+            >
+              Anterior
+            </Button>
+            <Button
+              onClick={
+                this.state.modalAtualizada
+                  ? this.handleOkAtualizar
+                  : this.handleOk
+              }
+              type="primary"
+              disabled={!empresaAtual && !razaosocialModal && !cnpjModal}
+            >
+              finalizar
+            </Button>
+          </>
+        );
+      default:
+        return null;
+    }
   };
 
   ModalIncluir = () => (
     <Modal
       width={700}
       visible={this.state.visible}
-      onOk={this.state.modalAtualizada ? this.handleOkAtualizar : this.handleOk}
-      onCancel={this.handleCancel}
-      cancelText="Cancelar"
-      okText={this.state.modalAtualizada ? "Atualizar" : "Salvar"}
+      onCancel={() => {
+        const {
+          tipo,
+          priceMonthly,
+          priceYearly,
+          quantidade,
+          priceSaleModal: price,
+          index,
+          itens,
+        } = this.state;
+        if (this.state.modalAtualizada) {
+          this.setState({
+            priceMonthly:
+              tipo === "MENSAL"
+                ? priceMonthly + itens[index].price * itens[index].quantidade
+                : priceMonthly,
+            priceYearly:
+              tipo === "ANUAL"
+                ? priceYearly + itens[index].price * itens[index].quantidade
+                : priceYearly,
+          });
+        }
+        this.handleCancel();
+      }}
+      // cancelText="Cancelar"
+      footer={<this.FooterModalIncluir />}
     >
-      <label
-        style={{
-          fontFamily: "Bebas",
-          fontSize: "20px",
-          margin: "10px 0 0 0"
-        }}
-      >
-        Item
-      </label>
-      <div className="div-line-modal">
-        <Select
-          style={{
-            width: "75%",
-            marginRight: "10px"
-          }}
-          size="large"
-          showSearch
-          placeholder="ITEM"
-          optionFilterProp="children"
-          value={this.state.item}
-          onChange={this.onChangeSelect}
-          filterOption={(input, option) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
-            0
-          }
-          getInputElement={() => (
-            <input
-              style={{
-                textTransform: "uppercase"
-              }}
-            />
-          )}
-        >
-          {this.state.allItens.map(value => (
-            <Option key={value.id} value={value.name} item={value}>
-              {value.name}
-            </Option>
-          ))}
-        </Select>
-        <Select
-          style={{ width: "25%" }}
-          size="large"
-          showSearch
-          placeholder="CÓDIGO"
-          optionFilterProp="children"
-          value={this.state.codigoModal}
-          onChange={this.onChangeSelect}
-          filterOption={(input, option) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
-            0
-          }
-        >
-          {this.state.allItens.map(value => (
-            <Option key={value.id} value={value.code} item={value}>
-              {value.code}
-            </Option>
-          ))}
-        </Select>
+      <div style={{ margin: "20px 0" }}>
+        <Steps current={this.state.progressModalItem} type="navigation">
+          <Step key={"item"} title={"item"} />
+          <Step key={"endereco"} title={"endereco"} />
+          <Step key={"empresa"} title={"empresa"} />
+        </Steps>
       </div>
-      <div className="div-line-modal">
-        <Select
-          onChange={value => this.setState({ tipo: value })}
-          placeholder="TIPO"
-          value={this.state.tipo}
-          size="large"
-          style={{ width: "40%" }}
-        >
-          <Option value="MENSAL">MENSAL</Option>
-          <Option value="ANUAL">ANUAL</Option>
-        </Select>
-        <input
-          className={`input-cnpj-contratos ${this.state.fieldErrors.cnpjModal &&
-            "input-error"}`}
-          style={{ width: "40%" }}
-          placeholder="CNPJ / CPF"
-          onChange={this.onChange}
-          name="cnpjModal"
-          value={this.state.cnpjModal}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
-        ></input>
-      </div>
-      <div className="div-twoInfo-modal">
+      <this.ContentModalIncluir />
+      {/* <div className="div-twoInfo-modal">
         <input
           className={`input-cep-modal ${this.state.fieldErrors.cep &&
             "input-error"}`}
@@ -593,28 +876,37 @@ class NewContratosContainer extends Component {
         onChange={this.onChange}
         name="observacoes"
         value={this.state.observacoes}
-      ></input>
+      ></input> */}
     </Modal>
   );
 
-  showModal = e => {
+  showModal = (e) => {
     this.setState({
-      visible: true
+      visible: true,
     });
   };
 
-  getModal = index => {
+  getModal = (index) => {
     // console.log(index);
     const {
-      id: itemId,
-      contractItemId: id,
-      contractItem: { type: tipo, cnpj: cnpjModal },
-      name: item,
-      code: codigoModal,
-      costPrice,
-      address,
-      zipCode
-    } = this.state.itens[index];
+        id: itemId,
+        contractItemId: id,
+        contractItem: {
+          type: tipo,
+          cnpj: cnpjModal,
+          razaosocial: razaosocialModal,
+          costPrice,
+          price: priceSaleModal,
+          quantidade,
+          empresaAtual,
+        },
+        name: item,
+        code: codigoModal,
+        address,
+        zipCode,
+        typeItem: type,
+      } = this.state.itens[index],
+      { priceMonthly, priceYearly } = this.state;
 
     if ((id && address) || zipCode) {
       const {
@@ -624,7 +916,7 @@ class NewContratosContainer extends Component {
         city: cidade,
         state: uf,
         complement: complemento,
-        observation: observacoes
+        observation: observacoes,
       } = id && !zipCode ? address : this.state.itens[index];
 
       this.setState({
@@ -639,25 +931,47 @@ class NewContratosContainer extends Component {
         uf,
         complemento,
         observacoes,
-        modalAtualizada: true
+        modalAtualizada: true,
       });
     }
 
     this.setState({
       index,
+      empresaAtual,
       costPrice,
+      priceSaleModal,
+      quantidade,
       visible: true,
       itemId,
       item,
       codigoModal,
       tipo,
       cnpjModal,
-      modalAtualizada: true
+      razaosocialModal,
+      modalAtualizada: true,
+      progressModalItem: 0,
+      type,
+      priceMonthly:
+        tipo === "MENSAL"
+          ? priceMonthly - priceSaleModal * quantidade
+          : priceMonthly,
+      priceYearly:
+        tipo === "ANUAL"
+          ? priceYearly - priceSaleModal * quantidade
+          : priceYearly,
     });
   };
 
   handleOkAtualizar = () => {
     const {
+      index,
+      itemId,
+      item: name,
+      itens,
+      costPrice,
+      tipo: type,
+      priceSaleModal: price,
+      quantidade,
       rua: street,
       bairro: neighborhood,
       cep: zipCode,
@@ -665,11 +979,13 @@ class NewContratosContainer extends Component {
       uf: state,
       complemento: complement,
       observacoes: observation,
-      itemId,
-      item: name,
-      itens,
-      costPrice,
-      index
+      empresaAtual,
+      cnpjModal,
+      razaosocialModal,
+      cnpj,
+      razaosocial,
+      priceMonthly,
+      priceYearly,
     } = this.state;
 
     const copyItens = itens;
@@ -678,6 +994,7 @@ class NewContratosContainer extends Component {
 
     copyItens[index] = {
       ...copyItens[index],
+      contractItem: { ...copyItens[index].contractItem, price },
       costPrice,
       street,
       neighborhood,
@@ -687,13 +1004,27 @@ class NewContratosContainer extends Component {
       complement,
       observation,
       itemId,
-      name
+      name,
+      type,
+      price,
+      quantidade,
+      empresaAtual,
+      cnpj: empresaAtual ? cnpj : cnpjModal,
+      razaosocial: empresaAtual ? razaosocial : razaosocialModal,
     };
 
-    if (
+    console.log(
       this.state.item !== "NÃO SELECIONADO" &&
-      this.state.cep !== "" &&
-      this.state.bairro !== ""
+        this.state.cep !== "" &&
+        this.state.bairro !== ""
+    );
+
+    if (
+      itemId &&
+      type &&
+      ((this.state.type === "EQUIPAMENTO" && zipCode && neighborhood) ||
+        (this.state.type === "SOFTWARE" &&
+          ((zipCode && neighborhood) || !zipCode)))
     ) {
       this.setState({
         itens: copyItens,
@@ -708,7 +1039,13 @@ class NewContratosContainer extends Component {
         complemento: "",
         observacoes: "",
         visible: false,
-        modalAtualizada: false
+        modalAtualizada: false,
+        progressModalItem: 0,
+
+        priceMonthly:
+          type === "MENSAL" ? priceMonthly + price * quantidade : priceMonthly,
+        priceYearly:
+          type === "ANUAL" ? priceYearly + price * quantidade : priceYearly,
       });
     } else {
       message.error("Verifique se não falta nada para ser preenchido.");
@@ -725,26 +1062,34 @@ class NewContratosContainer extends Component {
       complemento: complement,
       observacoes: observation,
       tipo: type,
-      cnpjModal: cnpj,
-      // contractCode,
+      cnpj,
+      razaosocial,
+      priceSaleModal: price,
+      codigoModal: code,
+      quantidade,
+      empresaAtual,
+      cnpjModal,
+      razaosocialModal,
       itemId,
       item: name,
-      itens
+      itens,
+      priceMonthly,
+      priceYearly,
+      cep,
+      bairro,
     } = this.state;
 
     if (
-      this.state.itemId &&
-      this.state.tipo &&
-      ((this.state.type === "EQUIPAMENTO" &&
-        this.state.cep &&
-        this.state.bairro) ||
-        (this.state.type === "SOFTWARE" &&
-          ((this.state.cep && this.state.bairro) || !this.state.cep)))
+      itemId &&
+      type &&
+      ((this.state.type === "EQUIPAMENTO" && cep && bairro) ||
+        (this.state.type === "SOFTWARE" && ((cep && bairro) || !cep)))
     ) {
       this.setState({
         itens: [
           ...itens,
           {
+            code,
             name,
             itemId,
             street,
@@ -756,12 +1101,20 @@ class NewContratosContainer extends Component {
             observation,
             igpms: [],
             type,
-            cnpj
-          }
+            price,
+            quantidade,
+            empresaAtual,
+            cnpj: empresaAtual ? cnpj : cnpjModal,
+            razaosocial: empresaAtual ? razaosocial : razaosocialModal,
+          },
         ],
+        priceMonthly:
+          type === "MENSAL" ? priceMonthly + price * quantidade : priceMonthly,
+        priceYearly:
+          type === "ANUAL" ? priceYearly + price * quantidade : priceYearly,
         itemId: "",
-        item: "NÃO SELECIONADO",
-        codigoModal: "CÓDIGO",
+        item: undefined,
+        codigoModal: undefined,
         tipo: undefined,
         rua: "",
         bairro: "",
@@ -771,7 +1124,11 @@ class NewContratosContainer extends Component {
         complemento: "",
         observacoes: "",
         visible: false,
-        modalAtualizada: false
+        empresaAtual: true,
+        cnpjModal: "",
+        razaosocialModal: "",
+        modalAtualizada: false,
+        progressModalItem: 0,
       });
     } else {
       message.error("Verifique se não falta nada para ser preenchido.");
@@ -781,8 +1138,8 @@ class NewContratosContainer extends Component {
   handleCancel = () => {
     this.setState({
       visible: false,
-      item: "NÃO SELECIONADO",
-      codigoModal: "CÓDIGO",
+      item: undefined,
+      codigoModal: undefined,
       rua: "",
       bairro: "",
       cep: "",
@@ -792,11 +1149,11 @@ class NewContratosContainer extends Component {
       observacoes: "",
       contractCode: "",
       itemId: "",
-      modalAtualizada: false
+      modalAtualizada: false,
     });
   };
 
-  disabledDate = current => {
+  disabledDate = (current) => {
     return current && current < moment().startOf("day");
   };
 
@@ -811,7 +1168,7 @@ class NewContratosContainer extends Component {
         city,
         state,
         complement,
-        observation
+        observation,
       } = this.state.itens[this.state.index];
       address = zipCode
         ? {
@@ -822,7 +1179,7 @@ class NewContratosContainer extends Component {
             city,
             state,
             complement,
-            observation
+            observation,
           }
         : address;
     }
@@ -830,7 +1187,7 @@ class NewContratosContainer extends Component {
       <Modal
         width={700}
         visible={this.state.modalInfo}
-        onOk={e => console.log(e)}
+        onOk={(e) => console.log(e)}
         onCancel={() => this.setState({ modalInfo: false })}
         cancelText="Cancelar"
         okText="OK"
@@ -863,7 +1220,7 @@ class NewContratosContainer extends Component {
                     "pt-BR",
                     {
                       style: "currency",
-                      currency: "BRL"
+                      currency: "BRL",
                     }
                   )}
                 </label>
@@ -958,7 +1315,7 @@ class NewContratosContainer extends Component {
     const { state } = this;
     const { fieldErrors } = state;
 
-    // console.log(state);
+    console.log(state);
 
     return (
       <div className="card-main">
@@ -972,8 +1329,9 @@ class NewContratosContainer extends Component {
         <div className="div-card-contratos-1">
           <div className="div-inputs-flex">
             <input
-              className={`input-codigo-contratos ${fieldErrors.codigo &&
-                "input-error"}`}
+              className={`input-codigo-contratos ${
+                fieldErrors.codigo && "input-error"
+              }`}
               placeholder="Nº CONTRATO"
               onChange={this.onChange}
               name="codigo"
@@ -985,19 +1343,22 @@ class NewContratosContainer extends Component {
               // className={`input-cnpj-contratos ${
               //   fieldErrors.cnpj && "input-error"
               // }`}
+              value={this.state.cnpj}
               style={{ width: "25%" }}
-              onChange={id => {
+              onChange={async (id) => {
                 const { clientList } = this.state;
                 const index = R.findIndex(R.propEq("id", id))(clientList);
+
+                await setTimeout(function () {}, 1000);
 
                 this.setState({
                   razaosocial: clientList[index].razaosocial,
                   cnpj: clientList[index].cnpj,
-                  grupo: clientList[index].group.group
+                  grupo: clientList[index].group.group,
                 });
               }}
               showSearch
-              onSearch={cnpj => this.getAllClient(cnpj)}
+              onSearch={(cnpj) => this.getAllClient(cnpj)}
               placeholder="cnpj"
               optionFilterProp="children"
               filterOption={(input, option) =>
@@ -1007,20 +1368,20 @@ class NewContratosContainer extends Component {
               }
               size="large"
             >
-              {this.state.clientList.map(client => (
+              {this.state.clientList.map((client) => (
                 <Option
                   value={client.id}
                   onMouseEnter={() =>
                     this.setState({
                       razaosocial: client.razaosocial,
-                      grupo: client.group.group
+                      grupo: client.group.group,
                     })
                   }
                   onMouseLeave={() => {
                     if (this.state.cnpj === "")
                       this.setState({
                         razaosocial: "",
-                        grupo: ""
+                        grupo: "",
                       });
                   }}
                 >
@@ -1029,8 +1390,9 @@ class NewContratosContainer extends Component {
               ))}
             </Select>
             <input
-              className={`input-nome-contratos ${fieldErrors.razaosocial &&
-                "input-error"}`}
+              className={`input-nome-contratos ${
+                fieldErrors.razaosocial && "input-error"
+              }`}
               style={{ textTransform: "uppercase" }}
               placeholder="RAZÃO SOCIAL / NOME"
               onChange={this.onChange}
@@ -1070,7 +1432,7 @@ class NewContratosContainer extends Component {
               name="dataAtivacao"
               value={this.state.dataAtivacao}
               format="DD/MM/YYYY"
-              onChange={e => {
+              onChange={(e) => {
                 this.setState({ dataAtivacao: e });
               }}
             />
@@ -1086,7 +1448,7 @@ class NewContratosContainer extends Component {
                 value={this.state.dataRescisao}
                 disabledDate={this.disabledDate}
                 format="DD/MM/YYYY"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({ dataRescisao: e });
                 }}
               />
@@ -1109,7 +1471,7 @@ class NewContratosContainer extends Component {
                   value={this.state.fine}
                   step={0.01}
                   min={0}
-                  onChange={fine => this.setState({ fine })}
+                  onChange={(fine) => this.setState({ fine })}
                 />
                 <button
                   onClick={() =>
@@ -1132,7 +1494,7 @@ class NewContratosContainer extends Component {
             style={{
               display: "flex",
               justifyContent: "flex-end",
-              marginTop: "10px"
+              marginTop: "10px",
             }}
           >
             {!this.state.divOculta ? (
@@ -1170,7 +1532,11 @@ class NewContratosContainer extends Component {
         <div className="div-card-contratos-1">
           <div className="div-block-header-contractItem">
             <h2 style={{ fontFamily: "Bebas" }}>Itens</h2>
-            <button className="button-incluir" onClick={this.showModal}>
+            <button
+              className="button-incluir"
+              onClick={this.showModal}
+              disabled={!this.state.codigo}
+            >
               Incluir
             </button>
           </div>
@@ -1207,10 +1573,13 @@ class NewContratosContainer extends Component {
                     </div>
                     <div className="div-valor-title-contractItem">
                       <label>
-                        {item.price.toLocaleString("pt-BR", {
-                          style: "currency",
-                          currency: "BRL"
-                        })}
+                        {(item.price * item.quantidade).toLocaleString(
+                          "pt-BR",
+                          {
+                            style: "currency",
+                            currency: "BRL",
+                          }
+                        )}
                       </label>
                     </div>
                     <div className="div-acoes-title-contractItem">
@@ -1252,7 +1621,7 @@ class NewContratosContainer extends Component {
                             priceYearly:
                               item.type === "ANUAL"
                                 ? priceYearly - price
-                                : priceYearly
+                                : priceYearly,
                           });
                           this.removeItem(index);
                         }}
@@ -1260,7 +1629,7 @@ class NewContratosContainer extends Component {
                     </div>
                   </div>
                   {this.state.indexIgpm === index &&
-                    this.state.itens[this.state.indexIgpm].igpms.map(item => (
+                    this.state.itens[this.state.indexIgpm].igpms.map((item) => (
                       <div className="div-igpm-contratos">
                         <h4 className="h4-contratos">{`${item.type} ${
                           item.month
@@ -1419,7 +1788,7 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    login: state.login
+    login: state.login,
   };
 }
 
