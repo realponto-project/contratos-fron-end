@@ -99,6 +99,10 @@ class NewContratosContainer extends Component {
     itens: [],
     allItens: [],
     clientList: [],
+
+    count: 0,
+    page: 1,
+    total: 10,
   };
 
   clearState = () => {
@@ -234,6 +238,69 @@ class NewContratosContainer extends Component {
     }
   };
 
+  getContractByParams = async () => {
+    const { codigo: code } = this.state;
+    const query = { code, page: this.state.page, total: this.state.total };
+
+    const { status, data } = await GetContractByParams(query);
+    if (status === 200 && data) {
+      const {
+        code: contractCode,
+        status,
+        stockBase: base,
+        client: { id: clientId, razaosocial, cnpj, group: grupo },
+        items: itens = [],
+        dateActivation: dataAtivacao,
+        dateTermination: dataRescisao,
+        priceMonthly,
+        priceYearly,
+        fine,
+        show,
+        page,
+        count,
+      } = data;
+
+      this.setState({
+        fieldErrors: {
+          razaosocial: false,
+          cnpj: false,
+          codigo: false,
+        },
+        fine,
+        contractCode,
+        status,
+        dataAtivacao: moment(dataAtivacao),
+        dataRescisao: dataRescisao ? moment(dataRescisao) : dataRescisao,
+        base,
+        clientId,
+        razaosocial,
+        cnpj,
+        grupo,
+        itens,
+        priceMonthly,
+        priceYearly,
+        show,
+        page,
+        count,
+      });
+    } else {
+      this.setState({
+        razaosocial: "",
+        cnpj: "",
+        grupo: "",
+        dataRescisao: null,
+        dataAtivacao: "",
+        status: "STATUS",
+        base: "BASE",
+        clientId: "",
+        contractCode: "",
+        itens: [],
+        priceMonthly: 0,
+        priceYearly: 0,
+      });
+    }
+  };
+
   onBlur = async (e) => {
     const { name, value } = e.target;
     const { fieldErrors } = this.state;
@@ -243,57 +310,8 @@ class NewContratosContainer extends Component {
     });
 
     if (name === "codigo") {
-      const { status, data } = await GetContractByParams({ code: value });
-      if (status === 200 && data) {
-        const {
-          code: contractCode,
-          status,
-          stockBase: base,
-          client: { id: clientId, razaosocial, cnpj, group: grupo },
-          items: itens = [],
-          dateActivation: dataAtivacao,
-          dateTermination: dataRescisao,
-          priceMonthly,
-          priceYearly,
-          fine,
-        } = data;
-
-        this.setState({
-          fieldErrors: {
-            razaosocial: false,
-            cnpj: false,
-            codigo: false,
-          },
-          fine,
-          contractCode,
-          status,
-          dataAtivacao: moment(dataAtivacao),
-          dataRescisao: dataRescisao ? moment(dataRescisao) : dataRescisao,
-          base,
-          clientId,
-          razaosocial,
-          cnpj,
-          grupo,
-          itens,
-          priceMonthly,
-          priceYearly,
-        });
-      } else {
-        this.setState({
-          razaosocial: "",
-          cnpj: "",
-          grupo: "",
-          dataRescisao: null,
-          dataAtivacao: "",
-          status: "STATUS",
-          base: "BASE",
-          clientId: "",
-          contractCode: "",
-          itens: [],
-          priceMonthly: 0,
-          priceYearly: 0,
-        });
-      }
+      this.setState({ page: 1 });
+      await this.getContractByParams();
     }
 
     if (name === "cep" && !validator(name, value)) {
@@ -1311,6 +1329,100 @@ class NewContratosContainer extends Component {
     );
   };
 
+  changePages = async (pages) => {
+    await this.setState(
+      {
+        page: pages,
+      },
+      () => {
+        this.getContractByParams();
+      }
+    );
+  };
+
+  Pages = () => (
+    <div className="div-pages">
+      {Math.ceil(this.state.count / this.state.total) >= 5 &&
+      Math.ceil(this.state.count / this.state.total) - this.state.page < 1 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 4)}
+        >
+          {this.state.page - 4}
+        </button>
+      ) : null}
+      {Math.ceil(this.state.count / this.state.total) >= 4 &&
+      Math.ceil(this.state.count / this.state.total) - this.state.page < 2 &&
+      this.state.page > 3 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 3)}
+        >
+          {this.state.page - 3}
+        </button>
+      ) : null}
+      {this.state.page >= 3 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 2)}
+        >
+          {this.state.page - 2}
+        </button>
+      ) : null}
+      {this.state.page >= 2 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 1)}
+        >
+          {this.state.page - 1}
+        </button>
+      ) : null}
+      <div className="div-teste">{this.state.page}</div>
+      {this.state.page < this.state.count / this.state.total ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 1)}
+        >
+          {this.state.page + 1}
+        </button>
+      ) : null}
+      {this.state.page + 1 < this.state.count / this.state.total ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 2)}
+        >
+          {this.state.page + 2}
+        </button>
+      ) : null}
+      {this.state.page + 2 < this.state.count / this.state.total &&
+      this.state.page < 3 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 3)}
+        >
+          {this.state.page + 3}
+        </button>
+      ) : null}
+      {this.state.page + 3 < this.state.count / this.state.total &&
+      this.state.page < 2 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 4)}
+        >
+          {this.state.page + 4}
+        </button>
+      ) : null}
+    </div>
+  );
+
   render() {
     const { state } = this;
     const { fieldErrors } = state;
@@ -1640,6 +1752,7 @@ class NewContratosContainer extends Component {
                 </>
               ))
             : null}
+          {this.state.itens.length !== 0 && <this.Pages />}
         </div>
 
         {/* <div className="div-main-contratos">
