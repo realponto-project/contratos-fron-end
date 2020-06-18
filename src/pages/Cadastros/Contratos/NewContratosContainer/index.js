@@ -35,6 +35,7 @@ import {
   UpdateContract,
   GetContractByParams,
 } from "../../../../services/contract";
+import { GetAllUsers } from "../../../../services/user";
 import moment from "moment";
 import { setContractCode } from "../ContratosRedux/action";
 
@@ -82,6 +83,8 @@ class NewContratosContainer extends Component {
     itemId: "",
     priceMonthly: "",
     priceYearly: "",
+    username: undefined,
+    userId: "",
     status: "ATIVO",
     fieldErrors: {
       razaosocial: false,
@@ -103,6 +106,7 @@ class NewContratosContainer extends Component {
     count: 0,
     page: 1,
     total: 10,
+    userList: [],
   };
 
   clearState = () => {
@@ -133,6 +137,8 @@ class NewContratosContainer extends Component {
       observacoes: "",
       contractCode: "",
       itemId: "",
+      username: undefined,
+      userId: "",
       fieldErrors: {
         razaosocial: false,
         cnpjModal: false,
@@ -163,7 +169,26 @@ class NewContratosContainer extends Component {
     }
   };
 
+  getAllUsers = async () => {
+    const query = {
+      filters: {
+        user: {
+          specific: {
+            award: true,
+          },
+        },
+      },
+      total: 500,
+    };
+    const { status, data } = await GetAllUsers(query);
+
+    if (status === 200) {
+      this.setState({ userList: data });
+    }
+  };
+
   componentDidMount = async () => {
+    await this.getAllUsers();
     const query = {
       filters: {
         item: {
@@ -201,7 +226,6 @@ class NewContratosContainer extends Component {
     if (status === 200) {
       this.setState({ clientList: data.rows });
     }
-    console.log(data);
   };
 
   getClientByParams = async (name, value, fieldErrors) => {
@@ -373,7 +397,6 @@ class NewContratosContainer extends Component {
   };
 
   newContract = async () => {
-    // console.log(this.state);
     const {
       codigo: code,
       status,
@@ -438,8 +461,6 @@ class NewContratosContainer extends Component {
 
     if (contractCode !== "") {
       value = { ...value, contractCode };
-
-      console.log(value);
 
       const response = await UpdateContract(value);
 
@@ -582,7 +603,7 @@ class NewContratosContainer extends Component {
                 placeholder="venda"
                 value={this.state.priceSaleModal}
                 onChange={(value) => this.setState({ priceSaleModal: value })}
-                step={0.1}
+                step={0.01}
               />
               <InputNumber
                 disabled
@@ -590,7 +611,7 @@ class NewContratosContainer extends Component {
                 style={{ width: "35%" }}
                 placeholder="custo"
                 value={this.state.priceCostModal}
-                step={0.1}
+                step={0.01}
               />
             </div>
           </>
@@ -716,6 +737,21 @@ class NewContratosContainer extends Component {
               onBlur={this.onBlur}
               onFocus={this.onFocus}
             ></input>
+            <Select
+              style={{ marginTop: "20px", width: "50%" }}
+              size="large"
+              placeholder="Responsável"
+              onChange={(value, prop) =>
+                this.setState({ username: value, userId: prop.key })
+              }
+              value={this.state.username}
+            >
+              {this.state.userList.map((user) => (
+                <Option key={user.id} value={user.username}>
+                  {user.username}
+                </Option>
+              ))}
+            </Select>
           </>
         );
       default:
@@ -905,7 +941,6 @@ class NewContratosContainer extends Component {
   };
 
   getModal = (index) => {
-    // console.log(index);
     const {
         id: itemId,
         contractItemId: id,
@@ -923,6 +958,8 @@ class NewContratosContainer extends Component {
         address,
         zipCode,
         typeItem: type,
+        username,
+        userId,
       } = this.state.itens[index],
       { priceMonthly, priceYearly } = this.state;
 
@@ -969,6 +1006,8 @@ class NewContratosContainer extends Component {
       modalAtualizada: true,
       progressModalItem: 0,
       type,
+      username,
+      userId,
       priceMonthly:
         tipo === "MENSAL"
           ? priceMonthly - priceSaleModal * quantidade
@@ -1004,11 +1043,10 @@ class NewContratosContainer extends Component {
       razaosocial,
       priceMonthly,
       priceYearly,
+      userId,
     } = this.state;
 
     const copyItens = itens;
-
-    // console.log(index, copyItens[index]);
 
     copyItens[index] = {
       ...copyItens[index],
@@ -1027,15 +1065,10 @@ class NewContratosContainer extends Component {
       price,
       quantidade,
       empresaAtual,
+      userId,
       cnpj: empresaAtual ? cnpj : cnpjModal,
       razaosocial: empresaAtual ? razaosocial : razaosocialModal,
     };
-
-    console.log(
-      this.state.item !== "NÃO SELECIONADO" &&
-        this.state.cep !== "" &&
-        this.state.bairro !== ""
-    );
 
     if (
       itemId &&
@@ -1059,7 +1092,8 @@ class NewContratosContainer extends Component {
         visible: false,
         modalAtualizada: false,
         progressModalItem: 0,
-
+        username: undefined,
+        userId: "",
         priceMonthly:
           type === "MENSAL" ? priceMonthly + price * quantidade : priceMonthly,
         priceYearly:
@@ -1095,6 +1129,7 @@ class NewContratosContainer extends Component {
       priceYearly,
       cep,
       bairro,
+      userId,
     } = this.state;
 
     if (
@@ -1122,6 +1157,7 @@ class NewContratosContainer extends Component {
             price,
             quantidade,
             empresaAtual,
+            userId,
             cnpj: empresaAtual ? cnpj : cnpjModal,
             razaosocial: empresaAtual ? razaosocial : razaosocialModal,
           },
@@ -1147,6 +1183,8 @@ class NewContratosContainer extends Component {
         razaosocialModal: "",
         modalAtualizada: false,
         progressModalItem: 0,
+        username: undefined,
+        userId: "",
       });
     } else {
       message.error("Verifique se não falta nada para ser preenchido.");
@@ -1167,6 +1205,8 @@ class NewContratosContainer extends Component {
       observacoes: "",
       contractCode: "",
       itemId: "",
+      username: undefined,
+      userId: "",
       modalAtualizada: false,
     });
   };
@@ -1205,7 +1245,6 @@ class NewContratosContainer extends Component {
       <Modal
         width={700}
         visible={this.state.modalInfo}
-        onOk={(e) => console.log(e)}
         onCancel={() => this.setState({ modalInfo: false })}
         cancelText="Cancelar"
         okText="OK"
@@ -1426,8 +1465,6 @@ class NewContratosContainer extends Component {
   render() {
     const { state } = this;
     const { fieldErrors } = state;
-
-    console.log(state);
 
     return (
       <div className="card-main">

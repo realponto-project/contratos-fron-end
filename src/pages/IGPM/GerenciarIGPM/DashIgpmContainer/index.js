@@ -25,7 +25,7 @@ const meses = [
   "SETEMBRO",
   "OUTUBRO",
   "NOVEMBRO",
-  "DEZEMBRO"
+  "DEZEMBRO",
 ];
 
 class DashIgmpContainer extends Component {
@@ -40,7 +40,7 @@ class DashIgmpContainer extends Component {
     page: 1,
     contractItems: [],
     igpm: {},
-    itemId: ""
+    itemId: "",
   };
 
   soundPlay = () => {
@@ -48,8 +48,8 @@ class DashIgmpContainer extends Component {
       src: ha,
       html5: true,
       sprite: {
-        laser: [15100, 1500]
-      }
+        laser: [15100, 1500],
+      },
     });
 
     sound.play("laser");
@@ -72,15 +72,14 @@ class DashIgmpContainer extends Component {
       //   }
       // }
     };
-    GetAllIgpm(query).then(resp => {
-      console.log(resp);
+    GetAllIgpm(query).then((resp) => {
       this.setState({ contractItems: resp.data });
     });
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -112,7 +111,7 @@ class DashIgmpContainer extends Component {
                     fontSize: 20,
                     display: "flex",
                     alignItems: "center",
-                    color: "red"
+                    color: "red",
                   }}
                   type="delete"
                   onClick={() =>
@@ -175,13 +174,13 @@ class DashIgmpContainer extends Component {
     <div className="div-table">
       {this.state.contractItems.length !== 0 ? (
         <div className="div-main-table">
-          {this.state.contractItems.map(line => (
+          {this.state.contractItems.map((line) => (
             <div className="div-line-table">
-              {console.log(line)}
               <label className="label-nome-igpm">{line.razaosocial}</label>
               <label
-                className={`label-data-igpm ${this.props.login.user.troll &&
-                  "cursor"}`}
+                className={`label-data-igpm ${
+                  this.props.login.user.troll && "cursor"
+                }`}
                 // onClick={() =>
                 //   this.setState({
                 //     igpm: line.item.igpms[0],
@@ -296,7 +295,6 @@ class DashIgmpContainer extends Component {
   );
 
   render() {
-    console.log(this.state.contractItems);
     Howler.volume(1);
     return (
       <div className="card-main">
@@ -345,7 +343,7 @@ class DashIgmpContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    login: state.login
+    login: state.login,
   };
 }
 

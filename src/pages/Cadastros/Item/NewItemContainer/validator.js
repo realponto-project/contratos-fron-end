@@ -33,7 +33,6 @@ export const masks = (name, value) => {
 
       const valueArray = value.split(".", 2);
 
-      console.log(valueArray);
       valueArray[0] = valueArray[0].slice(0, 5);
 
       value = valueArray[0];

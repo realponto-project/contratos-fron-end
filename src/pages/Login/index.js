@@ -81,6 +81,9 @@ class LoginPage extends Component {
                   onChange={this.onChange}
                   onFocus={this.onFocus}
                   autoFocus
+                  style={{
+                    textTransform: "none",
+                  }}
                   name="email"
                   required
                   value={this.state.email}
@@ -110,6 +113,9 @@ class LoginPage extends Component {
               <div className="App-block-inputs-login">
                 <label>Senha</label>
                 <input
+                  style={{
+                    textTransform: "none",
+                  }}
                   onFocus={this.onFocus}
                   onBlur={this.onFocus}
                   onChange={this.onChange}

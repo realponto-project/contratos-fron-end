@@ -103,8 +103,6 @@ class NewClientContainer extends Component {
       .then((resp) => this.setState({ groups: resp.data }))
       .catch((err) => console.error(err));
 
-    console.log(this.props.clientValue);
-
     const {
       deletedAt,
       clientId,
@@ -278,7 +276,6 @@ class NewClientContainer extends Component {
       });
 
       if (status === 200 && data) {
-        console.log(data);
         const {
           id: clientId,
           razaosocial,
@@ -508,7 +505,6 @@ class NewClientContainer extends Component {
                 />
               )}
             >
-              {console.log(this.state.groups)}
               {this.state.groups.length !== 0 &&
                 this.state.groups.map((group, index) => (
                   <Option key={index} value={group}>

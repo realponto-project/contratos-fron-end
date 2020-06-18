@@ -21,24 +21,24 @@ class RelatorioCadastroContainer extends Component {
       code: "",
       razaosocial: "",
       cnpj: "",
-      group: ""
+      group: "",
     },
     searchItem: {
       name: "",
       type: "",
-      code: ""
+      code: "",
     },
     total: 10,
     count: 0,
     page: 1,
-    redirect: ""
+    redirect: "",
   };
 
   componentDidMount = async () => {
     await this.getAllClient();
 
     this.setState({
-      select: "cliente"
+      select: "cliente",
     });
   };
 
@@ -52,13 +52,13 @@ class RelatorioCadastroContainer extends Component {
             name,
             type,
             code,
-            igpm: false
-          }
-        }
+            igpm: false,
+          },
+        },
       },
       total: this.state.total,
       page: this.state.page,
-      paranoid: false
+      paranoid: false,
     };
 
     const { status, data: items } = await GetAllItens(query);
@@ -78,12 +78,12 @@ class RelatorioCadastroContainer extends Component {
             code,
             razaosocial,
             cnpj: cnpj.replace(/\D/gi, ""),
-            group
-          }
-        }
+            group,
+          },
+        },
       },
       total: this.state.total,
-      page: this.state.page
+      page: this.state.page,
     };
 
     const { status, data: clientes } = await GetAllClient(query);
@@ -93,7 +93,7 @@ class RelatorioCadastroContainer extends Component {
     if (status === 200) await this.setState({ clientes, count, show, page });
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     const { name, value } = e.target;
 
     const [objectName, childrenName] = name.split(" ");
@@ -101,8 +101,8 @@ class RelatorioCadastroContainer extends Component {
     await this.setState({
       [objectName]: {
         ...this.state[objectName],
-        [childrenName]: value.toUpperCase()
-      }
+        [childrenName]: value.toUpperCase(),
+      },
     });
 
     switch (objectName) {
@@ -196,9 +196,9 @@ class RelatorioCadastroContainer extends Component {
                     size="large"
                     placeholder="TIPO"
                     name="searchItem type"
-                    onChange={async value => {
+                    onChange={async (value) => {
                       await this.setState({
-                        searchItem: { ...this.state.searchItem, type: value }
+                        searchItem: { ...this.state.searchItem, type: value },
                       });
                       await this.getAllItens();
                     }}
@@ -242,7 +242,7 @@ class RelatorioCadastroContainer extends Component {
     }
   };
 
-  setItemRedux = item => {
+  setItemRedux = (item) => {
     const {
       deletedAt,
       id: itemId,
@@ -251,7 +251,7 @@ class RelatorioCadastroContainer extends Component {
       costPriceYearly: custoMensal,
       type: tipo,
       code: codigo,
-      description: descricao
+      description: descricao,
     } = item;
     this.props.setItem({
       deletedAt: !!deletedAt,
@@ -261,15 +261,13 @@ class RelatorioCadastroContainer extends Component {
       custoMensal,
       tipo,
       codigo,
-      descricao
+      descricao,
     });
 
     this.setState({ redirect: "/logged/newItem/add" });
   };
 
-  setClientRedux = client => {
-    console.log(client);
-
+  setClientRedux = (client) => {
     const {
       deletedAt,
       id: clientId,
@@ -283,15 +281,15 @@ class RelatorioCadastroContainer extends Component {
         city: cidade,
         state: uf,
         complement: complemento,
-        observation: observacoes
+        observation: observacoes,
       },
       contact: {
         email: emailContato,
         name: nomeContato,
         telphone: celularContato,
-        celular: telefoneContato
+        celular: telefoneContato,
       },
-      group: { group: grupo }
+      group: { group: grupo },
     } = client;
 
     this.props.setClient({
@@ -311,7 +309,7 @@ class RelatorioCadastroContainer extends Component {
       nomeContato,
       celularContato,
       telefoneContato,
-      grupo
+      grupo,
     });
 
     this.setState({ redirect: "/logged/newClient/add" });
@@ -346,7 +344,7 @@ class RelatorioCadastroContainer extends Component {
               </Col>
               <Col className="col-icon-edit" span={1}></Col>
             </Row>
-            {this.state.clientes.rows.map(cliente => (
+            {this.state.clientes.rows.map((cliente) => (
               <Row>
                 <Col style={{ margin: "0 5px 10px 0" }} span={3}>
                   {cliente.code}
@@ -392,7 +390,7 @@ class RelatorioCadastroContainer extends Component {
               </Col>
               <Col className="col-icon-edit" span={1}></Col>
             </Row>
-            {this.state.items.rows.map(item => (
+            {this.state.items.rows.map((item) => (
               <Row>
                 <Col style={{ margin: "0 5px 10px 0" }} span={12}>
                   {item.name}
@@ -419,11 +417,11 @@ class RelatorioCadastroContainer extends Component {
     }
   };
 
-  onChangeSelect = async select => {
+  onChangeSelect = async (select) => {
     await this.setState({
       total: 10,
       count: 0,
-      page: 1
+      page: 1,
     });
     switch (select) {
       case "cliente":
@@ -439,9 +437,9 @@ class RelatorioCadastroContainer extends Component {
     this.setState({ select });
   };
 
-  changePages = async pages => {
+  changePages = async (pages) => {
     await this.setState({
-      page: pages
+      page: pages,
     });
 
     switch (this.state.select) {
@@ -593,7 +591,7 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    itemValue: state.itemValue
+    itemValue: state.itemValue,
   };
 }
 

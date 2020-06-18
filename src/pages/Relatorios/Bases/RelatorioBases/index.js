@@ -5,7 +5,7 @@ import { RelatorioBasesService } from "../../../../services/grafic";
 
 class RelatorioBases extends Component {
   state = {
-    rows: []
+    rows: [],
   };
 
   componentDidMount = async () => {
@@ -24,7 +24,7 @@ class RelatorioBases extends Component {
           <strong style={{ width: "20%" }}>PREÇO</strong>
         </div>
         {this.state.rows &&
-          this.state.rows.map(row => (
+          this.state.rows.map((row) => (
             <div className="div-line-table">
               <label style={{ width: "40%" }}>{row.base}</label>
               <label style={{ width: "10%" }}>{row.quant}</label>
@@ -32,7 +32,7 @@ class RelatorioBases extends Component {
               <label style={{ width: "20%" }}>
                 {row.total.toLocaleString("pt-BR", {
                   style: "currency",
-                  currency: "BRL"
+                  currency: "BRL",
                 })}
               </label>
             </div>
@@ -42,7 +42,6 @@ class RelatorioBases extends Component {
   );
 
   render() {
-    console.log(this.state);
     return (
       <div className="card-main">
         <div

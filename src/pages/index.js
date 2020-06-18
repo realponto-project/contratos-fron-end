@@ -28,7 +28,7 @@ import NewPremiacaoRoute from "./Cadastros/Premiacao";
 
 class PagesRoute extends Component {
   state = {
-    auth: true
+    auth: true,
   };
 
   componentDidMount = async () => {
@@ -37,32 +37,29 @@ class PagesRoute extends Component {
       // this.props.login.token,
       "%dfsJd"
     )
-      .then(resp => {
-        VerifyTroll({ id: resp.id }).then(user => {
+      .then((resp) => {
+        VerifyTroll({ id: resp.id }).then((user) => {
           if (
             user.status === 200 &&
             user.data &&
             user.data.troll !== this.props.login.user.troll
           ) {
-            // console.log(this.props.login.user.troll);
             this.props.onSubmit({
               user: {
                 ...this.props.login.user,
-                troll: !this.props.login.user.troll
-              }
+                troll: !this.props.login.user.troll,
+              },
             });
           }
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         this.props.Logout();
       });
   };
 
   render() {
-    console.log(this.props);
-    console.log(this.props.login.token && !!this.props.login.user);
     if (this.props.login.token && !!this.props.login.user) {
       return (
         <Switch>
@@ -158,11 +155,8 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    login: state.login
+    login: state.login,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(PagesRoute);
+export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute);

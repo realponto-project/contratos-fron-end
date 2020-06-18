@@ -18,7 +18,7 @@ class GerenciarConsultaContainer extends Component {
     total: 10,
     count: 0,
     page: 1,
-    contracts: []
+    contracts: [],
   };
 
   componentDidMount = async () => {
@@ -27,7 +27,7 @@ class GerenciarConsultaContainer extends Component {
 
   getAllContract = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const query = {
@@ -36,19 +36,19 @@ class GerenciarConsultaContainer extends Component {
           specific: {
             razaosocial: this.state.nome,
             cnpj: this.state.cnpj.replace(/\D/gi, ""),
-            group: this.state.grupo
-          }
+            group: this.state.grupo,
+          },
         },
         contract: {
           specific: {
             type: this.state.tipo !== "TODOS" && this.state.tipo,
             // type: null,
-            code: this.state.codigo
-          }
-        }
+            code: this.state.codigo,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
     const contracts = await GetAllContract(query);
 
@@ -57,14 +57,14 @@ class GerenciarConsultaContainer extends Component {
       page: contracts.data.page,
       count: contracts.data.count,
       show: contracts.data.show,
-      loading: false
+      loading: false,
     });
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     const { name, value } = masks(e.target.name, e.target.value);
     await this.setState({
-      [name]: value
+      [name]: value,
     });
     await this.getAllContract();
   };
@@ -73,9 +73,8 @@ class GerenciarConsultaContainer extends Component {
     <div className="div-table">
       <div className="div-main-table">
         {this.state.contracts.length !== 0 ? (
-          this.state.contracts.map(line => (
+          this.state.contracts.map((line) => (
             <div className="div-line-table">
-              {console.log(line)}
               <label
                 className="label-nome-table"
                 style={line.dateTermination ? { color: "red" } : null}
@@ -125,10 +124,10 @@ class GerenciarConsultaContainer extends Component {
     </div>
   );
 
-  changePages = async pages => {
+  changePages = async (pages) => {
     await this.setState(
       {
-        page: pages
+        page: pages,
       },
       () => {
         this.getAllContract();
@@ -261,7 +260,7 @@ class GerenciarConsultaContainer extends Component {
             placeholder="TIPO"
             name="tipo"
             value={state.tipo}
-            onChange={value =>
+            onChange={(value) =>
               this.setState({ tipo: value }, () => this.getAllContract())
             }
           >
