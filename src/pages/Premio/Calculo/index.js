@@ -22,7 +22,7 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { NewAward, GetAllAwards } from "../../../services/award";
+import { NewAward, GetAllAwards, NewEquation } from "../../../services/award";
 import { validator, masks } from "./validator";
 import { GetAllContract, GetAllContractItem } from "../../../services/contract";
 import moment from "moment";
@@ -37,7 +37,7 @@ export default class CalculoContainer extends Component {
     fieldErrors: { name: false, initialDate: false },
     code: undefined,
     visible: false,
-    visibleEquations: true,
+    visibleEquations: false,
     valor2: 0,
     name: undefined,
     initialDate: undefined,
@@ -137,7 +137,17 @@ export default class CalculoContainer extends Component {
     });
   };
 
-  handleCancel = () => this.setState({ visible: false });
+  newEquation = async () => {
+    const { value, operator, rows, index } = this.state;
+
+    const { status } = await NewEquation({
+      value,
+      operator,
+      awardId: rows[index].id,
+    });
+
+    if (status === 200) message.success("sucesso");
+  };
 
   ModalEquations = () => {
     return (
@@ -149,13 +159,22 @@ export default class CalculoContainer extends Component {
         onCancel={() => this.setState({ visibleEquations: false })}
       >
         <div className="div-block-row-premio">
-          <Select placeholder="operador" style={{ width: "30%" }}>
+          <Select
+            placeholder="operator"
+            style={{ width: "30%" }}
+            value={this.state.operator}
+            onChange={(operator) => this.setState({ operator })}
+          >
             {["SOMA", "SUBTRAÇÃO", "MULTIPLICAÇÃO", "DIVISÃO"].map((item) => (
               <Option value={item}>{item}</Option>
             ))}
           </Select>
-          <InputNumber placeholder="valor" />
-          <PlusOutlined />
+          <InputNumber
+            placeholder="valor"
+            onChange={(value) => this.setState({ value })}
+            value={this.state.value}
+          />
+          <PlusOutlined onClick={this.newEquation} />
         </div>
       </Modal>
     );
@@ -167,7 +186,7 @@ export default class CalculoContainer extends Component {
         title="Basic Modal"
         visible={this.state.visible}
         onOk={this.NewAward}
-        onCancel={this.handleCancel}
+        onCancel={() => this.setState({ visible: false })}
       >
         <Input
           placeholder="nome"
