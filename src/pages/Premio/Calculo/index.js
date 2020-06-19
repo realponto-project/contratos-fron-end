@@ -1,32 +1,61 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Input, Button, Tooltip, Select, message, Progress } from "antd";
 import {
-  InfoCircleOutlined,
+  Input,
+  Button,
+  Tooltip,
+  Select,
+  message,
+  Modal,
+  DatePicker,
+  InputNumber,
+  Progress,
+} from "antd";
+import {
   MailOutlined,
-  BellOutlined
+  BellOutlined,
+  InfoCircleOutlined,
+  PlusOutlined,
+  PlusCircleOutlined,
+  DownOutlined,
+  UpOutlined,
+  EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
-import { NewTypeAccount } from "../../../services/typeAccount";
+import { NewAward, GetAllAwards } from "../../../services/award";
 import { validator, masks } from "./validator";
 import { GetAllContract, GetAllContractItem } from "../../../services/contract";
+import moment from "moment";
+import * as R from "ramda";
 
 const { Option } = Select;
 
 export default class CalculoContainer extends Component {
   state = {
-    grupo: "",
-    equacao: "",
-    fieldErrors: {
-      grupo: false,
-      equacao: false
-    },
     contracts: [],
     contractItems: [],
-    code: undefined
+    fieldErrors: { name: false, initialDate: false },
+    code: undefined,
+    visible: false,
+    visibleEquations: true,
+    valor2: 0,
+    name: undefined,
+    initialDate: undefined,
+    rows: [],
+    index: -1,
   };
 
   componentDidMount = async () => {
     await this.getAllContract();
+    await this.getAllAwards();
+  };
+
+  getAllAwards = async () => {
+    const { status, data } = await GetAllAwards();
+
+    if (status === 200) this.setState({ rows: data });
+
+    console.log(status, data);
   };
 
   getAllContractItem = async () => {
@@ -35,13 +64,20 @@ export default class CalculoContainer extends Component {
       filters: {
         contractItem: {
           specific: {
-            contractCode: this.state.code
-          }
-        }
+            contractCode: this.state.code,
+          },
+        },
       },
       attributes: {
-        contractItem: ["id", "contractCode", "itemId"]
-      }
+        contractItem: [
+          "id",
+          "contractCode",
+          "itemId",
+          "quantidade",
+          "costPrice",
+          "price",
+        ],
+      },
     };
     const { status, data } = await GetAllContractItem(query);
 
@@ -55,50 +91,100 @@ export default class CalculoContainer extends Component {
     }
   };
 
-  newPremission = async () => {
-    const { grupo: group, equacao: equation } = this.state;
+  NewAward = async () => {
+    const { name, initialDate } = this.state;
 
-    const { status } = await NewTypeAccount({ group, equation });
+    const { status } = await NewAward({ name, initialDate });
 
     if (status === 200) {
       this.setState({
-        grupo: "",
-        equacao: "",
-        fieldErrors: {
-          grupo: false,
-          equacao: false
-        }
+        name: undefined,
+        initialDate: undefined,
+        fieldErrors: { name: false, initialDate: false },
+        visible: false,
       });
       message.success("sucesso");
+    } else {
+      message.error("erro");
     }
   };
 
-  onChange = e => {
+  onChange = (e) => {
     const { name, value } = masks(e.target.name, e.target.value);
 
     this.setState({ [name]: value });
   };
 
-  onBlur = e => {
+  onBlur = (e) => {
     const { value, name } = e.target;
     const { fieldErrors } = this.state;
 
     fieldErrors[name] = validator(name, value);
 
     this.setState({
-      fieldErrors
+      fieldErrors,
     });
   };
 
-  onFocus = e => {
+  onFocus = (e) => {
     const { name } = e.target;
     const { fieldErrors } = this.state;
 
     fieldErrors[name] = false;
 
     this.setState({
-      fieldErrors
+      fieldErrors,
     });
+  };
+
+  handleCancel = () => this.setState({ visible: false });
+
+  ModalEquations = () => {
+    return (
+      <Modal
+        title="equações"
+        visible={this.state.visibleEquations}
+        // onOk={this.NewAward}
+        // width={700}
+        onCancel={() => this.setState({ visibleEquations: false })}
+      >
+        <div className="div-block-row-premio">
+          <Select placeholder="operador" style={{ width: "30%" }}>
+            {["SOMA", "SUBTRAÇÃO", "MULTIPLICAÇÃO", "DIVISÃO"].map((item) => (
+              <Option value={item}>{item}</Option>
+            ))}
+          </Select>
+          <InputNumber placeholder="valor" />
+          <PlusOutlined />
+        </div>
+      </Modal>
+    );
+  };
+
+  ModalPremiacao = () => {
+    return (
+      <Modal
+        title="Basic Modal"
+        visible={this.state.visible}
+        onOk={this.NewAward}
+        onCancel={this.handleCancel}
+      >
+        <Input
+          placeholder="nome"
+          value={this.state.name}
+          name="name"
+          onChange={this.onChange}
+        />
+        <DatePicker
+          style={{ width: "280px", marginTop: "20px" }}
+          placeholder="data inicial"
+          value={this.state.initialDate}
+          onChange={(initialDate) => {
+            this.setState({ initialDate });
+          }}
+        />
+      </Modal>
+    );
   };
 
   render() {
@@ -129,10 +215,159 @@ export default class CalculoContainer extends Component {
             <BellOutlined style={{ fontSize: "28px" }} />
           </div>
         </div>
-        <div className="div-block-cards-premio">
+        <div className="div-main-premio">
+          <this.ModalPremiacao />
+          <this.ModalEquations />
           <div className="div-card-premio">
-            <h2>Cadastro</h2>
+            <div className="div-block-row-premio">
+              <h1 className="h1-titulo" style={{ margin: "0" }}>
+                premiação
+              </h1>
+              <Button
+                type="primary"
+                onClick={() => this.setState({ visible: true })}
+              >
+                <PlusOutlined />
+              </Button>
+            </div>
+            {/* <div className="div-block-row-premio">
             <div className="div-block-input-premio">
+              <label>Contrato</label>
+              <Select
+                onChange={async (value) => {
+                  await this.setState({ code: value });
+                  await this.getAllContractItem();
+                }}
+                // placeholder="TIPO"
+                // value={this.state.tipo}
+                // size="large"
+                style={{ width: "100%" }}
+              >
+                {this.state.contracts.map((contract) => (
+                  <Option value={contract.code}>{contract.code}</Option>
+                ))}
+              </Select>
+            </div>
+            <div className="div-block-input-premio">
+              <label>Item</label>
+              <Select
+                style={{ width: "100%" }}
+                onChange={(value) => this.setState({ contractItemId: value })}
+              >
+                {this.state.contractItems.map((contractItem) => (
+                  <Option value={contractItem.id}>
+                    {contractItem.item.name}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+          </div>
+
+          <div className="div-block-row-premio">
+            <div className="div-block-input-premio">
+              <label>Valor 1</label>
+              <InputNumber
+                style={{ width: "100%" }}
+                onChange={() =>
+                  console.log(
+                    R.find(R.propEq("id", this.state.contractItemId))(
+                      this.state.contractItems
+                    ).price
+                  )
+                }
+                disabled={
+                  !R.find(R.propEq("id", this.state.contractItemId))(
+                    this.state.contractItems
+                  )
+                }
+                value={
+                  R.find(R.propEq("id", this.state.contractItemId))(
+                    this.state.contractItems
+                  )
+                    ? R.find(R.propEq("id", this.state.contractItemId))(
+                        this.state.contractItems
+                      ).price
+                    : 0
+                }
+              />
+            </div>
+
+            <div className="div-block-input-premio">
+              <label>Base calculo</label>
+              <Select
+                style={{ width: "100%" }}
+                // onChange={(value) => this.setState({ contractItemId: value })}
+              >
+                {["SOMA", "SUBTRAÇÃO", "MULTIPLICAÇÃO", "DIVISÃO"].map(
+                  (item) => (
+                    <Option value={item}>{item}</Option>
+                  )
+                )}
+              </Select>
+            </div>
+          </div>
+
+          <div className="div-block-row-premio">
+            <div className="div-block-input-premio">
+              <label>Valor 1</label>
+              <InputNumber
+                style={{ width: "100%" }}
+                step={0.05}
+                onChange={(valor2) => this.setState({ valor2 })}
+                disabled={
+                  !R.find(R.propEq("id", this.state.contractItemId))(
+                    this.state.contractItems
+                  )
+                }
+                value={this.state.valor2}
+              />
+            </div>
+          </div> */}
+            <div
+              className="div-block-row-premio"
+              style={{ backgroundColor: "#f5f5f5" }}
+            >
+              <div className="div-title-premio-name">
+                <strong>Grupo</strong>
+              </div>
+              <div className="div-title-premio-initialDate">
+                <strong>Data Inicial</strong>
+              </div>
+              <div className="div-title-premio-icons">Ações</div>
+            </div>
+            {this.state.rows.map((row, index) => (
+              <>
+                <div className="div-block-row-premio">
+                  <div className="div-title-premio-name">{row.name}</div>
+                  <div className="div-title-premio-initialDate">
+                    {moment(row.initialDate).format("LL")}
+                  </div>
+                  <div className="div-title-premio-icons">
+                    {this.state.index === index ? (
+                      <UpOutlined
+                        onClick={() => this.setState({ index: -1 })}
+                      />
+                    ) : (
+                      <DownOutlined onClick={() => this.setState({ index })} />
+                    )}
+
+                    <EditOutlined />
+                    <DeleteOutlined />
+                  </div>
+                </div>
+                {this.state.index === index && (
+                  <div className="div-block-row-premio">
+                    {this.state.rows[index].equations.map((equation) => (
+                      <label>{equation.operator}</label>
+                    ))}
+                    <PlusCircleOutlined
+                      onClick={() => this.setState({ visibleEquations: true })}
+                    />
+                  </div>
+                )}
+              </>
+            ))}
+            {/* <div className="div-block-input-premio">
               <label>Grupo</label>
               <Input
                 name="grupo"
@@ -167,8 +402,8 @@ export default class CalculoContainer extends Component {
                 onBlur={this.onBlur}
                 onFocus={this.onFocus}
               />
-            </div>
-            <div className="button-save-premio">
+            </div> */}
+            {/* <div className="button-save-premio">
               <Button onClick={this.newPremission}>Salvar</Button>
             </div>
           </div>
@@ -208,6 +443,8 @@ export default class CalculoContainer extends Component {
                 ))}
               </Select>
             </div>
+          </div>
+            </div> */}
           </div>
         </div>
       </div>
