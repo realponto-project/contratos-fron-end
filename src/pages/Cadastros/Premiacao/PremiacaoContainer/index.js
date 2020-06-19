@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Modal, Input } from "antd";
+import { Modal, Input, Progress } from "antd";
+
+import { MailOutlined, BellOutlined } from "@ant-design/icons";
 
 class PremiacaoContainer extends Component {
   state = {
@@ -63,6 +65,31 @@ class PremiacaoContainer extends Component {
   render() {
     return (
       <div className="card-main">
+        <div className="div-titulo">
+          <h1 className="h1-titulo">Premiacao</h1>
+          <div className="div-info-titulo">
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>EMPRESA</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>USUARIO</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
+          </div>
+          <div className="div-bell-titulo">
+            <MailOutlined style={{ fontSize: "28px", marginRight: "20px" }} />
+            <BellOutlined style={{ fontSize: "28px" }} />
+          </div>
+        </div>
         <div className="div-card-item">
           <div className="div-titulo-usuario">
             <h1 className="h1-titulo" style={{ margin: "0" }}>

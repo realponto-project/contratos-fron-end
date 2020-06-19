@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Input, Button, Tooltip, Select, message } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { Input, Button, Tooltip, Select, message, Progress } from "antd";
+import {
+  InfoCircleOutlined,
+  MailOutlined,
+  BellOutlined
+} from "@ant-design/icons";
 import { NewTypeAccount } from "../../../services/typeAccount";
 import { validator, masks } from "./validator";
 import { GetAllContract, GetAllContractItem } from "../../../services/contract";
@@ -14,11 +18,11 @@ export default class CalculoContainer extends Component {
     equacao: "",
     fieldErrors: {
       grupo: false,
-      equacao: false,
+      equacao: false
     },
     contracts: [],
     contractItems: [],
-    code: undefined,
+    code: undefined
   };
 
   componentDidMount = async () => {
@@ -31,13 +35,13 @@ export default class CalculoContainer extends Component {
       filters: {
         contractItem: {
           specific: {
-            contractCode: this.state.code,
-          },
-        },
+            contractCode: this.state.code
+          }
+        }
       },
       attributes: {
-        contractItem: ["id", "contractCode", "itemId"],
-      },
+        contractItem: ["id", "contractCode", "itemId"]
+      }
     };
     const { status, data } = await GetAllContractItem(query);
 
@@ -62,52 +66,69 @@ export default class CalculoContainer extends Component {
         equacao: "",
         fieldErrors: {
           grupo: false,
-          equacao: false,
-        },
+          equacao: false
+        }
       });
       message.success("sucesso");
     }
   };
 
-  onChange = (e) => {
+  onChange = e => {
     const { name, value } = masks(e.target.name, e.target.value);
 
     this.setState({ [name]: value });
   };
 
-  onBlur = (e) => {
+  onBlur = e => {
     const { value, name } = e.target;
     const { fieldErrors } = this.state;
 
     fieldErrors[name] = validator(name, value);
 
     this.setState({
-      fieldErrors,
+      fieldErrors
     });
   };
 
-  onFocus = (e) => {
+  onFocus = e => {
     const { name } = e.target;
     const { fieldErrors } = this.state;
 
     fieldErrors[name] = false;
 
     this.setState({
-      fieldErrors,
+      fieldErrors
     });
   };
 
   render() {
     return (
-      <div className="div-main-premio">
-        <h1
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          Prêmio
-        </h1>
+      <div className="card-main">
+        <div className="div-titulo">
+          <h1 className="h1-titulo">Premio</h1>
+          <div className="div-info-titulo">
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>EMPRESA</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>USUARIO</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
+          </div>
+          <div className="div-bell-titulo">
+            <MailOutlined style={{ fontSize: "28px", marginRight: "20px" }} />
+            <BellOutlined style={{ fontSize: "28px" }} />
+          </div>
+        </div>
         <div className="div-block-cards-premio">
           <div className="div-card-premio">
             <h2>Cadastro</h2>
@@ -157,7 +178,7 @@ export default class CalculoContainer extends Component {
             <div className="div-block-input-premio">
               <label>Contrato</label>
               <Select
-                onChange={async (value) => {
+                onChange={async value => {
                   await this.setState({ code: value });
                   await this.getAllContractItem();
                 }}
@@ -166,7 +187,7 @@ export default class CalculoContainer extends Component {
                 // size="large"
                 style={{ width: "100%" }}
               >
-                {this.state.contracts.map((contract) => (
+                {this.state.contracts.map(contract => (
                   <Option value={contract.code}>{contract.code}</Option>
                 ))}
               </Select>
@@ -180,7 +201,7 @@ export default class CalculoContainer extends Component {
                 // size="large"
                 style={{ width: "100%" }}
               >
-                {this.state.contractItems.map((contractItem) => (
+                {this.state.contractItems.map(contractItem => (
                   <Option value={contractItem.id}>
                     {contractItem.item.name}
                   </Option>

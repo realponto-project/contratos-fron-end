@@ -2,7 +2,8 @@
 import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
-import { Select, InputNumber, message } from "antd";
+import { Select, InputNumber, message, Progress } from "antd";
+import { BellOutlined, MailOutlined } from "@ant-design/icons";
 
 import { NewIGPM } from "../../../../services/igpm";
 import moment from "moment";
@@ -90,6 +91,28 @@ class NewIgpmContainer extends Component {
       <div className="card-main">
         <div className="div-titulo">
           <h1 className="h1-titulo">Adicionar igpm</h1>
+          <div className="div-info-titulo">
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>EMPRESA</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>USUARIO</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
+          </div>
+          <div className="div-bell-titulo">
+            <MailOutlined style={{ fontSize: "28px", marginRight: "20px" }} />
+            <BellOutlined style={{ fontSize: "28px" }} />
+          </div>
         </div>
 
         <div className="div-line-igpm">

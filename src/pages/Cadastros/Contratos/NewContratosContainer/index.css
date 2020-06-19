@@ -1,5 +1,5 @@
 .div-inputs-flex-contratos {
-  width: 100%;
+  width: 90%;
   height: 50px;
   display: flex;
   align-items: center;
@@ -124,7 +124,16 @@
 .button-cancelar:active {
   background: #2279c0;
 }
-
+.div-info-titulo {
+  margin: 10px 0;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+.div-h3-titulo {
+  display: flex;
+  flex-direction: column;
+}
 .button-incluir {
   height: 35px;
   border: 0;
@@ -394,7 +403,7 @@
 
 .div-card-contratos-1 {
   padding: 20px 20px;
-  width: 100%;
+  width: 90%;
   height: auto;
   background-color: white;
   border: 1px solid #ccc;
