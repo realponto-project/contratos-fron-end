@@ -4,12 +4,13 @@ import "./index.css";
 import moment from "moment";
 import { connect } from "react-redux";
 import { Howl, Howler } from "howler";
+import { BellOutlined, MailOutlined } from "@ant-design/icons";
 
 import { GetAllIgpm } from "../../../../services/igpm";
 // import { GetAllContractItem } from "../../../../services/contract";
 import { DeleteIGPM } from "../../../../services/igpm";
 
-import { Spin, Button, Modal, Icon, Tooltip } from "antd";
+import { Spin, Button, Modal, Icon, Tooltip, Progress } from "antd";
 
 import ha from "./sound.mp3";
 
@@ -25,7 +26,7 @@ const meses = [
   "SETEMBRO",
   "OUTUBRO",
   "NOVEMBRO",
-  "DEZEMBRO",
+  "DEZEMBRO"
 ];
 
 class DashIgmpContainer extends Component {
@@ -40,7 +41,7 @@ class DashIgmpContainer extends Component {
     page: 1,
     contractItems: [],
     igpm: {},
-    itemId: "",
+    itemId: ""
   };
 
   soundPlay = () => {
@@ -48,8 +49,8 @@ class DashIgmpContainer extends Component {
       src: ha,
       html5: true,
       sprite: {
-        laser: [15100, 1500],
-      },
+        laser: [15100, 1500]
+      }
     });
 
     sound.play("laser");
@@ -72,14 +73,14 @@ class DashIgmpContainer extends Component {
       //   }
       // }
     };
-    GetAllIgpm(query).then((resp) => {
+    GetAllIgpm(query).then(resp => {
       this.setState({ contractItems: resp.data });
     });
   };
 
-  onChange = (e) => {
+  onChange = e => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
@@ -111,7 +112,7 @@ class DashIgmpContainer extends Component {
                     fontSize: 20,
                     display: "flex",
                     alignItems: "center",
-                    color: "red",
+                    color: "red"
                   }}
                   type="delete"
                   onClick={() =>
@@ -174,13 +175,12 @@ class DashIgmpContainer extends Component {
     <div className="div-table">
       {this.state.contractItems.length !== 0 ? (
         <div className="div-main-table">
-          {this.state.contractItems.map((line) => (
+          {this.state.contractItems.map(line => (
             <div className="div-line-table">
               <label className="label-nome-igpm">{line.razaosocial}</label>
               <label
-                className={`label-data-igpm ${
-                  this.props.login.user.troll && "cursor"
-                }`}
+                className={`label-data-igpm ${this.props.login.user.troll &&
+                  "cursor"}`}
                 // onClick={() =>
                 //   this.setState({
                 //     igpm: line.item.igpms[0],
@@ -300,6 +300,28 @@ class DashIgmpContainer extends Component {
       <div className="card-main">
         <div className="div-titulo">
           <h1 className="h1-titulo">Gerenciar igpm</h1>
+          <div className="div-info-titulo">
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>EMPRESA</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>USUARIO</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
+          </div>
+          <div className="div-bell-titulo">
+            <MailOutlined style={{ fontSize: "28px", marginRight: "20px" }} />
+            <BellOutlined style={{ fontSize: "28px" }} />
+          </div>
         </div>
         <div className="div-inputs-flex">
           <input
@@ -343,7 +365,7 @@ class DashIgmpContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    login: state.login,
+    login: state.login
   };
 }
 

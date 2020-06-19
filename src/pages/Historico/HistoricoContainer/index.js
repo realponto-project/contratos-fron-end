@@ -6,6 +6,8 @@ import * as R from "ramda";
 import moment from "moment";
 import "../../../global.css";
 import "./index.css";
+import { Progress } from "antd";
+import { BellOutlined, MailOutlined } from "@ant-design/icons";
 
 import { GetLogsByCode } from "../../../services/contract";
 import { setContractCode } from "../../Cadastros/Contratos/ContratosRedux/action";
@@ -39,6 +41,28 @@ class HistoricoContainer extends Component {
       <div className="card-main">
         <div className="div-titulo">
           <h1 className="h1-titulo">Historico</h1>
+          <div className="div-info-titulo">
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>EMPRESA</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>USUARIO</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
+          </div>
+          <div className="div-bell-titulo">
+            <MailOutlined style={{ fontSize: "28px", marginRight: "20px" }} />
+            <BellOutlined style={{ fontSize: "28px" }} />
+          </div>
         </div>
 
         <div className="history-container-main">
@@ -271,4 +295,7 @@ function mapDispacthToProps(dispach) {
   return bindActionCreators({ setContractCode }, dispach);
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(HistoricoContainer);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(HistoricoContainer);

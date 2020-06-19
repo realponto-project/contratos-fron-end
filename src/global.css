@@ -9,17 +9,22 @@
 }
 .div-titulo {
   width: 100%;
+  border-bottom: 1px solid #cccccc;
+  height: 80px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
+  background-color: #ffffff;
 }
 .h1-titulo {
   font-family: Bebas;
   font-weight: 500;
   font-size: 2.2em;
-  margin: 15px 0 0 25px;
+  margin-left: calc(100% - 95%);
 }
-
+.div-bell-titulo {
+  margin-right: calc(100% - 95%);
+}
 .h2-sub-titulo {
   font-family: Bebas;
   font-weight: 500;

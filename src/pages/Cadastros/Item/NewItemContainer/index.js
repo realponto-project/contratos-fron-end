@@ -4,14 +4,17 @@ import "../../../../global.css";
 import "./index.css";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { message, Modal, Icon, Select } from "antd";
+import { message, Modal, Progress, Select } from "antd";
 import {
   NewItem,
   UpdateItem,
   GetItemByParams,
   DeleteItem,
-  RestoreItem,
+  RestoreItem
 } from "../../../../services/item";
+
+import { MailOutlined, BellOutlined } from "@ant-design/icons";
+
 import { validator, masks } from "./validator";
 import { clearItem } from "../../../Relatorios/Cadastro/cadastroRedux/action";
 
@@ -31,10 +34,10 @@ class NewItemContainer extends Component {
       name: false,
       tipo: false,
       codigo: false,
-      descricao: false,
+      descricao: false
     },
     visible: false,
-    deletedAt: false,
+    deletedAt: false
   };
 
   componentDidMount = async () => {
@@ -46,7 +49,7 @@ class NewItemContainer extends Component {
       tipo,
       codigo,
       descricao,
-      deletedAt,
+      deletedAt
     } = this.props.itemValue;
 
     await this.setState({
@@ -57,7 +60,7 @@ class NewItemContainer extends Component {
       custoMensal,
       tipo,
       codigo,
-      descricao,
+      descricao
     });
 
     this.props.clearItem();
@@ -77,25 +80,25 @@ class NewItemContainer extends Component {
         name: false,
         tipo: false,
         codigo: false,
-        descricao: false,
-      },
+        descricao: false
+      }
     });
   };
 
-  onChange = (e) => {
+  onChange = e => {
     const { name, value } = masks(e.target.name, e.target.value);
 
     this.setState({
-      [name]: value,
+      [name]: value
     });
   };
 
-  onBlur = async (e) => {
+  onBlur = async e => {
     const { name, value } = e.target;
     const { fieldErrors } = this.state;
 
     this.setState({
-      fieldErrors: { ...fieldErrors, [name]: validator(name, value) },
+      fieldErrors: { ...fieldErrors, [name]: validator(name, value) }
     });
 
     if (name === "name") {
@@ -108,7 +111,7 @@ class NewItemContainer extends Component {
           type: tipo,
           code: codigo,
           description: descricao,
-          deletedAt,
+          deletedAt
         } = data;
         this.setState({
           deletedAt: !!deletedAt,
@@ -116,18 +119,18 @@ class NewItemContainer extends Component {
           name,
           tipo,
           codigo,
-          descricao,
+          descricao
         });
       }
     }
   };
 
-  onFocus = (e) => {
+  onFocus = e => {
     const { name } = e.target;
     const { fieldErrors } = this.state;
 
     this.setState({
-      fieldErrors: { ...fieldErrors, [name]: false },
+      fieldErrors: { ...fieldErrors, [name]: false }
     });
   };
 
@@ -139,7 +142,7 @@ class NewItemContainer extends Component {
       descricao: description,
       itemId,
       custoMensal: costPriceMonthly,
-      custoAnual: costPriceYearly,
+      custoAnual: costPriceYearly
     } = this.state;
 
     const value = {
@@ -148,7 +151,7 @@ class NewItemContainer extends Component {
       code,
       description,
       costPriceMonthly,
-      costPriceYearly,
+      costPriceYearly
     };
 
     if (itemId) {
@@ -165,19 +168,19 @@ class NewItemContainer extends Component {
         this.clearState();
         message.success("Item cadatrado com sucesso");
       } else if (status === 422) {
-        R.keys(data.errors[0].field).map((key) =>
+        R.keys(data.errors[0].field).map(key =>
           this.setState({
             fieldErrors: {
               ...this.state.fieldErrors,
-              [key]: data.errors[0].field,
-            },
+              [key]: data.errors[0].field
+            }
           })
         );
       }
     }
   };
 
-  handleOk = async (e) => {
+  handleOk = async e => {
     const { itemId } = this.state;
     const { status } = await DeleteItem(itemId);
 
@@ -192,7 +195,7 @@ class NewItemContainer extends Component {
         message.error("ocorreu um erro");
     }
     this.setState({
-      visible: false,
+      visible: false
     });
     this.clearState();
   };
@@ -206,7 +209,7 @@ class NewItemContainer extends Component {
         onOk={this.handleOk}
         onCancel={() =>
           this.setState({
-            visible: false,
+            visible: false
           })
         }
       >
@@ -238,12 +241,33 @@ class NewItemContainer extends Component {
 
     return (
       <div className="card-main">
-        <div className="div-card-item">
-          <div className="div-titulo-usuario">
-            <h1 className="h1-titulo" style={{ margin: "0" }}>
-              Itens
-            </h1>
+        <div className="div-titulo">
+          <h1 className="h1-titulo">Item</h1>
+          <div className="div-info-titulo">
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>EMPRESA</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>USUARIO</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
           </div>
+          <div className="div-bell-titulo">
+            <MailOutlined style={{ fontSize: "28px", marginRight: "20px" }} />
+            <BellOutlined style={{ fontSize: "28px" }} />
+          </div>
+        </div>
+        <div className="div-card-item">
+          <div className="div-titulo-usuario"></div>
           <div className="div-inputs-flex">
             <input
               className={`input-nome-item ${fieldErrors.name && "input-error"}`}
@@ -257,7 +281,7 @@ class NewItemContainer extends Component {
               value={this.state.tipo}
               className={`input-tipo-item ${fieldErrors.tipo && "input-error"}`}
               placeholder="TIPO"
-              onChange={(value) => this.setState({ tipo: value })}
+              onChange={value => this.setState({ tipo: value })}
               size="large"
             >
               <Option key="SOFTWARE" value="SOFTWARE">
@@ -271,9 +295,8 @@ class NewItemContainer extends Component {
 
           <div className="div-inputs-flex">
             <input
-              className={`input-codigo-item  ${
-                fieldErrors.codigo && "input-error"
-              }`}
+              className={`input-codigo-item  ${fieldErrors.codigo &&
+                "input-error"}`}
               onChange={this.onChange}
               placeholder="CÓDIGO"
               value={this.state.codigo}
@@ -293,7 +316,7 @@ class NewItemContainer extends Component {
               step={0.01}
               onBlur={() =>
                 this.setState({
-                  custoMensal: parseFloat(this.state.custoMensal).toFixed(2),
+                  custoMensal: parseFloat(this.state.custoMensal).toFixed(2)
                 })
               }
             ></input>
@@ -310,7 +333,7 @@ class NewItemContainer extends Component {
               step={0.01}
               onBlur={() =>
                 this.setState({
-                  custoAnual: parseFloat(this.state.custoAnual).toFixed(2),
+                  custoAnual: parseFloat(this.state.custoAnual).toFixed(2)
                 })
               }
             ></input>
@@ -321,15 +344,14 @@ class NewItemContainer extends Component {
               style={{
                 fontFamily: "Bebas",
                 fontSize: "20px",
-                margin: "20px 0 10px",
+                margin: "20px 0 10px"
               }}
             >
               Descricao
             </label>
             <textarea
-              className={`textArea-descricao-item ${
-                fieldErrors.descricao && "input-error"
-              }`}
+              className={`textArea-descricao-item ${fieldErrors.descricao &&
+                "input-error"}`}
               value={this.state.descricao}
               placeholder="DIGITE A DESCRIÇÃO"
               name="descricao"
@@ -354,9 +376,8 @@ class NewItemContainer extends Component {
           ) : (
             <>
               <button
-                className={`button-excluir-cliente ${
-                  !this.state.itemId && "button-disabled"
-                }`}
+                className={`button-excluir-cliente ${!this.state.itemId &&
+                  "button-disabled"}`}
                 onClick={
                   this.state.itemId && (() => this.setState({ visible: true }))
                   // (async () => await DeleteItem(this.state.itemId))
@@ -382,8 +403,11 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    itemValue: state.itemValue,
+    itemValue: state.itemValue
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(NewItemContainer);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(NewItemContainer);

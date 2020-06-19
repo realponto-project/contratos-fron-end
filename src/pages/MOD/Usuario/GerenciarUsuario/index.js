@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./index.css";
-import { Spin, Icon } from "antd";
+import { Spin, Icon, Progress } from "antd";
+import { BellOutlined, MailOutlined } from "@ant-design/icons";
 
 import { GetAllUsers, UpdateUserTroll } from "../../../../services/user";
 
@@ -163,6 +164,28 @@ class GerenciarUsuario extends Component {
       <div className="card-main">
         <div className="div-titulo">
           <h1 className="h1-titulo">Gerenciar Usuario</h1>
+          <div className="div-info-titulo">
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>EMPRESA</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
+            <div className="div-h3-titulo">
+              <h4 style={{ margin: "0" }}>USUARIO</h4>
+              <Progress
+                percent={50}
+                status="active"
+                style={{ padding: "0 !important" }}
+              />
+            </div>
+          </div>
+          <div className="div-bell-titulo">
+            <MailOutlined style={{ fontSize: "28px", marginRight: "20px" }} />
+            <BellOutlined style={{ fontSize: "28px" }} />
+          </div>
         </div>
 
         {this.state.loading ? (
