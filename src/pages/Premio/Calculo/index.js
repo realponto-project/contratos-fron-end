@@ -22,7 +22,13 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { NewAward, GetAllAwards, NewEquation } from "../../../services/award";
+import {
+  NewAward,
+  GetAllAwards,
+  NewEquation,
+  DeleteEquation,
+  UpdateEquation,
+} from "../../../services/award";
 import { validator, masks } from "./validator";
 import { GetAllContract, GetAllContractItem } from "../../../services/contract";
 import moment from "moment";
@@ -41,8 +47,11 @@ export default class CalculoContainer extends Component {
     valor2: 0,
     name: undefined,
     initialDate: undefined,
+    operator: undefined,
+    value: undefined,
     rows: [],
     index: -1,
+    equationId: "",
   };
 
   componentDidMount = async () => {
@@ -103,6 +112,8 @@ export default class CalculoContainer extends Component {
         fieldErrors: { name: false, initialDate: false },
         visible: false,
       });
+      this.getAllAwards();
+
       message.success("sucesso");
     } else {
       message.error("erro");
@@ -146,7 +157,45 @@ export default class CalculoContainer extends Component {
       awardId: rows[index].id,
     });
 
-    if (status === 200) message.success("sucesso");
+    if (status === 200) {
+      message.success("sucesso");
+      this.setState({
+        value: undefined,
+        operator: undefined,
+        awardId: "",
+        visibleEquations: false,
+      });
+      this.getAllAwards();
+    }
+  };
+
+  updateEquation = async () => {
+    const { value, operator, equationId: id } = this.state;
+
+    const { status } = await UpdateEquation({
+      value,
+      operator,
+      id,
+    });
+
+    if (status === 200) {
+      message.success("sucesso");
+      this.setState({
+        value: undefined,
+        operator: undefined,
+        equationId: "",
+        visibleEquations: false,
+      });
+      this.getAllAwards();
+    } else {
+      message.error("erro");
+    }
+  };
+
+  deleteEquation = async (id) => {
+    console.log(id);
+    const { status } = await DeleteEquation({ id });
+    if (status === 200) this.getAllAwards();
   };
 
   ModalEquations = () => {
@@ -154,9 +203,11 @@ export default class CalculoContainer extends Component {
       <Modal
         title="equações"
         visible={this.state.visibleEquations}
-        // onOk={this.NewAward}
+        onOk={this.state.equationId ? this.updateEquation : this.newEquation}
         // width={700}
-        onCancel={() => this.setState({ visibleEquations: false })}
+        onCancel={() =>
+          this.setState({ visibleEquations: false, equationId: "" })
+        }
       >
         <div className="div-block-row-premio">
           <Select
@@ -174,7 +225,6 @@ export default class CalculoContainer extends Component {
             onChange={(value) => this.setState({ value })}
             value={this.state.value}
           />
-          <PlusOutlined onClick={this.newEquation} />
         </div>
       </Modal>
     );
@@ -376,12 +426,41 @@ export default class CalculoContainer extends Component {
                 </div>
                 {this.state.index === index && (
                   <div className="div-block-row-premio">
-                    {this.state.rows[index].equations.map((equation) => (
-                      <label>{equation.operator}</label>
-                    ))}
-                    <PlusCircleOutlined
-                      onClick={() => this.setState({ visibleEquations: true })}
-                    />
+                    <div className="div-up-premio">
+                      <div className="div-cabecalho-up-premio">
+                        <label>operação</label>
+                        <label>valor</label>
+                        <label>ações</label>
+                        {this.state.rows[index].equations.length < 4 && (
+                          <PlusCircleOutlined
+                            onClick={() =>
+                              this.setState({ visibleEquations: true })
+                            }
+                          />
+                        )}
+                      </div>
+                      {this.state.rows[index].equations.map((equation) => (
+                        <div className="div-content-up-premio">
+                          <label>{equation.operator}</label>
+                          <label>{equation.value}</label>
+                          <div>
+                            <EditOutlined
+                              onClick={() =>
+                                this.setState({
+                                  visibleEquations: true,
+                                  operator: equation.operator,
+                                  value: equation.value,
+                                  equationId: equation.id,
+                                })
+                              }
+                            />
+                            <DeleteOutlined
+                              onClick={() => this.deleteEquation(equation.id)}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </>
