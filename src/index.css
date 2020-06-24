@@ -22,8 +22,9 @@ code {
   left: 0;
   overflow: hidden;
   height: 100vh;
-  background: linear-gradient(to right, #001529, rgba(0, 0, 0, 0));
-  width: 20px;
+  background-color: #001529;
+  background: linear(to right, #001529, rgba(0, 0, 0, 0));
+  width: 50px;
   transition: width 0.5s ease 0.1s;
   display: flex;
   z-index: 1;
@@ -32,16 +33,8 @@ code {
 .div-sideBar:hover {
   background-color: #001529;
   width: 190px;
-  transition-delay: 0.3s;
+  transition-delay: 0.2s;
   transition-duration: 1s;
 
   transition: width 1s ease 0.1s;
-
-  /* display: block; */
-
-  /* background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.5) 0%,
-    rgb(82, 73, 73) 100%
-  ); */
 }

@@ -2,15 +2,16 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import "./index.css";
+import { Icon } from "antd";
 
-import { RightOutlined } from "@ant-design/icons";
+import { TrophyOutlined } from "@ant-design/icons";
 
 import PagesRoute from "../pages";
 import SideBar from "../components/SideBar";
 
 class PrivateRoute extends Component {
   state = {
-    display: "none",
+    display: "none"
   };
 
   render() {
@@ -27,19 +28,55 @@ class PrivateRoute extends Component {
             <div
               style={{
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                flexDirection: "column",
+                width: "50px",
+                height: "100%"
               }}
             >
-              <RightOutlined style={{ fontSize: "20px" }} />
+              <div className="menuIcon"></div>
+              <Icon
+                type="plus"
+                style={{
+                  fontSize: "20px",
+                  color: "white",
+                  margin: "15px 0 5px 0"
+                }}
+              />
+              <Icon
+                type="bar-chart"
+                style={{
+                  fontSize: "20px",
+                  color: "white",
+                  margin: "20px 0 20px 0"
+                }}
+              />
+              <Icon
+                type="edit"
+                style={{
+                  fontSize: "20px",
+                  color: "white",
+                  margin: "5px 0 20px 0"
+                }}
+              />
+              <Icon
+                type="dollar"
+                style={{ fontSize: "20px", color: "white", margin: "5px 0" }}
+              />
+              <Icon
+                type="file-pdf"
+                style={{ fontSize: "20px", color: "white", margin: "25px 0" }}
+              />
+              <TrophyOutlined
+                style={{ fontSize: "20px", color: "white", margin: "5px 0" }}
+              />
             </div>
           )}
         </div>
         <div className="div-main-body">
           <div
-            className={`div-block-switch ${
-              this.props.login.user && this.props.login.user.troll && "troll"
-            }`}
+            className={`div-block-switch ${this.props.login.user &&
+              this.props.login.user.troll &&
+              "troll"}`}
           >
             <Switch>
               <Route path="/logged" component={PagesRoute} />
@@ -56,7 +93,7 @@ class PrivateRoute extends Component {
 
 function mapStateToProps(state) {
   return {
-    login: state.login,
+    login: state.login
   };
 }
 
