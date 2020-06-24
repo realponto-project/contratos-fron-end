@@ -3,31 +3,29 @@ import "./index.css";
 import {
   Input,
   Button,
-  Tooltip,
   Select,
   message,
   Modal,
   DatePicker,
   InputNumber,
-  Progress,
+  Progress
 } from "antd";
 import {
   MailOutlined,
   BellOutlined,
-  InfoCircleOutlined,
   PlusOutlined,
   PlusCircleOutlined,
   DownOutlined,
   UpOutlined,
   EditOutlined,
-  DeleteOutlined,
+  DeleteOutlined
 } from "@ant-design/icons";
 import {
   NewAward,
   GetAllAwards,
   NewEquation,
   DeleteEquation,
-  UpdateEquation,
+  UpdateEquation
 } from "../../../services/award";
 import { validator, masks } from "./validator";
 import { GetAllContract, GetAllContractItem } from "../../../services/contract";
@@ -51,7 +49,7 @@ export default class CalculoContainer extends Component {
     value: undefined,
     rows: [],
     index: -1,
-    equationId: "",
+    equationId: ""
   };
 
   componentDidMount = async () => {
@@ -73,9 +71,9 @@ export default class CalculoContainer extends Component {
       filters: {
         contractItem: {
           specific: {
-            contractCode: this.state.code,
-          },
-        },
+            contractCode: this.state.code
+          }
+        }
       },
       attributes: {
         contractItem: [
@@ -84,9 +82,9 @@ export default class CalculoContainer extends Component {
           "itemId",
           "quantidade",
           "costPrice",
-          "price",
-        ],
-      },
+          "price"
+        ]
+      }
     };
     const { status, data } = await GetAllContractItem(query);
 
@@ -110,7 +108,7 @@ export default class CalculoContainer extends Component {
         name: undefined,
         initialDate: undefined,
         fieldErrors: { name: false, initialDate: false },
-        visible: false,
+        visible: false
       });
       this.getAllAwards();
 
@@ -120,31 +118,31 @@ export default class CalculoContainer extends Component {
     }
   };
 
-  onChange = (e) => {
+  onChange = e => {
     const { name, value } = masks(e.target.name, e.target.value);
 
     this.setState({ [name]: value });
   };
 
-  onBlur = (e) => {
+  onBlur = e => {
     const { value, name } = e.target;
     const { fieldErrors } = this.state;
 
     fieldErrors[name] = validator(name, value);
 
     this.setState({
-      fieldErrors,
+      fieldErrors
     });
   };
 
-  onFocus = (e) => {
+  onFocus = e => {
     const { name } = e.target;
     const { fieldErrors } = this.state;
 
     fieldErrors[name] = false;
 
     this.setState({
-      fieldErrors,
+      fieldErrors
     });
   };
 
@@ -154,7 +152,7 @@ export default class CalculoContainer extends Component {
     const { status } = await NewEquation({
       value,
       operator,
-      awardId: rows[index].id,
+      awardId: rows[index].id
     });
 
     if (status === 200) {
@@ -163,7 +161,7 @@ export default class CalculoContainer extends Component {
         value: undefined,
         operator: undefined,
         awardId: "",
-        visibleEquations: false,
+        visibleEquations: false
       });
       this.getAllAwards();
     }
@@ -175,7 +173,7 @@ export default class CalculoContainer extends Component {
     const { status } = await UpdateEquation({
       value,
       operator,
-      id,
+      id
     });
 
     if (status === 200) {
@@ -184,7 +182,7 @@ export default class CalculoContainer extends Component {
         value: undefined,
         operator: undefined,
         equationId: "",
-        visibleEquations: false,
+        visibleEquations: false
       });
       this.getAllAwards();
     } else {
@@ -192,7 +190,7 @@ export default class CalculoContainer extends Component {
     }
   };
 
-  deleteEquation = async (id) => {
+  deleteEquation = async id => {
     console.log(id);
     const { status } = await DeleteEquation({ id });
     if (status === 200) this.getAllAwards();
@@ -214,15 +212,15 @@ export default class CalculoContainer extends Component {
             placeholder="operator"
             style={{ width: "30%" }}
             value={this.state.operator}
-            onChange={(operator) => this.setState({ operator })}
+            onChange={operator => this.setState({ operator })}
           >
-            {["SOMA", "SUBTRAÇÃO", "MULTIPLICAÇÃO", "DIVISÃO"].map((item) => (
+            {["SOMA", "SUBTRAÇÃO", "MULTIPLICAÇÃO", "DIVISÃO"].map(item => (
               <Option value={item}>{item}</Option>
             ))}
           </Select>
           <InputNumber
             placeholder="valor"
-            onChange={(value) => this.setState({ value })}
+            onChange={value => this.setState({ value })}
             value={this.state.value}
           />
         </div>
@@ -233,7 +231,7 @@ export default class CalculoContainer extends Component {
   ModalPremiacao = () => {
     return (
       <Modal
-        title="Basic Modal"
+        title="Premiação"
         visible={this.state.visible}
         onOk={this.NewAward}
         onCancel={() => this.setState({ visible: false })}
@@ -248,7 +246,7 @@ export default class CalculoContainer extends Component {
           style={{ width: "280px", marginTop: "20px" }}
           placeholder="data inicial"
           value={this.state.initialDate}
-          onChange={(initialDate) => {
+          onChange={initialDate => {
             this.setState({ initialDate });
           }}
         />
@@ -290,7 +288,7 @@ export default class CalculoContainer extends Component {
           <div className="div-card-premio">
             <div className="div-block-row-premio">
               <h1 className="h1-titulo" style={{ margin: "0" }}>
-                premiação
+                premiacao
               </h1>
               <Button
                 type="primary"
@@ -392,10 +390,7 @@ export default class CalculoContainer extends Component {
               />
             </div>
           </div> */}
-            <div
-              className="div-block-row-premio"
-              style={{ backgroundColor: "#f5f5f5" }}
-            >
+            <div className="div-block-row-premio">
               <div className="div-title-premio-name">
                 <strong>Grupo</strong>
               </div>
@@ -439,7 +434,7 @@ export default class CalculoContainer extends Component {
                           />
                         )}
                       </div>
-                      {this.state.rows[index].equations.map((equation) => (
+                      {this.state.rows[index].equations.map(equation => (
                         <div className="div-content-up-premio">
                           <label>{equation.operator}</label>
                           <label>{equation.value}</label>
@@ -450,7 +445,7 @@ export default class CalculoContainer extends Component {
                                   visibleEquations: true,
                                   operator: equation.operator,
                                   value: equation.value,
-                                  equationId: equation.id,
+                                  equationId: equation.id
                                 })
                               }
                             />
