@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 
 import "./index.css";
 
-import { Icon } from "antd";
+import { Icon, message } from "antd";
 
 import { login } from "../../services/login";
 import { onSubmit } from "./LoginRedux/action";
@@ -16,18 +16,22 @@ class LoginPage extends Component {
     email: "",
     password: "",
     message: "",
-    fieldError: "",
+    fieldError: ""
   };
 
-  onChange = (e) => {
+  onChange = e => {
     const { name, value } = e.target;
 
     this.setState({
-      [name]: value,
+      [name]: value
     });
   };
 
-  enterKey = async (e) => {
+  error = () => {
+    message.error(this.state.message);
+  };
+
+  enterKey = async e => {
     if (e.which === 13 || e.keyCode === 13) {
       const { email, password } = this.state;
 
@@ -62,9 +66,10 @@ class LoginPage extends Component {
   onFocus = () => {
     this.setState({
       message: "",
-      fieldError: "",
+      fieldError: ""
     });
   };
+
   render() {
     return (
       <>
@@ -72,17 +77,17 @@ class LoginPage extends Component {
         <div className="App">
           <aside className="App-aside">
             <div className="App-container-inputs-login">
-              <div className="div-contrato">
-                <img src="../retina.png" className="img-Login" />
-              </div>
+              <div className="div-contrato">Conecte-se</div>
               <div className="App-block-inputs-login">
-                <label>Email</label>
+                <label style={{ textTransform: "none", fontSize: "14px" }}>
+                  E-mail
+                </label>
                 <input
                   onChange={this.onChange}
                   onFocus={this.onFocus}
                   autoFocus
                   style={{
-                    textTransform: "none",
+                    textTransform: "none"
                   }}
                   name="email"
                   required
@@ -95,26 +100,15 @@ class LoginPage extends Component {
                       : "App-block-inputs-login"
                   }
                 />
-                {this.state.fieldError === "email" && (
-                  <label className="labelError-login">
-                    <Icon
-                      type="exclamation-circle"
-                      theme="filled"
-                      style={{
-                        color: "red",
-                        marginRight: "5px",
-                        fontSize: "18px",
-                      }}
-                    />
-                    {this.state.message}
-                  </label>
-                )}
+                {this.state.fieldError === "email" && this.error()}
               </div>
               <div className="App-block-inputs-login">
-                <label>Senha</label>
+                <label style={{ textTransform: "none", fontSize: "14px" }}>
+                  Senha
+                </label>
                 <input
                   style={{
-                    textTransform: "none",
+                    textTransform: "none"
                   }}
                   onFocus={this.onFocus}
                   onBlur={this.onFocus}
@@ -131,25 +125,14 @@ class LoginPage extends Component {
                       : "App-block-inputs-login"
                   }
                 />
-                {this.state.fieldError === "password" && (
-                  <label className="labelError-login">
-                    <Icon
-                      type="exclamation-circle"
-                      theme="filled"
-                      style={{
-                        color: "red",
-                        marginRight: "5px",
-                        fontSize: "18px",
-                      }}
-                    />
-                    {this.state.message}
-                  </label>
-                )}
+                {this.state.fieldError === "password" && this.error()}
+              </div>
+              <div className="div-button-login">
+                <button onClick={this.handleSubmit} type="submit">
+                  Conectar
+                </button>
               </div>
             </div>
-            <button onClick={this.handleSubmit} type="submit">
-              Salvar
-            </button>
           </aside>
         </div>
       </>
@@ -165,8 +148,11 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    login: state.login,
+    login: state.login
   };
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(LoginPage);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(LoginPage);
