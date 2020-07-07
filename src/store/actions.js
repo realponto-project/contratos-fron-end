@@ -2,15 +2,15 @@ export default {
   LOGIN: {
     // CHANGE_VALUE: 'LOGIN_CHANGE_VALUE',
     AUTH: "LOGIN_AUTH",
-    LOGOUT: "LOGOUT_AUTH"
+    LOGOUT: "LOGOUT_AUTH",
   },
   CONTRACTCODE: "CONTRACTCODE",
   SET: {
     ITEM: "SET_ITEM",
-    CLIENT: "SET_CLIENT"
+    CLIENT: "SET_CLIENT",
   },
   CLEAR: {
     ITEM: "CLEAR_ITEM",
-    CLIENT: "CLEAR_CLIENT"
-  }
+    CLIENT: "CLEAR_CLIENT",
+  },
 };

@@ -54,7 +54,6 @@ export const masks = (name, value) => {
   switch (name) {
     case "nomeContato":
     case "razaosocial":
-      value = value.replace(/\W/gi, "");
       value = value.slice(0, 50);
 
       return { name, value };

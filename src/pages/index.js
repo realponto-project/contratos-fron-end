@@ -11,6 +11,7 @@ import { Logout, onSubmit } from "./Login/LoginRedux/action";
 import Dash from "./Dash";
 import UserRoute from "./Gerenciar/Usuario";
 import NewClientRoute from "./Cadastros/Cliente";
+import DashClienteRoute from "./Gerenciar/Cliente";
 import NewItemRoute from "./Cadastros/Item";
 import NewContratosRoute from "./Cadastros/Contratos";
 import NewIgpmRoute from "./IGPM/AdicionarIGPM";
@@ -76,6 +77,16 @@ class PagesRoute extends Component {
                 component={NewClientRoute}
               />
             )}
+
+          {!!this.props.login.user &&
+            this.props.login.user.resource.addClient && (
+              <Route
+                exact
+                path="/logged/client/dash"
+                component={DashClienteRoute}
+              />
+            )}
+
           {!!this.props.login.user &&
             this.props.login.user.resource.addItem && (
               <Route

@@ -10,7 +10,7 @@ import {
   DeleteClient,
   RestoreClient,
   GetClientByParams,
-  GetAllGroups
+  GetAllGroups,
 } from "../../../../services/client";
 
 import { MailOutlined, BellOutlined } from "@ant-design/icons";
@@ -57,9 +57,9 @@ class NewClientContainer extends Component {
       cidade: false,
       uf: false,
       complemento: false,
-      observacoes: false
+      observacoes: false,
     },
-    groups: []
+    groups: [],
   };
 
   clearState = () => {
@@ -96,15 +96,15 @@ class NewClientContainer extends Component {
         cidade: false,
         uf: false,
         complemento: false,
-        observacoes: false
-      }
+        observacoes: false,
+      },
     });
   };
 
   componentDidMount = async () => {
     await GetAllGroups()
-      .then(resp => this.setState({ groups: resp.data }))
-      .catch(err => console.error(err));
+      .then((resp) => this.setState({ groups: resp.data }))
+      .catch((err) => console.error(err));
 
     const {
       deletedAt,
@@ -123,7 +123,7 @@ class NewClientContainer extends Component {
       cidade,
       uf,
       complemento,
-      observacoes
+      observacoes,
     } = this.props.clientValue;
 
     await this.setState({
@@ -143,23 +143,23 @@ class NewClientContainer extends Component {
       cidade,
       uf,
       complemento,
-      observacoes
+      observacoes,
     });
 
     this.props.clearClient();
   };
 
-  onChange = e => {
+  onChange = (e) => {
     const { name, value } = masks(e.target.name, e.target.value);
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
 
-  onChangeEmail = e => {
+  onChangeEmail = (e) => {
     const { name, value } = masks(e.target.name, e.target.value);
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -180,7 +180,7 @@ class NewClientContainer extends Component {
       codigo: code,
       cnpj,
       complemento: complement,
-      observacoes: observation
+      observacoes: observation,
     } = this.state;
 
     const value = {
@@ -198,7 +198,7 @@ class NewClientContainer extends Component {
       code,
       cnpj,
       complement,
-      observation
+      observation,
     };
 
     if (clientId) {
@@ -215,33 +215,33 @@ class NewClientContainer extends Component {
         this.clearState();
         message.success("Cliente cadatrado com sucesso");
       } else if (status === 422) {
-        R.keys(data.errors[0].field).map(key =>
+        R.keys(data.errors[0].field).map((key) =>
           this.setState({
             fieldErrors: {
               ...this.state.fieldErrors,
-              [key]: data.errors[0].field
-            }
+              [key]: data.errors[0].field,
+            },
           })
         );
       }
     }
   };
 
-  onFocus = e => {
+  onFocus = (e) => {
     const { name } = e.target;
     const { fieldErrors } = this.state;
 
     this.setState({
-      fieldErrors: { ...fieldErrors, [name]: false }
+      fieldErrors: { ...fieldErrors, [name]: false },
     });
   };
 
-  onBlur = async e => {
+  onBlur = async (e) => {
     const { name, value } = e.target;
     const { fieldErrors } = this.state;
 
     this.setState({
-      fieldErrors: { ...fieldErrors, [name]: validator(name, value) }
+      fieldErrors: { ...fieldErrors, [name]: validator(name, value) },
     });
 
     if (name === "cep" && !validator(name, value)) {
@@ -249,7 +249,7 @@ class NewClientContainer extends Component {
       if (status === 200) {
         if (R.has("erro", data)) {
           this.setState({
-            fieldErrors: { ...fieldErrors, [name]: true }
+            fieldErrors: { ...fieldErrors, [name]: true },
           });
         } else {
           const { logradouro: rua, bairro, localidade: cidade, uf } = data;
@@ -263,8 +263,8 @@ class NewClientContainer extends Component {
               rua: false,
               bairro: false,
               cidade: false,
-              uf: false
-            }
+              uf: false,
+            },
           });
         }
       }
@@ -273,9 +273,9 @@ class NewClientContainer extends Component {
     if (name === "razaosocial" || name === "cnpj") {
       const { status, data } = await GetClientByParams({
         where: {
-          [name]: name === "cnpj" ? value.replace(/\D/gi, "") : value
+          [name]: name === "cnpj" ? value.replace(/\D/gi, "") : value,
         },
-        paranoid: false
+        paranoid: false,
       });
 
       if (status === 200 && data) {
@@ -289,7 +289,7 @@ class NewClientContainer extends Component {
             name: nomeContato,
             celular: celularContato,
             telphone: telefoneContato,
-            email: emailContato
+            email: emailContato,
           },
           address: {
             street: rua,
@@ -298,9 +298,9 @@ class NewClientContainer extends Component {
             city: cidade,
             state: uf,
             complement: complemento,
-            observation: observacoes
+            observation: observacoes,
           },
-          deletedAt
+          deletedAt,
         } = data;
 
         this.setState({
@@ -348,8 +348,8 @@ class NewClientContainer extends Component {
             cidade: false,
             uf: false,
             complemento: false,
-            observacoes: false
-          }
+            observacoes: false,
+          },
         });
       } else if (this.state.clientId) {
         this.setState({
@@ -386,8 +386,8 @@ class NewClientContainer extends Component {
             cidade: false,
             uf: false,
             complemento: false,
-            observacoes: false
-          }
+            observacoes: false,
+          },
         });
       }
     }
@@ -395,11 +395,11 @@ class NewClientContainer extends Component {
 
   showModal = () => {
     this.setState({
-      visible: true
+      visible: true,
     });
   };
 
-  handleOk = async e => {
+  handleOk = async (e) => {
     const { clientId } = this.state;
     const { status } = await DeleteClient(clientId);
 
@@ -414,14 +414,14 @@ class NewClientContainer extends Component {
         message.error("ocorreu um erro");
     }
     this.setState({
-      visible: false
+      visible: false,
     });
     this.clearState();
   };
 
-  handleCancel = e => {
+  handleCancel = (e) => {
     this.setState({
-      visible: false
+      visible: false,
     });
   };
 
@@ -489,8 +489,9 @@ class NewClientContainer extends Component {
           <div className="div-h2-cliente"></div>
           <div className="div-inputs-flex-cliente">
             <input
-              className={`input-nome-cliente ${fieldErrors.razaosocial &&
-                "input-error"}`}
+              className={`input-nome-cliente ${
+                fieldErrors.razaosocial && "input-error"
+              }`}
               placeholder="RAZÃO SOCIAL / NOME"
               onChange={onChange}
               name="razaosocial"
@@ -499,8 +500,9 @@ class NewClientContainer extends Component {
               onBlur={onBlur}
             ></input>
             <input
-              className={`input-cnpj-cliente ${fieldErrors.cnpj &&
-                "input-error"}`}
+              className={`input-cnpj-cliente ${
+                fieldErrors.cnpj && "input-error"
+              }`}
               placeholder="CNPJ / CPF"
               onChange={onChange}
               name="cnpj"
@@ -510,11 +512,12 @@ class NewClientContainer extends Component {
             ></input>
             <Select
               showSearch
-              onSearch={grupo => this.setState({ grupo })}
-              onChange={grupo => this.setState({ grupo })}
-              onBlur={grupo => this.setState({ grupo: grupo.toUpperCase() })}
-              className={`input-grupo-cliente ${fieldErrors.grupo &&
-                "input-error"}`}
+              onSearch={(grupo) => this.setState({ grupo })}
+              onChange={(grupo) => this.setState({ grupo })}
+              onBlur={(grupo) => this.setState({ grupo: grupo.toUpperCase() })}
+              className={`input-grupo-cliente ${
+                fieldErrors.grupo && "input-error"
+              }`}
               size="large"
               readOnly={deletedAt}
               value={state.grupo}
@@ -523,22 +526,23 @@ class NewClientContainer extends Component {
               getInputElement={() => (
                 <input
                   style={{
-                    textTransform: "uppercase"
+                    textTransform: "uppercase",
                   }}
                 />
               )}
             >
               {this.state.groups.length !== 0 &&
                 this.state.groups.map((group, index) => (
-                  <Option key={index} value={group}>
-                    {group}
+                  <Option key={index} value={group.group}>
+                    {group.group}
                   </Option>
                 ))}
             </Select>
             <input
               readOnly={deletedAt}
-              className={`input-codigo-cliente ${fieldErrors.codigo &&
-                "input-error"}`}
+              className={`input-codigo-cliente ${
+                fieldErrors.codigo && "input-error"
+              }`}
               placeholder="CÓDIGO"
               onChange={onChange}
               name="codigo"
@@ -555,8 +559,9 @@ class NewClientContainer extends Component {
             </div>
             <input
               readOnly={deletedAt}
-              className={`input-contato-cliente ${fieldErrors.nomeContato &&
-                "input-error"}`}
+              className={`input-contato-cliente ${
+                fieldErrors.nomeContato && "input-error"
+              }`}
               placeholder="NOME"
               onChange={onChange}
               name="nomeContato"
@@ -566,8 +571,9 @@ class NewClientContainer extends Component {
             ></input>
             <input
               readOnly={deletedAt}
-              className={`input-contato-cliente ${fieldErrors.celularContato &&
-                "input-error"}`}
+              className={`input-contato-cliente ${
+                fieldErrors.celularContato && "input-error"
+              }`}
               placeholder="CELULAR"
               onChange={onChange}
               name="celularContato"
@@ -577,8 +583,9 @@ class NewClientContainer extends Component {
             ></input>
             <input
               readOnly={deletedAt}
-              className={`input-contato-cliente ${fieldErrors.telefoneContato &&
-                "input-error"}`}
+              className={`input-contato-cliente ${
+                fieldErrors.telefoneContato && "input-error"
+              }`}
               placeholder="TELEFONE"
               onChange={onChange}
               name="telefoneContato"
@@ -588,8 +595,9 @@ class NewClientContainer extends Component {
             ></input>
             <input
               readOnly={deletedAt}
-              className={`input-contato-cliente ${fieldErrors.emailContato &&
-                "input-error"}`}
+              className={`input-contato-cliente ${
+                fieldErrors.emailContato && "input-error"
+              }`}
               style={{ textTransform: "none" }}
               placeholder="E-MAIL"
               onChange={this.onChangeEmail}
@@ -606,8 +614,9 @@ class NewClientContainer extends Component {
             <div className="div-twoInfo-cliente">
               <input
                 readOnly={deletedAt}
-                className={`input-cep-cliente ${fieldErrors.cep &&
-                  "input-error"}`}
+                className={`input-cep-cliente ${
+                  fieldErrors.cep && "input-error"
+                }`}
                 placeholder="CEP"
                 onChange={onChange}
                 name="cep"
@@ -617,8 +626,9 @@ class NewClientContainer extends Component {
               ></input>
               <input
                 readOnly={deletedAt}
-                className={`input-bairro-cliente ${fieldErrors.bairro &&
-                  "input-error"}`}
+                className={`input-bairro-cliente ${
+                  fieldErrors.bairro && "input-error"
+                }`}
                 placeholder="BAIRRO"
                 onChange={this.onChange}
                 onFocus={onFocus}
@@ -629,8 +639,9 @@ class NewClientContainer extends Component {
             </div>
             <input
               readOnly={deletedAt}
-              className={`input-endereco-cliente ${fieldErrors.rua &&
-                "input-error"}`}
+              className={`input-endereco-cliente ${
+                fieldErrors.rua && "input-error"
+              }`}
               placeholder="RUA"
               onChange={this.onChange}
               onFocus={onFocus}
@@ -641,8 +652,9 @@ class NewClientContainer extends Component {
             <div className="div-twoInfo-cliente">
               <input
                 readOnly={deletedAt}
-                className={`input-cidade-cliente ${fieldErrors.cidade &&
-                  "input-error"}`}
+                className={`input-cidade-cliente ${
+                  fieldErrors.cidade && "input-error"
+                }`}
                 placeholder="CIDADE"
                 onChange={onChange}
                 name="cidade"
@@ -652,8 +664,9 @@ class NewClientContainer extends Component {
               ></input>
               <input
                 readOnly={deletedAt}
-                className={`input-uf-cliente ${fieldErrors.uf &&
-                  "input-error"}`}
+                className={`input-uf-cliente ${
+                  fieldErrors.uf && "input-error"
+                }`}
                 placeholder="UF"
                 onChange={onChange}
                 name="uf"
@@ -695,8 +708,9 @@ class NewClientContainer extends Component {
           ) : (
             <>
               <button
-                className={`button-excluir-cliente ${!this.state.clientId &&
-                  "button-disabled"}`}
+                className={`button-excluir-cliente ${
+                  !this.state.clientId && "button-disabled"
+                }`}
                 onClick={this.state.clientId && this.showModal}
               >
                 Excluir
@@ -722,11 +736,8 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    clientValue: state.clientValue
+    clientValue: state.clientValue,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(NewClientContainer);
+export default connect(mapStateToProps, mapDispacthToProps)(NewClientContainer);
