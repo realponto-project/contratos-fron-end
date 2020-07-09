@@ -8,9 +8,11 @@ export default {
   SET: {
     ITEM: "SET_ITEM",
     CLIENT: "SET_CLIENT",
+    USER: "SET_USER",
   },
   CLEAR: {
     ITEM: "CLEAR_ITEM",
     CLIENT: "CLEAR_CLIENT",
+    USER: "CLEAR_USER",
   },
 };

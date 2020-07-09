@@ -9,6 +9,7 @@ import { Logout, onSubmit } from "./Login/LoginRedux/action";
 // import moment from "moment";
 
 import Dash from "./Dash";
+import NewUserRoute from "./Cadastros/Usuario";
 import UserRoute from "./Gerenciar/Usuario";
 import NewClientRoute from "./Cadastros/Cliente";
 import DashClienteRoute from "./Gerenciar/Cliente";
@@ -66,6 +67,14 @@ class PagesRoute extends Component {
       return (
         <Switch>
           <Route exact path="/logged/dash" component={Dash} />
+          {!!this.props.login.user &&
+            this.props.login.user.resource.addUser && (
+              <Route
+                exact
+                path="/logged/newUser/add"
+                component={NewUserRoute}
+              />
+            )}
           {!!this.props.login.user &&
             this.props.login.user.resource.addUser && (
               <Route exact path="/logged/user/dash" component={UserRoute} />

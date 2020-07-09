@@ -5,6 +5,7 @@ import { contractCode } from "../pages/Cadastros/Contratos/ContratosRedux/reduce
 import {
   itemValue,
   clientValue,
+  userValue,
 } from "../pages/Relatorios/Cadastro/cadastroRedux/reduce";
 
 const appReducer = combineReducers({
@@ -12,6 +13,7 @@ const appReducer = combineReducers({
   contractCode,
   itemValue,
   clientValue,
+  userValue,
   // auth,
 });
 

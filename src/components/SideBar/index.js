@@ -58,6 +58,15 @@ class SideBar extends Component {
       switch (this.state.current) {
         case "logout":
           return <Redirect to="/login" />;
+        case "newUser_add":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/newUser/add",
+              }}
+            />
+          );
         case "user_dash":
           return (
             <Redirect
@@ -266,6 +275,14 @@ class SideBar extends Component {
               }
             >
               <Menu.Item
+                key="newUser_add"
+                disabled={!this.props.login.user.resource.addUser}
+              >
+                <Icon type="user-add" />
+                Usuário
+              </Menu.Item>
+
+              <Menu.Item
                 key="newClient_add"
                 disabled={!this.props.login.user.resource.addClient}
               >
@@ -307,17 +324,16 @@ class SideBar extends Component {
                 </span>
               }
             >
-              <Menu.Item key="dash">
-                <Icon type="pie-chart" />
-                Gráficos
-              </Menu.Item>
-
               <Menu.Item
                 key="user_dash"
                 disabled={!this.props.login.user.resource.addUser}
               >
                 <Icon type="user-add" />
                 Usuário
+              </Menu.Item>
+              <Menu.Item key="dash">
+                <Icon type="pie-chart" />
+                Gráficos
               </Menu.Item>
 
               <Menu.Item

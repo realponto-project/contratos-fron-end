@@ -1,301 +1,189 @@
 import React, { Component } from "react";
-import {
-  Input,
-  Checkbox,
-  message,
-  Modal,
-  Select,
-  Tooltip,
-  Switch,
-  Progress,
-} from "antd";
-import * as R from "ramda";
-import "../../../../global.css";
-import "./index.css";
-import { validator, masks } from "./validator";
-import { NewUser } from "../../../../services/user";
-import { GetAllAwards } from "../../../../services/award";
-import { MailOutlined, BellOutlined } from "@ant-design/icons";
-import {
-  NewTypeAccount,
-  GetAllTypeAccounts,
-} from "../../../../services/typeAccount";
-import { PlusOutlined, InfoCircleOutlined } from "@ant-design/icons";
 
-const { Option } = Select;
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { Progress, Button, Input, Select } from "antd";
+import { MailOutlined, BellOutlined, EditOutlined } from "@ant-design/icons";
+import { GetAllUsers } from "../../../../services/user";
+import { Redirect } from "react-router-dom";
+import { setUser } from "../../../Relatorios/Cadastro/cadastroRedux/action";
 
 class UserContainer extends Component {
   state = {
-    nome: "",
-    senha: "",
-    confirmarSenha: "",
-    email: "",
-    telefone: "",
-    search: "",
-    descricao: "",
-    premiacao: false,
-    fieldErrors: {
-      nome: false,
-      senha: false,
-      email: false,
-      telefone: false,
-      confirmarSenha: false,
-    },
-    addClient: false,
-    addItem: false,
-    addContract: false,
-    addUser: false,
-    addIgpm: false,
-    typeAccounts: [],
-    visible: false,
-    grupo: "",
-    equacao: "",
-    typeAccountId: "",
-    awardList: [],
-    award: undefined,
-    awardId: "",
+    avancado: false,
+    nome: undefined,
+    email: undefined,
+    telefone: undefined,
+    rows: [],
+    total: 10,
+    count: 0,
+    page: 1,
+    show: 0,
+    redirect: "",
   };
 
   componentDidMount = async () => {
-    await this.getAllTypeAccounts();
-    await this.getAllAwards();
+    await this.getAllUsers();
   };
 
-  getAllAwards = async (name) => {
+  getAllUsers = async () => {
     const query = {
       filters: {
-        award: {
+        user: {
           specific: {
-            name,
+            username: this.state.nome,
+            email: this.state.email,
+            telphone: this.state.telefone,
           },
         },
+        page: this.state.page,
+        total: this.state.total,
       },
-      total: 100,
     };
-    const { status, data } = await GetAllAwards(query);
 
-    if (status === 200) this.setState({ awardList: data });
+    const { status, data } = await GetAllUsers(query);
+
+    if (status === 200)
+      this.setState({
+        rows: data.rows,
+        page: data.page,
+        count: data.count,
+        show: data.show,
+      });
   };
 
-  getAllTypeAccounts = async () => {
-    const { status, data } = await GetAllTypeAccounts();
+  onChange = async (e) => {
+    const { name, value } = e.target;
 
-    if (status === 200) this.setState({ typeAccounts: data.rows });
+    await this.setState({ [name]: value });
+    await this.getAllUsers();
   };
 
-  onChange = (e) => {
-    const { name, value } = masks(e.target.name, e.target.value);
-
-    this.setState({
-      [name]: value,
-    });
-  };
-
-  onChangeEmail = (e) => {
-    const { name, value } = masks(e.target.name, e.target.value);
-
-    this.setState({
-      [name]: value,
-    });
-  };
-
-  clearState = () => {
-    this.setState({
-      nome: "",
-      senha: "",
-      confirmarSenha: "",
-      email: "",
-      telefone: "",
-      search: "",
-      descricao: "",
-      premiacao: false,
-      fieldErrors: {
-        nome: false,
-        senha: false,
-        email: false,
-        telefone: false,
-        confirmarSenha: false,
-      },
-      addClient: false,
-      addItem: false,
-      addContract: false,
-      addUser: false,
-      addIgpm: false,
-      grupo: "",
-      equacao: "",
-      typeAccountId: "",
-      award: undefined,
-      awardId: "",
-    });
-  };
-
-  newUser = async () => {
+  setUserRedux = (user) => {
+    console.log(user);
     const {
-      nome: username,
-      confirmarSenha,
-      senha: password,
-      telefone: telphone,
-      descricao: description,
-      typeAccountId,
-      email,
-      addClient,
-      addItem,
-      addContract,
-      addUser,
-      addIgpm,
-      premiacao: awardBoolean,
-      awardId,
-    } = this.state;
-
-    if (confirmarSenha !== password) {
-      message.error("senha incompatível");
-      return;
-    }
-
-    const value = {
+      deletedAt,
+      id: userId,
       username,
-      password,
-      telphone,
       email,
-      description,
-      typeAccountId,
+      telphone,
       awardBoolean,
-      resources: {
-        addClient,
-        addItem,
-        addContract,
-        addUser,
-        addIgpm,
+      description,
+      resource,
+      typeAccount,
+      award,
+    } = user;
+    this.props.setUser({
+      deletedAt: !!deletedAt,
+      userId,
+      username,
+      email,
+      telphone,
+      description,
+      awardBoolean,
+      resource,
+      typeAccount,
+      award,
+    });
+
+    this.setState({ redirect: "/logged/newUser/add" });
+  };
+
+  changePages = async (pages) => {
+    await this.setState(
+      {
+        page: pages,
       },
-      awardId,
-    };
-
-    const { status, data } = await NewUser(value);
-
-    if (status === 200) {
-      this.clearState();
-      message.success("Usuario cadatrado com sucesso");
-    } else if (status === 422) {
-      R.keys(data.errors[0].field).map((key) =>
-        this.setState({
-          fieldErrors: {
-            ...this.state.fieldErrors,
-            [key]: data.errors[0].field,
-          },
-        })
-      );
-    }
+      () => {
+        this.getAllUsers();
+      }
+    );
   };
 
-  onFocus = (e) => {
-    const { name } = e.target;
-    const { fieldErrors } = this.state;
-
-    this.setState({
-      fieldErrors: { ...fieldErrors, [name]: false },
-    });
-  };
-
-  onBlur = (e) => {
-    let { name, value } = e.target;
-    const { fieldErrors, senha, confirmarSenha } = this.state;
-
-    if (name === "confirmarSenha") {
-      fieldErrors.confirmarSenha = senha !== confirmarSenha;
-    }
-
-    this.setState({
-      fieldErrors: { ...fieldErrors, [name]: validator(name, value) },
-    });
-  };
-
-  onChengeCheckbox = (e) => {
-    const { name, checked } = e.target;
-    this.setState({ [name]: checked });
-  };
-
-  onChangeSelect = (typeAccountId) => {
-    this.setState({ typeAccountId });
-  };
-
-  ModalNewTypeAccount = () => (
-    <Modal
-      title="Novo Tipo de Conta"
-      visible={this.state.visible}
-      onOk={this.newTypeAccount}
-      onCancel={this.handleCancel}
-    >
-      <div className="div-block-input-premio" style={{ marginTop: "0" }}>
-        <label>Grupo</label>
-        <Input
-          name="grupo"
-          className={`${this.state.fieldErrors.grupo ? "input-error" : null}`}
-          value={this.state.grupo}
-          onChange={this.onChange}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
-        />
-      </div>
-      <div className="div-block-input-premio">
-        <label>
-          Equeção{" "}
-          <Tooltip
-            mouseEnterDelay={0.2}
-            trigger={["click"]}
-            placement="right"
-            title={`São aceitos apenas numeros, "+" para soma, "-" para subtração, "*" para multiplicação, "/" para divisão, "^" para exponeciação, "(" e ")" para indicar a importância da operação e "x" para representar o valor do item`}
-          >
-            <InfoCircleOutlined style={{ fontSize: "10px" }} />
-          </Tooltip>
-        </label>
-        <Input
-          name="equacao"
-          className={`${this.state.fieldErrors.equacao ? "input-error" : null}`}
-          value={this.state.equacao}
-          onChange={this.onChange}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
-        />
-      </div>
-    </Modal>
+  Pages = () => (
+    <div className="div-pages">
+      {Math.ceil(this.state.count / this.state.total) >= 5 &&
+      Math.ceil(this.state.count / this.state.total) - this.state.page < 1 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 4)}
+        >
+          {this.state.page - 4}
+        </button>
+      ) : null}
+      {Math.ceil(this.state.count / this.state.total) >= 4 &&
+      Math.ceil(this.state.count / this.state.total) - this.state.page < 2 &&
+      this.state.page > 3 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 3)}
+        >
+          {this.state.page - 3}
+        </button>
+      ) : null}
+      {this.state.page >= 3 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 2)}
+        >
+          {this.state.page - 2}
+        </button>
+      ) : null}
+      {this.state.page >= 2 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page - 1)}
+        >
+          {this.state.page - 1}
+        </button>
+      ) : null}
+      <div className="div-teste">{this.state.page}</div>
+      {this.state.page < this.state.count / this.state.total ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 1)}
+        >
+          {this.state.page + 1}
+        </button>
+      ) : null}
+      {this.state.page + 1 < this.state.count / this.state.total ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 2)}
+        >
+          {this.state.page + 2}
+        </button>
+      ) : null}
+      {this.state.page + 2 < this.state.count / this.state.total &&
+      this.state.page < 3 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 3)}
+        >
+          {this.state.page + 3}
+        </button>
+      ) : null}
+      {this.state.page + 3 < this.state.count / this.state.total &&
+      this.state.page < 2 ? (
+        <button
+          className="button-salvar"
+          type="primary"
+          onClick={() => this.changePages(this.state.page + 4)}
+        >
+          {this.state.page + 4}
+        </button>
+      ) : null}
+    </div>
   );
 
-  newTypeAccount = async () => {
-    const { grupo: group, equacao: equation } = this.state;
-    const value = { group, equation };
-    const { status } = await NewTypeAccount(value);
-    if (status === 200) {
-      this.setState({
-        grupo: "",
-        equacao: "",
-        fieldErrors: {
-          grupo: false,
-          equacao: false,
-        },
-        visible: false,
-      });
-      message.success("sucesso");
-      await this.getAllTypeAccounts();
-    } else {
-      message.error("erro");
-    }
-  };
-
-  handleCancel = (e) => {
-    this.setState({
-      visible: false,
-    });
-  };
-
-  openModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
-
   render() {
-    const state = this.state;
-    const { fieldErrors } = state;
     return (
       <div className="card-main">
         <div className="div-titulo">
@@ -323,204 +211,81 @@ class UserContainer extends Component {
             <BellOutlined style={{ fontSize: "28px" }} />
           </div>
         </div>
-        <div className="div-main-usuario">
-          <div className="div-info-usuario">
-            <input
-              className={`input-info-usuario ${
-                fieldErrors.nome && "input-error"
-              }`}
-              style={{ textTransform: "none" }}
-              onChange={this.onChange}
-              placeholder="NOME"
-              value={state.nome}
-              name="nome"
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
-            ></input>
-
-            <input
-              className={`input-info-usuario ${
-                fieldErrors.email && "input-error"
-              }`}
-              style={{ textTransform: "none" }}
-              onChange={this.onChangeEmail}
-              placeholder="E-MAIL"
-              value={state.email}
-              name="email"
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
-            ></input>
-
-            <input
-              className={`input-info-usuario ${
-                fieldErrors.telefone && "input-error"
-              }`}
-              onChange={this.onChange}
-              placeholder="TELEFONE"
-              value={state.telefone}
-              name="telefone"
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
-            ></input>
-
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <input
-                className={`input-info-usuario ${
-                  fieldErrors.senha && "input-error"
-                }`}
-                style={{ textTransform: "none", width: "30%" }}
-                onChange={this.onChange}
-                placeholder="SENHA"
-                value={state.senha}
-                name="senha"
-                onFocus={this.onFocus}
-                onBlur={this.onBlur}
-                // type="password"
-              ></input>
-              <input
-                className={`input-info-usuario ${
-                  fieldErrors.confirmarSenha && "input-error"
-                }`}
-                style={{ textTransform: "none", width: "30%" }}
-                onChange={this.onChange}
-                placeholder="CONFIRMAR SENHA"
-                value={state.confirmarSenha}
-                name="confirmarSenha"
-                onFocus={this.onFocus}
-                onBlur={this.onBlur}
-                // type="password"
-              ></input>
-
-              <div className="div-switch">
-                <label style={{ color: "#C8C8C8", marginTop: "20px" }}>
-                  PREMIAÇÃO:
-                </label>
-                <Switch
-                  className="switch-info-usuario"
-                  value={this.state.premiacao}
-                  onChange={(value) =>
-                    this.setState({
-                      premiacao: value,
-                      award: undefined,
-                      awardId: "",
-                    })
-                  }
+        <div className="div-main-client-dash">
+          <div className="div-block-search-gerClient">
+            <Button
+              onClick={() => this.setState({ avancado: !this.state.avancado })}
+            >
+              {this.state.avancado ? "Ocultar" : "Avançar"}
+            </Button>
+            {this.state.avancado && (
+              <div className="div-block-input-search-gerClient">
+                <Input
+                  value={this.state.nome}
+                  name="nome"
+                  placeholder="nome"
+                  style={{ width: "25%" }}
+                  onChange={this.onChange}
+                />
+                <Input
+                  value={this.state.email}
+                  name="email"
+                  placeholder="email"
+                  style={{ width: "25%" }}
+                  onChange={this.onChange}
+                />
+                <Input
+                  value={this.state.telefone}
+                  name="telefone"
+                  placeholder="telefone"
+                  style={{ width: "25%" }}
+                  onChange={this.onChange}
                 />
               </div>
-            </div>
-
-            {this.state.premiacao && (
-              <Select
-                showSearch
-                onSearch={(name) => this.getAllAwards(name)}
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option.props.children
-                    .toLowerCase()
-                    .indexOf(input.toLowerCase()) >= 0
-                }
-                style={{ marginTop: "15px" }}
-                onChange={(name) => {
-                  const { id: awardId, name: award } = R.find(
-                    R.propEq("name", name)
-                  )(this.state.awardList);
-                  this.setState({ awardId, award });
-                }}
-                placeholder="SELECIONE UM GRUPO"
-                value={this.state.award}
-              >
-                {this.state.awardList.map((award) => (
-                  <Option value={award.name}>{award.name}</Option>
-                ))}
-              </Select>
             )}
-
-            <textarea
-              className={`textArea-descricao-item ${
-                fieldErrors.descricao && "input-error"
-              }`}
-              style={{ marginTop: "20px" }}
-              value={this.state.descricao}
-              placeholder="DIGITE A DESCRIÇÃO"
-              name="descricao"
-              rows="4"
-              onChange={this.onChange}
-              // onFocus={onFocus}
-            ></textarea>
           </div>
 
-          <div className="div-permissoes-main-usuario">
-            <div className="div-block-subtitulo-permissoes">
-              <label style={{ fontFamily: "Bebas", fontSize: "20px" }}>
-                Permissoes
-              </label>
+          <div className="div-main-table-client">
+            <table>
+              <tr>
+                <th style={{ width: "30%" }}>nome</th>
+                <th style={{ width: "30%" }}>e-mail</th>
+                <th style={{ width: "30%" }}>telefone</th>
+                <th style={{ width: "10%" }}>ação</th>
+              </tr>
 
-              <div style={{ display: "flex" }}>
-                <button className="button-plus" onClick={this.openModal}>
-                  <PlusOutlined style={{ fontSize: "16px" }} />
-                </button>
-                <Select
-                  style={{
-                    width: "200px",
-                  }}
-                  onChange={this.onChangeSelect}
-                >
-                  {this.state.typeAccounts.map((typeAccount) => (
-                    <Option value={typeAccount.id}>{typeAccount.group}</Option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-            <div className="div-permissoes-usuario">
-              <Checkbox
-                name="addClient"
-                onChange={this.onChengeCheckbox}
-                checked={this.state.addClient}
-              >
-                Adicionar Cliente
-              </Checkbox>
-              <Checkbox
-                name="addItem"
-                onChange={this.onChengeCheckbox}
-                checked={this.state.addItem}
-              >
-                Adicionar Item
-              </Checkbox>
-              <Checkbox
-                name="addContract"
-                onChange={this.onChengeCheckbox}
-                checked={this.state.addContract}
-              >
-                Adicionar Contrato
-              </Checkbox>
-              <Checkbox
-                name="addUser"
-                onChange={this.onChengeCheckbox}
-                checked={this.state.addUser}
-              >
-                Adicionar Usuário
-              </Checkbox>
-              <Checkbox
-                name="addIgpm"
-                onChange={this.onChengeCheckbox}
-                checked={this.state.addIgpm}
-              >
-                Adicionar Igpm
-              </Checkbox>
-            </div>
+              {this.state.rows.map((row) => (
+                <tr>
+                  {console.log(row)}
+                  <td>{row.username}</td>
+                  <td>{row.email}</td>
+                  <td>{row.telphone}</td>
+                  <td>
+                    <EditOutlined
+                      className="icon-edit"
+                      onClick={() => this.setUserRedux(row)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </table>
+          </div>
+          <div className="div-paginacao">
+            <this.Pages />
           </div>
         </div>
-        <div className="div-buttons-usuario">
-          <button className="button-excluir-cliente">Excluir</button>
-          <button className="button-salvar-cliente" onClick={this.newUser}>
-            Salvar
-          </button>
-        </div>
-
-        <this.ModalNewTypeAccount />
+        {this.state.redirect && <Redirect to={this.state.redirect} />}
       </div>
     );
   }
 }
 
-export default UserContainer;
+function mapDispacthToProps(dispach) {
+  return bindActionCreators({ setUser }, dispach);
+}
+
+function mapStateToProps(state) {
+  return {};
+}
+
+export default connect(mapStateToProps, mapDispacthToProps)(UserContainer);

@@ -1,37 +1,55 @@
 import action from "../../../../store/actions";
 
 export function setItem(value) {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: action.SET.ITEM,
-      payload: value
+      payload: value,
     });
   };
 }
 
 export function clearItem() {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: action.CLEAR.ITEM,
-      payload: null
+      payload: null,
     });
   };
 }
 
 export function setClient(value) {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: action.SET.CLIENT,
-      payload: value
+      payload: value,
     });
   };
 }
 
 export function clearClient() {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: action.CLEAR.CLIENT,
-      payload: null
+      payload: null,
+    });
+  };
+}
+
+export function setUser(value) {
+  return (dispatch) => {
+    dispatch({
+      type: action.SET.USER,
+      payload: value,
+    });
+  };
+}
+
+export function clearUser() {
+  return (dispatch) => {
+    dispatch({
+      type: action.CLEAR.USER,
+      payload: null,
     });
   };
 }

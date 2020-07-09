@@ -7,7 +7,7 @@ const INICIAL_STATE_ITEM = {
   custoMensal: undefined,
   tipo: undefined,
   codigo: "",
-  descricao: ""
+  descricao: "",
 };
 
 const INICIAL_STATE_CLIENT = {
@@ -27,18 +27,37 @@ const INICIAL_STATE_CLIENT = {
   cidade: "",
   uf: "",
   complemento: "",
-  observacoes: ""
+  observacoes: "",
+};
+
+const INICIAL_STATE_USER = {
+  deletedAt: false,
+  userId: "",
+  username: "",
+  email: "",
+  telphone: "",
+  description: "",
+  awardBoolean: false,
+  award: {},
+  resource: {
+    addClient: false,
+    addItem: false,
+    addContract: false,
+    addUser: false,
+    addIgpm: false,
+  },
+  typeAccount: { id: "", group: "" },
 };
 
 export function itemValue(state = INICIAL_STATE_ITEM, action) {
   switch (action.type) {
     case actions.SET.ITEM:
       let item = {
-        ...state
+        ...state,
       };
       item = {
         ...item,
-        ...action.payload
+        ...action.payload,
       };
 
       return item;
@@ -53,16 +72,35 @@ export function clientValue(state = INICIAL_STATE_CLIENT, action) {
   switch (action.type) {
     case actions.SET.CLIENT:
       let client = {
-        ...state
+        ...state,
       };
       client = {
         ...client,
-        ...action.payload
+        ...action.payload,
       };
 
       return client;
     case actions.CLEAR.CLIENT:
       return INICIAL_STATE_CLIENT;
+    default:
+      return state;
+  }
+}
+
+export function userValue(state = INICIAL_STATE_USER, action) {
+  switch (action.type) {
+    case actions.SET.USER:
+      let user = {
+        ...state,
+      };
+      user = {
+        ...user,
+        ...action.payload,
+      };
+
+      return user;
+    case actions.CLEAR.USER:
+      return INICIAL_STATE_USER;
     default:
       return state;
   }
