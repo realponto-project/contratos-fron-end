@@ -13,6 +13,7 @@ import UserRoute from "./Gerenciar/Usuario";
 import NewClientRoute from "./Cadastros/Cliente";
 import DashClienteRoute from "./Gerenciar/Cliente";
 import NewItemRoute from "./Cadastros/Item";
+import DashItemRoute from "./Gerenciar/Item";
 import NewContratosRoute from "./Cadastros/Contratos";
 import NewIgpmRoute from "./IGPM/AdicionarIGPM";
 import DashIgpmRoute from "./IGPM/GerenciarIGPM";
@@ -94,6 +95,11 @@ class PagesRoute extends Component {
                 path="/logged/newItem/add"
                 component={NewItemRoute}
               />
+            )}
+
+          {!!this.props.login.user &&
+            this.props.login.user.resource.addItem && (
+              <Route exact path="/logged/item/dash" component={DashItemRoute} />
             )}
           {!!this.props.login.user &&
             this.props.login.user.resource.addItem && (

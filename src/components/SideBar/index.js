@@ -94,6 +94,15 @@ class SideBar extends Component {
               }}
             />
           );
+        case "item_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/item/dash",
+              }}
+            />
+          );
         case "newPremiacao_add":
           return (
             <Redirect
@@ -317,6 +326,13 @@ class SideBar extends Component {
               >
                 <Icon type="user-add" />
                 Cliente
+              </Menu.Item>
+              <Menu.Item
+                key="item_dash"
+                disabled={!this.props.login.user.resource.addItem}
+              >
+                <Icon type="tablet" />
+                Item
               </Menu.Item>
             </SubMenu>
             <SubMenu
