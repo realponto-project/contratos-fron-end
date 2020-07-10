@@ -16,6 +16,7 @@ import DashClienteRoute from "./Gerenciar/Cliente";
 import NewItemRoute from "./Cadastros/Item";
 import DashItemRoute from "./Gerenciar/Item";
 import NewContratosRoute from "./Cadastros/Contratos";
+import ContratosRoute from "./Gerenciar/Contrato";
 import NewIgpmRoute from "./IGPM/AdicionarIGPM";
 import DashIgpmRoute from "./IGPM/GerenciarIGPM";
 import DashConsultaRoute from "./Consulta/GerenciarConsulta";
@@ -124,6 +125,14 @@ class PagesRoute extends Component {
                 exact
                 path="/logged/newContrato/add"
                 component={NewContratosRoute}
+              />
+            )}
+          {!!this.props.login.user &&
+            this.props.login.user.resource.addContract && (
+              <Route
+                exact
+                path="/logged/contrato/dash"
+                component={ContratosRoute}
               />
             )}
           <Route

@@ -49,6 +49,10 @@ const INICIAL_STATE_USER = {
   typeAccount: { id: "", group: "" },
 };
 
+const INICIAL_STATE_CONTRACT = {
+  code: "",
+};
+
 export function itemValue(state = INICIAL_STATE_ITEM, action) {
   switch (action.type) {
     case actions.SET.ITEM:
@@ -101,6 +105,25 @@ export function userValue(state = INICIAL_STATE_USER, action) {
       return user;
     case actions.CLEAR.USER:
       return INICIAL_STATE_USER;
+    default:
+      return state;
+  }
+}
+
+export function contractValue(state = INICIAL_STATE_CONTRACT, action) {
+  switch (action.type) {
+    case actions.SET.CONTRACT:
+      let contract = {
+        ...state,
+      };
+      contract = {
+        ...contract,
+        ...action.payload,
+      };
+
+      return contract;
+    case actions.CLEAR.CONTRACT:
+      return INICIAL_STATE_CONTRACT;
     default:
       return state;
   }

@@ -139,6 +139,15 @@ class SideBar extends Component {
               }}
             />
           );
+        case "contrato_dash":
+          return (
+            <Redirect
+              push
+              to={{
+                pathname: "/logged/contrato/dash",
+              }}
+            />
+          );
         case "newIgpm_add":
           return (
             <Redirect
@@ -349,6 +358,14 @@ class SideBar extends Component {
               >
                 <Icon type="tablet" />
                 Item
+              </Menu.Item>
+
+              <Menu.Item
+                key="contrato_dash"
+                disabled={!this.props.login.user.resource.addContract}
+              >
+                <Icon type="file-add" />
+                Contratos
               </Menu.Item>
             </SubMenu>
             <SubMenu

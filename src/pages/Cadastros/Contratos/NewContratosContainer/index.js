@@ -40,6 +40,7 @@ import {
 import { GetAllUsers } from "../../../../services/user";
 import moment from "moment";
 import { setContractCode } from "../ContratosRedux/action";
+import { clearContract } from "../../../Relatorios/Cadastro/cadastroRedux/action";
 
 const { Option } = Select,
   { Step } = Steps;
@@ -204,6 +205,11 @@ class NewContratosContainer extends Component {
     await this.setState({ allItens: (await GetAllItens(query)).data.rows });
 
     await this.getAllClient();
+
+    const { code: codigo } = this.props.contractValue;
+    await this.setState({ codigo });
+    await this.getContractByParams();
+    this.props.clearContract();
   };
 
   onChange = (e) => {
@@ -1960,11 +1966,12 @@ class NewContratosContainer extends Component {
 }
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators({ setContractCode }, dispach);
+  return bindActionCreators({ setContractCode, clearContract }, dispach);
 }
 
 function mapStateToProps(state) {
   return {
+    contractValue: state.contractValue,
     login: state.login,
   };
 }

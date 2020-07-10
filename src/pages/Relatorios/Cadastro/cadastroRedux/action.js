@@ -53,3 +53,21 @@ export function clearUser() {
     });
   };
 }
+
+export function setContract(value) {
+  return (dispatch) => {
+    dispatch({
+      type: action.SET.CONTRACT,
+      payload: value,
+    });
+  };
+}
+
+export function clearContract() {
+  return (dispatch) => {
+    dispatch({
+      type: action.CLEAR.CONTRACT,
+      payload: null,
+    });
+  };
+}
