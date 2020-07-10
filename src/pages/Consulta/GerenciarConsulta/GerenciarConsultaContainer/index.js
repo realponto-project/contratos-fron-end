@@ -248,60 +248,61 @@ class GerenciarConsultaContainer extends Component {
             <BellOutlined style={{ fontSize: "28px" }} />
           </div>
         </div>
-        <div className="div-inputs-flex">
-          <input
-            className="input-nome-consulta"
-            placeholder="RAZÃO SOCIAL / NOME"
-            onChange={onChange}
-            name="nome"
-            value={state.nome}
-          ></input>
-          <input
-            className="input-cnpj-consulta"
-            placeholder="CNPJ / CPF"
-            onChange={onChange}
-            name="cnpj"
-            value={state.cnpj}
-          ></input>
-          <input
-            className="input-grupo-consulta"
-            placeholder="GRUPO"
-            onChange={onChange}
-            name="grupo"
-            value={state.grupo}
-          ></input>
-          <input
-            className="input-codigo-consulta"
-            placeholder="CÓDIGO"
-            onChange={onChange}
-            name="codigo"
-            value={state.codigo}
-          ></input>
-          <Select
-            style={{ marginRight: "25px", marginLeft: "15px", width: "15%" }}
-            size="large"
-            placeholder="TIPO"
-            name="tipo"
-            value={state.tipo}
-            onChange={value =>
-              this.setState({ tipo: value }, () => this.getAllContract())
-            }
-          >
-            <Option value="TODOS">TODOS</Option>
-            <Option value="MENSAL">MENSAL</Option>
-            <Option value="ANUAL">ANUAL</Option>
-          </Select>
-        </div>
-
-        {this.state.loading ? (
-          <div className="div-spin">
-            <Spin />
+        <div className="div-table-gerenciar">
+          <div className="div-inputs-flex">
+            <input
+              className="input-nome-consulta"
+              placeholder="RAZÃO SOCIAL / NOME"
+              onChange={onChange}
+              name="nome"
+              value={state.nome}
+            ></input>
+            <input
+              className="input-cnpj-consulta"
+              placeholder="CNPJ / CPF"
+              onChange={onChange}
+              name="cnpj"
+              value={state.cnpj}
+            ></input>
+            <input
+              className="input-grupo-consulta"
+              placeholder="GRUPO"
+              onChange={onChange}
+              name="grupo"
+              value={state.grupo}
+            ></input>
+            <input
+              className="input-codigo-consulta"
+              placeholder="CÓDIGO"
+              onChange={onChange}
+              name="codigo"
+              value={state.codigo}
+            ></input>
+            <Select
+              style={{ marginRight: "25px", marginLeft: "15px", width: "15%" }}
+              size="large"
+              placeholder="TIPO"
+              name="tipo"
+              value={state.tipo}
+              onChange={value =>
+                this.setState({ tipo: value }, () => this.getAllContract())
+              }
+            >
+              <Option value="TODOS">TODOS</Option>
+              <Option value="MENSAL">MENSAL</Option>
+              <Option value="ANUAL">ANUAL</Option>
+            </Select>
           </div>
-        ) : (
-          <this.TableConsulta />
-        )}
-        <div className="div-main-pages">
-          <this.Pages />
+          {this.state.loading ? (
+            <div className="div-spin">
+              <Spin />
+            </div>
+          ) : (
+            <this.TableConsulta />
+          )}
+          <div className="div-main-pages">
+            <this.Pages />
+          </div>
         </div>
       </div>
     );

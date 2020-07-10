@@ -53,9 +53,9 @@
   transition: border-bottom 0.8s;
   transition-timing-function: ease;
 }
-.ant-message-notice-content {
-  background-color: red;
-  color: white;
+.message-error {
+  background-color: red !important;
+  color: white !important;
 }
 .div-contrato {
   display: flex;
