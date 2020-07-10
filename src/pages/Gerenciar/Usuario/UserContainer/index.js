@@ -105,7 +105,7 @@ class UserContainer extends Component {
       {Math.ceil(this.state.count / this.state.total) >= 5 &&
       Math.ceil(this.state.count / this.state.total) - this.state.page < 1 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page - 4)}
         >
@@ -116,7 +116,7 @@ class UserContainer extends Component {
       Math.ceil(this.state.count / this.state.total) - this.state.page < 2 &&
       this.state.page > 3 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page - 3)}
         >
@@ -125,7 +125,7 @@ class UserContainer extends Component {
       ) : null}
       {this.state.page >= 3 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page - 2)}
         >
@@ -134,17 +134,19 @@ class UserContainer extends Component {
       ) : null}
       {this.state.page >= 2 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page - 1)}
         >
           {this.state.page - 1}
         </button>
       ) : null}
-      <div className="div-teste">{this.state.page}</div>
+      <button className="button-paginacao-atual" type="primary">
+        {this.state.page}
+      </button>
       {this.state.page < this.state.count / this.state.total ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page + 1)}
         >
@@ -153,7 +155,7 @@ class UserContainer extends Component {
       ) : null}
       {this.state.page + 1 < this.state.count / this.state.total ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page + 2)}
         >
@@ -163,7 +165,7 @@ class UserContainer extends Component {
       {this.state.page + 2 < this.state.count / this.state.total &&
       this.state.page < 3 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page + 3)}
         >
@@ -173,7 +175,7 @@ class UserContainer extends Component {
       {this.state.page + 3 < this.state.count / this.state.total &&
       this.state.page < 2 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page + 4)}
         >

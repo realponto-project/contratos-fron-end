@@ -19,7 +19,7 @@ class RelatorioItens extends Component {
     count: 0,
     page: 1,
     allItens: [],
-    checked: "contractItem"
+    checked: "contractItem",
   };
 
   componentDidMount = async () => {
@@ -29,28 +29,28 @@ class RelatorioItens extends Component {
   onChangeSelect = (value, option) => {
     this.setState({
       item: option.props.item.name,
-      codigo: option.props.item.code
+      codigo: option.props.item.code,
     });
     const query = {
       filters: {
         item: {
           specific: {
-            id: option.props.item.id
-          }
-        }
-      }
+            id: option.props.item.id,
+          },
+        },
+      },
     };
 
     GetAllContractItem(query)
-      .then(resp => {
+      .then((resp) => {
         this.setState({ contractItem: resp.data });
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -65,21 +65,21 @@ class RelatorioItens extends Component {
           <strong style={{ width: "10%" }}>Total</strong>
           <strong style={{ width: "20%" }}>Tipo</strong>
         </div>
-        {this.state.items.map(item => (
+        {this.state.items.map((item) => (
           <div className="div-line-table">
             <strong style={{ width: "40%" }}>{item.item}</strong>
             <strong style={{ width: "5%" }}>{item.quant}</strong>
             <strong style={{ width: "15%" }}>
               {item.cost.toLocaleString("pt-BR", {
                 style: "currency",
-                currency: "BRL"
+                currency: "BRL",
               })}
             </strong>
             <strong style={{ width: "10%" }}>{item.quantContract}</strong>
             <strong style={{ width: "10%" }}>
               {item.total.toLocaleString("pt-BR", {
                 style: "currency",
-                currency: "BRL"
+                currency: "BRL",
               })}
             </strong>
             <strong style={{ width: "20%" }}>{item.type}</strong>
@@ -100,7 +100,7 @@ class RelatorioItens extends Component {
           <strong className="label-tipo-table">TIPO</strong>
         </div>
         {this.state.contractItem.length !== 0 ? (
-          this.state.contractItem.map(line => (
+          this.state.contractItem.map((line) => (
             <div className="div-line-table">
               <label className="label-nContrato-table">
                 {line.contractCode}
@@ -126,10 +126,10 @@ class RelatorioItens extends Component {
     </div>
   );
 
-  changePages = async pages => {
+  changePages = async (pages) => {
     await this.setState(
       {
-        page: pages
+        page: pages,
       }
       // () => {
       //   this.getAllContract();
@@ -142,7 +142,7 @@ class RelatorioItens extends Component {
       {Math.ceil(this.state.count / this.state.total) >= 5 &&
       Math.ceil(this.state.count / this.state.total) - this.state.page < 1 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page - 4)}
         >
@@ -153,7 +153,7 @@ class RelatorioItens extends Component {
       Math.ceil(this.state.count / this.state.total) - this.state.page < 2 &&
       this.state.page > 3 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page - 3)}
         >
@@ -162,7 +162,7 @@ class RelatorioItens extends Component {
       ) : null}
       {this.state.page >= 3 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page - 2)}
         >
@@ -171,17 +171,19 @@ class RelatorioItens extends Component {
       ) : null}
       {this.state.page >= 2 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page - 1)}
         >
           {this.state.page - 1}
         </button>
       ) : null}
-      <div className="div-teste">{this.state.page}</div>
+      <button className="button-paginacao-atual" type="primary">
+        {this.state.page}
+      </button>
       {this.state.page < this.state.count / this.state.total ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page + 1)}
         >
@@ -190,7 +192,7 @@ class RelatorioItens extends Component {
       ) : null}
       {this.state.page + 1 < this.state.count / this.state.total ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page + 2)}
         >
@@ -200,7 +202,7 @@ class RelatorioItens extends Component {
       {this.state.page + 2 < this.state.count / this.state.total &&
       this.state.page < 3 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page + 3)}
         >
@@ -210,7 +212,7 @@ class RelatorioItens extends Component {
       {this.state.page + 3 < this.state.count / this.state.total &&
       this.state.page < 2 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page + 4)}
         >
@@ -231,7 +233,7 @@ class RelatorioItens extends Component {
     }
   };
 
-  onChangeChecked = async e => {
+  onChangeChecked = async (e) => {
     const { name } = e.target;
     await this.setState({ checked: name });
 
@@ -268,7 +270,7 @@ class RelatorioItens extends Component {
             marginTop: "20px",
             display: "flex",
             alignItems: "center",
-            width: "95%"
+            width: "95%",
           }}
         >
           <Checkbox
@@ -306,7 +308,7 @@ class RelatorioItens extends Component {
               <input style={{ textTransform: "uppercase" }} />
             )}
           >
-            {this.state.allItens.map(value => (
+            {this.state.allItens.map((value) => (
               <Option key={value.id} value={value.name} item={value}>
                 {value.name}
               </Option>
@@ -332,7 +334,7 @@ class RelatorioItens extends Component {
               <input style={{ textTransform: "uppercase" }} />
             )}
           >
-            {this.state.allItens.map(value => (
+            {this.state.allItens.map((value) => (
               <Option key={value.id} value={value.code} item={value}>
                 {value.code}
               </Option>

@@ -19,7 +19,7 @@ class GerenciarConsultaContainer extends Component {
     total: 10,
     count: 0,
     page: 1,
-    contracts: []
+    contracts: [],
   };
 
   componentDidMount = async () => {
@@ -28,7 +28,7 @@ class GerenciarConsultaContainer extends Component {
 
   getAllContract = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const query = {
@@ -37,19 +37,19 @@ class GerenciarConsultaContainer extends Component {
           specific: {
             razaosocial: this.state.nome,
             cnpj: this.state.cnpj.replace(/\D/gi, ""),
-            group: this.state.grupo
-          }
+            group: this.state.grupo,
+          },
         },
         contract: {
           specific: {
             type: this.state.tipo !== "TODOS" && this.state.tipo,
             // type: null,
-            code: this.state.codigo
-          }
-        }
+            code: this.state.codigo,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
     const contracts = await GetAllContract(query);
 
@@ -58,14 +58,14 @@ class GerenciarConsultaContainer extends Component {
       page: contracts.data.page,
       count: contracts.data.count,
       show: contracts.data.show,
-      loading: false
+      loading: false,
     });
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     const { name, value } = masks(e.target.name, e.target.value);
     await this.setState({
-      [name]: value
+      [name]: value,
     });
     await this.getAllContract();
   };
@@ -74,7 +74,7 @@ class GerenciarConsultaContainer extends Component {
     <div className="div-table">
       <div className="div-main-table">
         {this.state.contracts.length !== 0 ? (
-          this.state.contracts.map(line => (
+          this.state.contracts.map((line) => (
             <div className="div-line-table">
               <label
                 className="label-nome-table"
@@ -125,10 +125,10 @@ class GerenciarConsultaContainer extends Component {
     </div>
   );
 
-  changePages = async pages => {
+  changePages = async (pages) => {
     await this.setState(
       {
-        page: pages
+        page: pages,
       },
       () => {
         this.getAllContract();
@@ -141,7 +141,7 @@ class GerenciarConsultaContainer extends Component {
       {Math.ceil(this.state.count / this.state.total) >= 5 &&
       Math.ceil(this.state.count / this.state.total) - this.state.page < 1 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page - 4)}
         >
@@ -152,7 +152,7 @@ class GerenciarConsultaContainer extends Component {
       Math.ceil(this.state.count / this.state.total) - this.state.page < 2 &&
       this.state.page > 3 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page - 3)}
         >
@@ -161,7 +161,7 @@ class GerenciarConsultaContainer extends Component {
       ) : null}
       {this.state.page >= 3 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page - 2)}
         >
@@ -170,17 +170,19 @@ class GerenciarConsultaContainer extends Component {
       ) : null}
       {this.state.page >= 2 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page - 1)}
         >
           {this.state.page - 1}
         </button>
       ) : null}
-      <div className="div-teste">{this.state.page}</div>
+      <button className="button-paginacao-atual" type="primary">
+        {this.state.page}
+      </button>
       {this.state.page < this.state.count / this.state.total ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page + 1)}
         >
@@ -189,7 +191,7 @@ class GerenciarConsultaContainer extends Component {
       ) : null}
       {this.state.page + 1 < this.state.count / this.state.total ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page + 2)}
         >
@@ -199,7 +201,7 @@ class GerenciarConsultaContainer extends Component {
       {this.state.page + 2 < this.state.count / this.state.total &&
       this.state.page < 3 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page + 3)}
         >
@@ -209,7 +211,7 @@ class GerenciarConsultaContainer extends Component {
       {this.state.page + 3 < this.state.count / this.state.total &&
       this.state.page < 2 ? (
         <button
-          className="button-salvar"
+          className="button-paginacao"
           type="primary"
           onClick={() => this.changePages(this.state.page + 4)}
         >
@@ -284,7 +286,7 @@ class GerenciarConsultaContainer extends Component {
               placeholder="TIPO"
               name="tipo"
               value={state.tipo}
-              onChange={value =>
+              onChange={(value) =>
                 this.setState({ tipo: value }, () => this.getAllContract())
               }
             >
