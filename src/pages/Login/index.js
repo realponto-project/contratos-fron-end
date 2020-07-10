@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 
 import "./index.css";
 
-import { Icon, message } from "antd";
+import { message } from "antd";
 
 import { login } from "../../services/login";
 import { onSubmit } from "./LoginRedux/action";
@@ -28,8 +28,16 @@ class LoginPage extends Component {
   };
 
   error = () => {
-    message.error(this.state.message);
+    message.error(this.state.message, this.configuracaoError);
   };
+
+  configuracaoError = message.config({
+    top: 10,
+    duration: 2,
+    maxCount: 3,
+    rtl: true,
+    className: "message-error"
+  });
 
   enterKey = async e => {
     if (e.which === 13 || e.keyCode === 13) {
