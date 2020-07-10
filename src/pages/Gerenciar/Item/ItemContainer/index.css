@@ -3,21 +3,13 @@
   width: 90%;
   min-height: 500px;
   background-color: #fff;
-  border: 1px solid;
+  border: 1px solid #ccc;
   border-radius: 10px;
-  box-shadow: 2px 2px 6px 1px rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   flex-direction: column;
-
   position: relative;
 }
-
-/* .div-main-client-dash div:nth-child(n) {
-  width: 100%;
-  justify-content: end !important;
-  padding: 0 5%;
-} */
 
 .div-block-search-gerClient {
   margin-top: 25px;
