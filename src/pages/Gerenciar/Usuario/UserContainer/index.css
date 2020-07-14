@@ -33,8 +33,3 @@
 .div-main-table-client table td {
   border-top: 1px solid #666;
 }
-.div-paginacao {
-  position: absolute;
-  bottom: 20px;
-  right: 10%;
-}
