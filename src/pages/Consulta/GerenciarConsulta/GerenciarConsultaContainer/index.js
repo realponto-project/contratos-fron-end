@@ -53,6 +53,8 @@ class GerenciarConsultaContainer extends Component {
     };
     const contracts = await GetAllContract(query);
 
+    console.log(contracts);
+
     this.setState({
       contracts: contracts.data.rows,
       page: contracts.data.page,
@@ -100,7 +102,7 @@ class GerenciarConsultaContainer extends Component {
                 className="label-grupo-table"
                 style={line.dateTermination ? { color: "red" } : null}
               >
-                {line.client.group}
+                {line.client.group.group}
               </label>
               <label
                 className="label-codigo-table"
