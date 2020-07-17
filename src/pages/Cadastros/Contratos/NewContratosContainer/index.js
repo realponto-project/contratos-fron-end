@@ -186,7 +186,7 @@ class NewContratosContainer extends Component {
     const { status, data } = await GetAllUsers(query);
 
     if (status === 200) {
-      this.setState({ userList: data });
+      this.setState({ userList: data.rows });
     }
   };
 
@@ -1656,7 +1656,7 @@ class NewContratosContainer extends Component {
                 />
                 <button
                   onClick={() =>
-                    this.state.contractCode !== "" ? this.setRedirect : null
+                    this.state.contractCode !== "" ? this.setRedirect() : null
                   }
                   className={
                     this.state.contractCode !== ""
