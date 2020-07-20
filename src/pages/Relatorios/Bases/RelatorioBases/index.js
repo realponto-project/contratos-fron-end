@@ -73,8 +73,9 @@ class RelatorioBases extends Component {
             <BellOutlined style={{ fontSize: "28px" }} />
           </div>
         </div>
-
-        <this.Table />
+        <div className="div-info-re-itens">
+          <this.Table />
+        </div>
       </div>
     );
   }

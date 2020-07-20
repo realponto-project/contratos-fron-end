@@ -3,7 +3,7 @@ import "../../../../global.css";
 import "./index.css";
 import { masks } from "./validator";
 import { GetAllContract } from "../../../../services/contract";
-import { Select, Spin, Progress } from "antd";
+import { Select, Spin, Progress, Modal } from "antd";
 import { BellOutlined, MailOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
@@ -11,6 +11,8 @@ const { Option } = Select;
 class GerenciarConsultaContainer extends Component {
   state = {
     loading: false,
+    modalStatus: "Dados",
+    modalConsulta: false,
     nome: "",
     cnpj: "",
     grupo: "",
@@ -24,6 +26,12 @@ class GerenciarConsultaContainer extends Component {
 
   componentDidMount = async () => {
     await this.getAllContract();
+  };
+
+  openModalConsulta = () => {
+    this.setState({
+      modalConsulta: true
+    });
   };
 
   getAllContract = async () => {
@@ -72,13 +80,44 @@ class GerenciarConsultaContainer extends Component {
     await this.getAllContract();
   };
 
+  handleCancel = () => {
+    this.setState({
+      modalConsulta: false
+    });
+  };
+
+  ModalAntConsulta = () => (
+    <Modal
+      width={"700px"}
+      title="Consulta de contratos"
+      visible={this.state.modalConsulta}
+      onOk={this.handleCancel}
+      onCancel={this.handleCancel}
+      okText="OK"
+      cancelText="Fechar"
+    >
+      <div className="div-main-labels-modal">
+        <div className="div-esquerda-label-modal">Dados do contrato</div>
+        <div className="div-meio-label-modal">Itens</div>
+        <div className="div-direita-label-modal">Histórico</div>
+      </div>
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+    </Modal>
+  );
+
   TableConsulta = () => (
     <div className="div-table">
       {console.log(this.state.contracts)}
       <div className="div-main-table">
         {this.state.contracts.length !== 0 ? (
           this.state.contracts.map(line => (
-            <div className="div-line-table">
+            <div
+              className="div-line-table-consulta"
+              onClick={this.openModalConsulta}
+            >
+              <this.ModalAntConsulta />
               <label
                 className="label-nome-table"
                 style={line.dateTermination ? { color: "red" } : null}

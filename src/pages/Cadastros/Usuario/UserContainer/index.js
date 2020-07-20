@@ -5,7 +5,6 @@ import {
   message,
   Modal,
   Select,
-  Tooltip,
   Switch,
   Progress
 } from "antd";
@@ -483,6 +482,7 @@ class UserContainer extends Component {
                   style={{
                     width: "200px"
                   }}
+                  defaultValue={this.state.typeAccount}
                   onChange={this.onChangeSelect}
                   value={this.state.typeAccount}
                 >
