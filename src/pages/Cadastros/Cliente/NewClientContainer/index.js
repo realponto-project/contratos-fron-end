@@ -42,6 +42,7 @@ class NewClientContainer extends Component {
     uf: "",
     complemento: "",
     observacoes: "",
+    number: "",
     fieldErrors: {
       razaosocial: false,
       cnpj: false,
@@ -81,6 +82,7 @@ class NewClientContainer extends Component {
       uf: "",
       complemento: "",
       observacoes: "",
+      number: "",
       fieldErrors: {
         razaosocial: false,
         cnpj: false,
@@ -181,6 +183,7 @@ class NewClientContainer extends Component {
       cnpj,
       complemento: complement,
       observacoes: observation,
+      number,
     } = this.state;
 
     const value = {
@@ -199,6 +202,7 @@ class NewClientContainer extends Component {
       cnpj,
       complement,
       observation,
+      number,
     };
 
     if (clientId) {
@@ -637,18 +641,35 @@ class NewClientContainer extends Component {
                 value={this.state.bairro}
               ></input>
             </div>
-            <input
-              readOnly={deletedAt}
-              className={`input-endereco-cliente ${
-                fieldErrors.rua && "input-error"
-              }`}
-              placeholder="RUA"
-              onChange={this.onChange}
-              onFocus={onFocus}
-              onBlur={onBlur}
-              name="rua"
-              value={this.state.rua}
-            ></input>
+
+            <div className="div-twoInfo-cliente">
+              <input
+                readOnly={deletedAt}
+                className={`input-endereco-cliente ${
+                  fieldErrors.rua && "input-error"
+                }`}
+                style={{ width: "60%" }}
+                placeholder="RUA"
+                onChange={this.onChange}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                name="rua"
+                value={this.state.rua}
+              ></input>{" "}
+              <input
+                readOnly={deletedAt}
+                className={`input-endereco-cliente ${
+                  fieldErrors.number && "input-error"
+                }`}
+                style={{ width: "30%" }}
+                placeholder="Numero"
+                onChange={this.onChange}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                name="number"
+                value={this.state.number}
+              ></input>
+            </div>
             <div className="div-twoInfo-cliente">
               <input
                 readOnly={deletedAt}

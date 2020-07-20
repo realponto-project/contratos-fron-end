@@ -3,13 +3,21 @@ import "../../../../global.css";
 import "./index.css";
 import { masks } from "./validator";
 import { GetAllContract } from "../../../../services/contract";
-import { Select, Spin, Progress, Modal } from "antd";
-import { BellOutlined, MailOutlined } from "@ant-design/icons";
+import { Select, Spin, Progress, Button, Modal, Tabs, Input } from "antd";
+import moment from "moment";
+import {
+  BellOutlined,
+  MailOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 
-const { Option } = Select;
+const { Option } = Select,
+  { TabPane } = Tabs;
 
 class GerenciarConsultaContainer extends Component {
   state = {
+    avancado: false,
+    visible: false,
     loading: false,
     modalStatus: "Dados",
     modalConsulta: false,
@@ -17,11 +25,12 @@ class GerenciarConsultaContainer extends Component {
     cnpj: "",
     grupo: "",
     codigo: "",
-    tipo: "TODOS",
+    status: "TODOS",
     total: 10,
     count: 0,
     page: 1,
-    contracts: []
+    contracts: [],
+    index: -1,
   };
 
   componentDidMount = async () => {
@@ -30,13 +39,13 @@ class GerenciarConsultaContainer extends Component {
 
   openModalConsulta = () => {
     this.setState({
-      modalConsulta: true
+      modalConsulta: true,
     });
   };
 
   getAllContract = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     const query = {
@@ -45,19 +54,18 @@ class GerenciarConsultaContainer extends Component {
           specific: {
             razaosocial: this.state.nome,
             cnpj: this.state.cnpj.replace(/\D/gi, ""),
-            group: this.state.grupo
-          }
+          },
         },
         contract: {
           specific: {
-            type: this.state.tipo !== "TODOS" && this.state.tipo,
+            status: this.state.status !== "TODOS" && this.state.status,
             // type: null,
-            code: this.state.codigo
-          }
-        }
+            code: this.state.codigo,
+          },
+        },
       },
       page: this.state.page,
-      total: this.state.total
+      total: this.state.total,
     };
     const contracts = await GetAllContract(query);
 
@@ -68,109 +76,22 @@ class GerenciarConsultaContainer extends Component {
       page: contracts.data.page,
       count: contracts.data.count,
       show: contracts.data.show,
-      loading: false
+      loading: false,
     });
   };
 
-  onChange = async e => {
+  onChange = async (e) => {
     const { name, value } = masks(e.target.name, e.target.value);
     await this.setState({
-      [name]: value
+      [name]: value,
     });
     await this.getAllContract();
   };
 
-  handleCancel = () => {
-    this.setState({
-      modalConsulta: false
-    });
-  };
-
-  ModalAntConsulta = () => (
-    <Modal
-      width={"700px"}
-      title="Consulta de contratos"
-      visible={this.state.modalConsulta}
-      onOk={this.handleCancel}
-      onCancel={this.handleCancel}
-      okText="OK"
-      cancelText="Fechar"
-    >
-      <div className="div-main-labels-modal">
-        <div className="div-esquerda-label-modal">Dados do contrato</div>
-        <div className="div-meio-label-modal">Itens</div>
-        <div className="div-direita-label-modal">Histórico</div>
-      </div>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
-    </Modal>
-  );
-
-  TableConsulta = () => (
-    <div className="div-table">
-      {console.log(this.state.contracts)}
-      <div className="div-main-table">
-        {this.state.contracts.length !== 0 ? (
-          this.state.contracts.map(line => (
-            <div
-              className="div-line-table-consulta"
-              onClick={this.openModalConsulta}
-            >
-              <this.ModalAntConsulta />
-              <label
-                className="label-nome-table"
-                style={line.dateTermination ? { color: "red" } : null}
-              >
-                {line.client.razaosocial}
-              </label>
-              <label
-                className="label-cnpj-table"
-                style={line.dateTermination ? { color: "red" } : null}
-              >
-                {line.client.cnpj.length === 12
-                  ? line.client.cnpj.replace(
-                      /(\d{2})(\d{3})(\d{3})(\d{4})/,
-                      "$1.$2.$3/$4"
-                    )
-                  : line.client.cnpj.replace(
-                      /(\d{2})(\d{3})(\d{3})(\d{4})(\d{1,2})/,
-                      "$1.$2.$3/$4-$5"
-                    )}
-              </label>
-              <label
-                className="label-grupo-table"
-                style={line.dateTermination ? { color: "red" } : null}
-              >
-                {line.client.group.group}
-              </label>
-              <label
-                className="label-codigo-table"
-                style={line.dateTermination ? { color: "red" } : null}
-              >
-                {line.code}
-              </label>
-              <label
-                className="label-tipo-table"
-                style={line.dateTermination ? { color: "red" } : null}
-              >
-                {line.type}
-              </label>
-            </div>
-          ))
-        ) : (
-          <div className="div-noItens-consulta">
-            *** NENHUM CONTRATO ENCONTRADO ***
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
-  changePages = async pages => {
+  changePages = async (pages) => {
     await this.setState(
       {
-        page: pages
+        page: pages,
       },
       () => {
         this.getAllContract();
@@ -263,6 +184,158 @@ class GerenciarConsultaContainer extends Component {
     </div>
   );
 
+  ModalInfo = () => {
+    const { index, contracts } = this.state,
+      contract = contracts[index];
+
+    console.log(contract);
+    return (
+      <Modal
+        visible={this.state.visible}
+        onOk={this.handleOk}
+        width={700}
+        onCancel={() => this.setState({ visible: false })}
+      >
+        <Tabs defaultActiveKey="1" type="card">
+          <TabPane tab="Dados do contrato" key={1}>
+            {index > -1 ? (
+              <div className="div-main-contentModal">
+                <div className="div-row-contentModal">
+                  <div
+                    className="div-block-contentModal"
+                    style={{ width: "45%" }}
+                  >
+                    <label>data Ativação:</label>
+                    {moment(contract.dateActivation).format("LL")}
+                  </div>
+                  <div
+                    className="div-block-contentModal"
+                    style={{ width: "45%" }}
+                  >
+                    <label>Nº Contrato:</label>
+                    {contract.code}
+                  </div>
+                </div>
+                <div className="div-row-contentModal">
+                  <div
+                    className="div-block-contentModal"
+                    style={{ width: "100%" }}
+                  >
+                    <label>ENDEREÇO:</label>
+                    {`${contract.client.address.street}, ${contract.client.address.number}, ${contract.client.address.complement} - ${contract.client.address.zipCode}. ${contract.client.address.city}/${contract.client.address.state}. CEP: ${contract.client.address.zipCode}`}
+                  </div>
+                </div>
+                <div className="div-row-contentModal">
+                  <div
+                    className="div-block-contentModal"
+                    style={{ width: "100%" }}
+                  >
+                    <label>CONTATO:</label>
+                    {`${contract.client.contact.name}, tel: ${contract.client.contact.telphone}, cel: ${contract.client.contact.celular}, ${contract.client.contact.email}`}
+                  </div>
+                </div>
+                <div className="div-row-contentModal">
+                  <div
+                    className="div-block-contentModal"
+                    style={{ width: "100%" }}
+                  >
+                    <label>OBSERVAÇÃO:</label>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </TabPane>
+          <TabPane tab="itens" key={2}>
+            {index > -1 ? (
+              <div className="div-main-contentModal">
+                <Input />
+                {contract.contractItems.map((contractItem) => (
+                  <div className="div-card-iten-contentModal">
+                    <div className="div-row-contentModal">
+                      <strong>{contractItem.item.name}</strong>
+                      <p>
+                        adicionado em{" "}
+                        {moment(contractItem.createdAt).format("LL")}
+                      </p>
+                    </div>
+                    <p>
+                      {contractItem.razaosocial} -{" "}
+                      {contractItem.cnpj.replace(
+                        /(\d{2})(\d{3})(\d{3})(\d{4})(\d{1,2})/,
+                        "$1.$2.$3/$4-$5"
+                      )}
+                    </p>
+                    {contractItem.address && (
+                      <p>
+                        {`${contractItem.address.street}, ${contractItem.address.number}, ${contractItem.address.complement} - ${contractItem.address.zipCode}. ${contractItem.address.city}/${contractItem.address.state}. CEP: ${contractItem.address.zipCode}`}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </TabPane>
+          <TabPane tab="historico" key={3}></TabPane>
+        </Tabs>
+      </Modal>
+    );
+  };
+  TableConsulta = () => (
+    <div className="div-table">
+      {console.log(this.state.contracts)}
+      <div className="div-main-table">
+        <table>
+          <tr>
+            <th style={{ width: "15%" }}>Nº Contrato</th>
+            <th style={{ width: "45%" }}>razão</th>
+            <th style={{ width: "15%" }}>cnpj</th>
+            <th style={{ width: "15%" }}>status</th>
+            <th style={{ width: "10%" }}>açao</th>
+          </tr>
+
+          {this.state.contracts.length !== 0 ? (
+            this.state.contracts.map((line, index) => (
+              <tr>
+                <td style={line.dateTermination ? { color: "red" } : null}>
+                  {line.code}
+                </td>
+                <td style={line.dateTermination ? { color: "red" } : null}>
+                  {line.client.razaosocial}
+                </td>
+                <td style={line.dateTermination ? { color: "red" } : null}>
+                  {line.client.cnpj.length === 12
+                    ? line.client.cnpj.replace(
+                        /(\d{2})(\d{3})(\d{3})(\d{4})/,
+                        "$1.$2.$3/$4"
+                      )
+                    : line.client.cnpj.replace(
+                        /(\d{2})(\d{3})(\d{3})(\d{4})(\d{1,2})/,
+                        "$1.$2.$3/$4-$5"
+                      )}
+                </td>
+                <td style={line.dateTermination ? { color: "red" } : null}>
+                  {line.status}
+                </td>
+                <td>
+                  <InfoCircleOutlined
+                    className="icon-info"
+                    onClick={async () =>
+                      await this.setState({ visible: true, index: index })
+                    }
+                  />
+                </td>
+              </tr>
+            ))
+          ) : (
+            <div className="div-noItens-consulta">
+              *** NENHUM CONTRATO ENCONTRADO ***
+            </div>
+          )}
+        </table>
+      </div>
+    </div>
+  );
+
   render() {
     const { state, onChange } = this;
     return (
@@ -293,49 +366,54 @@ class GerenciarConsultaContainer extends Component {
           </div>
         </div>
         <div className="div-table-gerenciar">
-          <div className="div-inputs-flex">
-            <input
-              className="input-nome-consulta"
-              placeholder="RAZÃO SOCIAL / NOME"
-              onChange={onChange}
-              name="nome"
-              value={state.nome}
-            ></input>
-            <input
-              className="input-cnpj-consulta"
-              placeholder="CNPJ / CPF"
-              onChange={onChange}
-              name="cnpj"
-              value={state.cnpj}
-            ></input>
-            <input
-              className="input-grupo-consulta"
-              placeholder="GRUPO"
-              onChange={onChange}
-              name="grupo"
-              value={state.grupo}
-            ></input>
-            <input
-              className="input-codigo-consulta"
-              placeholder="CÓDIGO"
-              onChange={onChange}
-              name="codigo"
-              value={state.codigo}
-            ></input>
-            <Select
-              style={{ marginRight: "25px", marginLeft: "15px", width: "15%" }}
-              size="large"
-              placeholder="TIPO"
-              name="tipo"
-              value={state.tipo}
-              onChange={value =>
-                this.setState({ tipo: value }, () => this.getAllContract())
-              }
+          <div className="div-block-search-gerClient">
+            <Button
+              onClick={() => this.setState({ avancado: !this.state.avancado })}
             >
-              <Option value="TODOS">TODOS</Option>
-              <Option value="MENSAL">MENSAL</Option>
-              <Option value="ANUAL">ANUAL</Option>
-            </Select>
+              {this.state.avancado ? "Ocultar" : "Avançar"}
+            </Button>
+            {this.state.avancado && (
+              <div className="div-inputs-flex">
+                <input
+                  className="input-codigo-consulta"
+                  placeholder="CÓDIGO"
+                  onChange={onChange}
+                  name="codigo"
+                  value={state.codigo}
+                ></input>
+                <input
+                  className="input-nome-consulta"
+                  placeholder="RAZÃO SOCIAL / NOME"
+                  onChange={onChange}
+                  name="nome"
+                  value={state.nome}
+                ></input>
+                <input
+                  className="input-cnpj-consulta"
+                  placeholder="CNPJ / CPF"
+                  onChange={onChange}
+                  name="cnpj"
+                  value={state.cnpj}
+                ></input>
+
+                <Select
+                  style={{ width: "15%" }}
+                  size="large"
+                  placeholder="Status"
+                  name="status"
+                  value={state.status}
+                  onChange={(value) =>
+                    this.setState({ status: value }, () =>
+                      this.getAllContract()
+                    )
+                  }
+                >
+                  {["ATIVO", "DEBITO", "CANCELADO", "TODOS"].map((item) => (
+                    <Option value={item}>{item}</Option>
+                  ))}
+                </Select>
+              </div>
+            )}
           </div>
           {this.state.loading ? (
             <div className="div-spin">
@@ -348,6 +426,7 @@ class GerenciarConsultaContainer extends Component {
             <this.Pages />
           </div>
         </div>
+        <this.ModalInfo />
       </div>
     );
   }

@@ -66,7 +66,7 @@ class NewContratosContainer extends Component {
     modalAtualizada: false,
     visible: false,
     search: "",
-    fine: "",
+    fine: 0,
     razaosocial: "",
     razaosocialModal: "",
     cnpjModal: "",
@@ -75,6 +75,7 @@ class NewContratosContainer extends Component {
     grupo: "",
     dataAtivacao: "",
     rua: "",
+    number: "",
     bairro: "",
     cep: "",
     cidade: "",
@@ -95,6 +96,7 @@ class NewContratosContainer extends Component {
       cnpjModal: false,
       codigo: false,
       rua: false,
+      number: false,
       bairro: false,
       cep: false,
       cidade: false,
@@ -132,6 +134,7 @@ class NewContratosContainer extends Component {
       codigoModal: "",
       cnpjModal: "",
       rua: "",
+      number: "",
       bairro: "",
       cep: "",
       cidade: "",
@@ -148,6 +151,7 @@ class NewContratosContainer extends Component {
         cnpj: false,
         codigo: false,
         rua: false,
+        number: false,
         bairro: false,
         cep: false,
         cidade: false,
@@ -648,13 +652,22 @@ class NewContratosContainer extends Component {
                 value={this.state.bairro}
               ></input>
             </div>
-            <input
-              className="input-endereco-modal"
-              placeholder="RUA"
-              onChange={this.onChange}
-              name="rua"
-              value={this.state.rua}
-            ></input>
+            <div className="div-twoInfo-modal">
+              <input
+                className="input-cidade-modal"
+                placeholder="RUA"
+                onChange={this.onChange}
+                name="rua"
+                value={this.state.rua}
+              ></input>
+              <input
+                className="input-uf-modal"
+                placeholder="numero"
+                onChange={this.onChange}
+                name="number"
+                value={this.state.number}
+              ></input>
+            </div>
             <div className="div-twoInfo-modal">
               <input
                 className={`input-cidade-modal ${
@@ -974,6 +987,7 @@ class NewContratosContainer extends Component {
     if ((id && address) || zipCode) {
       const {
         street: rua,
+        number,
         neighborhood: bairro,
         zipCode: cep,
         city: cidade,
@@ -988,6 +1002,7 @@ class NewContratosContainer extends Component {
         item,
         codigoModal,
         rua,
+        number,
         bairro,
         cep,
         cidade,
@@ -1038,6 +1053,7 @@ class NewContratosContainer extends Component {
       priceSaleModal: price,
       quantidade,
       rua: street,
+      number,
       bairro: neighborhood,
       cep: zipCode,
       cidade: city,
@@ -1061,6 +1077,7 @@ class NewContratosContainer extends Component {
       contractItem: { ...copyItens[index].contractItem, price },
       costPrice,
       street,
+      number,
       neighborhood,
       zipCode,
       city,
@@ -1091,6 +1108,8 @@ class NewContratosContainer extends Component {
         item: "NÃO SELECIONADO",
         codigoModal: "CÓDIGO",
         rua: "",
+        number: "",
+
         bairro: "",
         cep: "",
         cidade: "",
@@ -1115,6 +1134,7 @@ class NewContratosContainer extends Component {
   handleOk = () => {
     const {
       rua: street,
+      number,
       bairro: neighborhood,
       cep: zipCode,
       cidade: city,
@@ -1154,6 +1174,7 @@ class NewContratosContainer extends Component {
             name,
             itemId,
             street,
+            number,
             neighborhood,
             zipCode,
             city,
@@ -1179,8 +1200,10 @@ class NewContratosContainer extends Component {
         codigoModal: undefined,
         tipo: undefined,
         rua: "",
+        numer: "",
         bairro: "",
         cep: "",
+        quantidade: 1,
         cidade: "",
         uf: "",
         complemento: "",
@@ -1205,6 +1228,7 @@ class NewContratosContainer extends Component {
       item: undefined,
       codigoModal: undefined,
       rua: "",
+      number: "",
       bairro: "",
       cep: "",
       cidade: "",
@@ -1235,6 +1259,7 @@ class NewContratosContainer extends Component {
         state,
         complement,
         observation,
+        number,
       } = this.state.itens[this.state.index];
       address = zipCode
         ? {
@@ -1246,6 +1271,7 @@ class NewContratosContainer extends Component {
             state,
             complement,
             observation,
+            number,
           }
         : address;
     }
@@ -1533,6 +1559,7 @@ class NewContratosContainer extends Component {
                 await setTimeout(function () {}, 1000);
 
                 this.setState({
+                  clientId: clientList[index].id,
                   razaosocial: clientList[index].razaosocial,
                   cnpj: clientList[index].cnpj,
                   grupo: clientList[index].group.group,
