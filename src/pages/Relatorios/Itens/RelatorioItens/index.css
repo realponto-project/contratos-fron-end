@@ -12,6 +12,14 @@
 .input-item-relatorioItens::placeholder {
   color: rgb(177, 177, 177);
 }
+.div-info-re-itens {
+  width: 90%;
+  background-color: white;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding-bottom: 10px;
+}
 .input-item-relatorioItens:focus {
   border-bottom: 1px solid #001529;
 }

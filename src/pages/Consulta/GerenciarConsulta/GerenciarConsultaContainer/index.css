@@ -90,6 +90,7 @@
   font-size: 15px;
   width: 35%;
   margin-right: 10px;
+  cursor: pointer;
 }
 .label-cnpj-table {
   display: flex;
@@ -98,6 +99,7 @@
   font-size: 15px;
   width: 20%;
   margin-right: 10px;
+  cursor: pointer;
 }
 .label-grupo-table {
   display: flex;
@@ -106,6 +108,7 @@
   font-size: 15px;
   width: 15%;
   margin-right: 10px;
+  cursor: pointer;
 }
 .label-codigo-table {
   display: flex;
@@ -114,6 +117,64 @@
   font-size: 15px;
   width: 15%;
   margin-right: 10px;
+  cursor: pointer;
+}
+.div-main-labels-modal {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #9a9a9a;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.div-esquerda-label-modal {
+  width: 33%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.div-direita-label-modal {
+  width: 33%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.div-meio-label-modal {
+  width: 33%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.div-esquerda-label-modal:active {
+  width: 33%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #5fceef;
+}
+.div-direita-label-modal:active {
+  width: 33%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #5fceef;
+}
+.div-meio-label-modal:active {
+  width: 33%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #5fceef;
 }
 .label-tipo-table {
   display: flex;
@@ -121,6 +182,7 @@
   padding: 0 5px 0 5px;
   font-size: 15px;
   width: 15%;
+  cursor: pointer;
 }
 .div-pages {
   margin-right: 10px;

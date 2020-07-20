@@ -284,9 +284,6 @@ export default class PremiacaoContainer extends Component {
           <this.ModalEquations />
           <div className="div-card-premio">
             <div className="div-block-row-premio">
-              <h1 className="h1-titulo" style={{ margin: "0" }}>
-                premiacao
-              </h1>
               <Button
                 type="primary"
                 onClick={() => this.setState({ visible: true })}
