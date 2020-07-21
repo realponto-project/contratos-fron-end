@@ -14,18 +14,22 @@ import { setContractCode } from "../../Cadastros/Contratos/ContratosRedux/action
 
 class HistoricoContainer extends Component {
   state = {
-    logs: []
+    logs: [],
   };
 
   componentDidMount = async () => {
     const query = {
       filters: {
         contract: {
+          specific: {},
+        },
+        user: {
           specific: {
-            code: this.props.contractCode
-          }
-        }
-      }
+            // id: "",
+          },
+        },
+      },
+      code: this.props.contractCode,
     };
     const { status, data } = await GetLogsByCode(query);
 
@@ -84,7 +88,7 @@ class HistoricoContainer extends Component {
             <div className="div-separate" />
           </div>
           {this.state.logs.length !== 0 ? (
-            this.state.logs.map(item => {
+            this.state.logs.map((item) => {
               switch (item.type) {
                 case "create":
                   const logCreate = JSON.parse(item.log);
@@ -150,12 +154,12 @@ class HistoricoContainer extends Component {
                         {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
                       </div>
                       <div className="history-column-log">
-                        {R.keys(logUpdate.oldContratc).map(key => {
+                        {R.keys(logUpdate.oldContratc).map((key) => {
                           if (R.has(key, logUpdate.newContratc)) {
                             return <label>{logUpdate.oldContratc[key]} </label>;
                           }
                         })}
-                        {R.keys(logUpdate.newContratc).map(key => {
+                        {R.keys(logUpdate.newContratc).map((key) => {
                           if (R.has(key, logUpdate.oldContratc)) {
                             return <label>{logUpdate.newContratc[key]} </label>;
                           }
@@ -182,7 +186,7 @@ class HistoricoContainer extends Component {
                             ["id", "updatedAt", "itemId", "addressId"],
                             logDeleteItem
                           )
-                        ).map(key => {
+                        ).map((key) => {
                           if (typeof logDeleteItem[key] === "string")
                             return (
                               <label>
@@ -194,12 +198,12 @@ class HistoricoContainer extends Component {
                               <>
                                 {R.keys(logDeleteItem[key])
                                   .filter(
-                                    filterKey =>
+                                    (filterKey) =>
                                       filterKey !== "id" &&
                                       filterKey.indexOf("At") === -1 &&
                                       filterKey.indexOf("Id") === -1
                                   )
-                                  .map(itemKey => {
+                                  .map((itemKey) => {
                                     return (
                                       <label>
                                         {itemKey}: {logDeleteItem[key][itemKey]}
@@ -227,7 +231,7 @@ class HistoricoContainer extends Component {
                         {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
                       </div>
                       <div className="history-column-log">
-                        {R.keys(logUpdateItem.oldContractItem).map(key => {
+                        {R.keys(logUpdateItem.oldContractItem).map((key) => {
                           return (
                             <label>
                               {key}: {logUpdateItem.oldContractItem[key]} ----->
@@ -287,7 +291,7 @@ class HistoricoContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    contractCode: state.contractCode
+    contractCode: state.contractCode,
   };
 }
 
@@ -295,7 +299,4 @@ function mapDispacthToProps(dispach) {
   return bindActionCreators({ setContractCode }, dispach);
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(HistoricoContainer);
+export default connect(mapStateToProps, mapDispacthToProps)(HistoricoContainer);

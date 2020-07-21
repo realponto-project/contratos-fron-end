@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import "../../../../global.css";
 import "./index.css";
 import { masks } from "./validator";
-import { GetAllContract } from "../../../../services/contract";
+import {
+  GetAllContract,
+  GetAllContractItem,
+  GetLogsByCode,
+} from "../../../../services/contract";
 import { Select, Spin, Progress, Button, Modal, Tabs, Input } from "antd";
 import moment from "moment";
 import {
@@ -10,6 +14,7 @@ import {
   MailOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
+import * as R from "ramda";
 
 const { Option } = Select,
   { TabPane } = Tabs;
@@ -25,12 +30,16 @@ class GerenciarConsultaContainer extends Component {
     cnpj: "",
     grupo: "",
     codigo: "",
+    itemName: undefined,
+    contractCode: "",
     status: "TODOS",
     total: 10,
     count: 0,
     page: 1,
     contracts: [],
     index: -1,
+    contractItems: [],
+    logs: [],
   };
 
   componentDidMount = async () => {
@@ -41,6 +50,40 @@ class GerenciarConsultaContainer extends Component {
     this.setState({
       modalConsulta: true,
     });
+  };
+
+  getLogsByCode = async () => {
+    const query = {
+      filters: {
+        contract: {
+          specific: {},
+        },
+      },
+      code: this.state.contractCode,
+    };
+    const { status, data } = await GetLogsByCode(query);
+
+    if (status === 200) this.setState({ logs: data.rows });
+  };
+
+  getAllContractItem = async () => {
+    const { contractCode, itemName } = this.state,
+      query = {
+        filters: {
+          item: {
+            specific: {
+              name: itemName,
+            },
+          },
+        },
+        contractCode,
+        page: this.state.page,
+        total: null,
+      };
+
+    const { status, data } = await GetAllContractItem(query);
+
+    if (status === 200) await this.setState({ contractItems: data });
   };
 
   getAllContract = async () => {
@@ -68,8 +111,6 @@ class GerenciarConsultaContainer extends Component {
       total: this.state.total,
     };
     const contracts = await GetAllContract(query);
-
-    console.log(contracts);
 
     this.setState({
       contracts: contracts.data.rows,
@@ -184,17 +225,216 @@ class GerenciarConsultaContainer extends Component {
     </div>
   );
 
+  ContentLog = () => {
+    console.log(this.state.logs);
+
+    return (
+      <>
+        {this.state.logs.map((item) => {
+          switch (item.type) {
+            case "create":
+              const logCreate = JSON.parse(item.log),
+                { status, stockBase, client } = logCreate,
+                { razaosocial, cnpj, group, code } = client;
+              return (
+                <tr>
+                  <td>
+                    <label>{item.user.username} </label>
+                  </td>
+                  <td>
+                    <label>{item.type}</label>
+                  </td>
+                  <td>
+                    <label>
+                      {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
+                    </label>
+                  </td>
+                  <td>
+                    <label>{razaosocial} </label>
+                    <label>{cnpj} </label>
+                    <label>{group} </label>
+                    <label>{code} </label>
+                    <label>{status} </label>
+                    <label>{stockBase} </label>
+                  </td>
+                </tr>
+              );
+            case "addItem":
+              const logAddItem = JSON.parse(item.log);
+              return (
+                <tr>
+                  <td>
+                    <label>{item.user.username} </label>
+                  </td>
+                  <td>
+                    <label>{item.type}</label>
+                  </td>
+                  <td>
+                    <label>
+                      {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
+                    </label>
+                  </td>
+                  <td>
+                    <label>{logAddItem.price} </label>
+                    <label>{logAddItem.item.name} </label>
+                    <label>{logAddItem.item.type} </label>
+                    <label>{logAddItem.item.code} </label>
+                    <label>{logAddItem.item.description} </label>
+                  </td>
+                </tr>
+              );
+            case "update":
+              const logUpdate = JSON.parse(item.log);
+              return (
+                <tr>
+                  <td>
+                    <label>{item.user.username} </label>
+                  </td>
+                  <td>
+                    <label>{item.type}</label>
+                  </td>
+                  <td>{moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}</td>
+                  <td>
+                    {R.keys(logUpdate.oldContratc).map((key) => {
+                      if (R.has(key, logUpdate.newContratc)) {
+                        return <label>{logUpdate.oldContratc[key]} </label>;
+                      }
+                    })}
+                    {R.keys(logUpdate.newContratc).map((key) => {
+                      if (R.has(key, logUpdate.oldContratc)) {
+                        return <label>{logUpdate.newContratc[key]} </label>;
+                      }
+                    })}
+                  </td>
+                </tr>
+              );
+            case "deletItem":
+              const logDeleteItem = JSON.parse(item.log);
+              return (
+                <tr>
+                  <td>
+                    <label>{item.user.username} </label>
+                  </td>
+                  <td>
+                    <label>{item.type}</label>
+                  </td>
+                  <td>{moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}</td>
+                  <td>
+                    {R.keys(
+                      R.omit(
+                        ["id", "updatedAt", "itemId", "addressId"],
+                        logDeleteItem
+                      )
+                    ).map((key) => {
+                      if (typeof logDeleteItem[key] === "string")
+                        return (
+                          <label>
+                            {key}: {logDeleteItem[key]}
+                          </label>
+                        );
+                      else if (typeof logDeleteItem[key] === "object") {
+                        return (
+                          <>
+                            {R.keys(logDeleteItem[key])
+                              .filter(
+                                (filterKey) =>
+                                  filterKey !== "id" &&
+                                  filterKey.indexOf("At") === -1 &&
+                                  filterKey.indexOf("Id") === -1
+                              )
+                              .map((itemKey) => {
+                                return (
+                                  <label>
+                                    {itemKey}: {logDeleteItem[key][itemKey]}
+                                  </label>
+                                );
+                              })}
+                          </>
+                        );
+                      }
+                    })}
+                  </td>
+                </tr>
+              );
+            case "updateItem":
+              const logUpdateItem = JSON.parse(item.log);
+              return (
+                <tr>
+                  <td>
+                    <label>{item.user.username} </label>
+                  </td>
+                  <td>
+                    <label>{item.type}</label>
+                  </td>
+                  <td>{moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}</td>
+                  <td>
+                    {R.keys(logUpdateItem.oldContractItem).map((key) => {
+                      return (
+                        <label>
+                          {key}: {logUpdateItem.oldContractItem[key]} ----->
+                          {logUpdateItem.newContractItem[key]}
+                        </label>
+                      );
+                    })}
+                    <strong>
+                      {logUpdateItem.item.name} {logUpdateItem.type}
+                    </strong>
+                  </td>
+                </tr>
+              );
+            case "igpm":
+              const logIgpm = JSON.parse(item.log);
+              return (
+                <tr>
+                  <td>
+                    <label>{item.user.username} </label>
+                  </td>
+                  <td>
+                    <label>{item.type}</label>
+                  </td>
+                  <td>{moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}</td>
+                  <td>
+                    <label>
+                      {logIgpm.oldPrice} -----> {logIgpm.newPrice}
+                      {", "}
+                      <strong>
+                        {logIgpm.igpm} %, {logIgpm.item.name} {logIgpm.type}
+                      </strong>
+                    </label>
+                  </td>
+                </tr>
+              );
+            default:
+              return (
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              );
+          }
+        })}
+      </>
+    );
+  };
+
   ModalInfo = () => {
     const { index, contracts } = this.state,
       contract = contracts[index];
 
-    console.log(contract);
     return (
       <Modal
         visible={this.state.visible}
         onOk={this.handleOk}
-        width={700}
-        onCancel={() => this.setState({ visible: false })}
+        width={800}
+        onCancel={() =>
+          this.setState({
+            visible: false,
+            contractCode: "",
+            itemName: undefined,
+          })
+        }
       >
         <Tabs defaultActiveKey="1" type="card">
           <TabPane tab="Dados do contrato" key={1}>
@@ -248,8 +488,16 @@ class GerenciarConsultaContainer extends Component {
           <TabPane tab="itens" key={2}>
             {index > -1 ? (
               <div className="div-main-contentModal">
-                <Input />
-                {contract.contractItems.map((contractItem) => (
+                <Input
+                  value={this.state.itemName}
+                  placeholder="Buscar"
+                  style={{ width: "calc(100% - 4px)" }}
+                  onChange={async (e) => {
+                    await this.setState({ itemName: e.target.value });
+                    await this.getAllContractItem();
+                  }}
+                />
+                {this.state.contractItems.map((contractItem) => (
                   <div className="div-card-iten-contentModal">
                     <div className="div-row-contentModal">
                       <strong>{contractItem.item.name}</strong>
@@ -275,14 +523,25 @@ class GerenciarConsultaContainer extends Component {
               </div>
             ) : null}
           </TabPane>
-          <TabPane tab="historico" key={3}></TabPane>
+          <TabPane tab="historico" key={3}>
+            <div className="div-main-contentModal">
+              <table>
+                <tr>
+                  <th style={{ width: "15%" }}>Responsável</th>
+                  <th style={{ width: "15%" }}>Ação</th>
+                  <th style={{ width: "15%" }}>data</th>
+                  <th style={{ width: "55%" }}>Log</th>
+                </tr>
+                <this.ContentLog />
+              </table>
+            </div>
+          </TabPane>
         </Tabs>
       </Modal>
     );
   };
   TableConsulta = () => (
     <div className="div-table">
-      {console.log(this.state.contracts)}
       <div className="div-main-table">
         <table>
           <tr>
@@ -319,9 +578,16 @@ class GerenciarConsultaContainer extends Component {
                 <td>
                   <InfoCircleOutlined
                     className="icon-info"
-                    onClick={async () =>
-                      await this.setState({ visible: true, index: index })
-                    }
+                    onClick={async () => {
+                      await this.setState({
+                        visible: true,
+                        index: index,
+                        contractCode: line.code,
+                      });
+
+                      await this.getAllContractItem();
+                      await this.getLogsByCode();
+                    }}
                   />
                 </td>
               </tr>
