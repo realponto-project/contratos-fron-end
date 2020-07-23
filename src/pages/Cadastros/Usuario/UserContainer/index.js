@@ -21,7 +21,7 @@ import {
   NewTypeAccount,
   GetAllTypeAccounts
 } from "../../../../services/typeAccount";
-import { PlusOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { clearUser } from "../../../Relatorios/Cadastro/cadastroRedux/action";
 
 const { Option } = Select;
@@ -209,7 +209,7 @@ class UserContainer extends Component {
     };
 
     if (userId) {
-      const { status, data } = await UpdateUser({ ...value, userId });
+      const { status } = await UpdateUser({ ...value, userId });
 
       if (status === 200) {
         this.clearState();

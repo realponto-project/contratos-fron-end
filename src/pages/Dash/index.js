@@ -155,7 +155,7 @@ export default class GraficoContainer extends Component {
   };
 
   componentDidMount = async () => {
-    const { status, data } = await PriceByContractType();
+    const { data } = await PriceByContractType();
 
     this.setState({ array: data });
   };

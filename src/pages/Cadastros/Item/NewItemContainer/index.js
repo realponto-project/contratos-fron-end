@@ -236,7 +236,7 @@ class NewItemContainer extends Component {
   };
 
   render() {
-    const { state, onFocus, onBlur } = this;
+    const { state, onFocus } = this;
     const { fieldErrors, deletedAt } = state;
 
     return (
