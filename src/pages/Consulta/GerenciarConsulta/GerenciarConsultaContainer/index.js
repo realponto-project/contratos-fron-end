@@ -7,7 +7,16 @@ import {
   GetAllContractItem,
   GetLogsByCode,
 } from "../../../../services/contract";
-import { Select, Spin, Progress, Button, Modal, Tabs, Input } from "antd";
+import {
+  Select,
+  Spin,
+  Progress,
+  Button,
+  Modal,
+  Tabs,
+  Input,
+  DatePicker,
+} from "antd";
 import moment from "moment";
 import {
   BellOutlined,
@@ -42,6 +51,7 @@ class GerenciarConsultaContainer extends Component {
     index: -1,
     contractItems: [],
     logs: [],
+    valueDate: { start: "2019/01/01" },
   };
 
   componentDidMount = async () => {
@@ -54,11 +64,20 @@ class GerenciarConsultaContainer extends Component {
     });
   };
 
+  searchDate = async (e) => {
+    if (!e[0] || !e[1]) return;
+    await this.setState({
+      valueDate: { start: e[0]._d, end: e[1]._d },
+    });
+
+    await this.getLogsByCode();
+  };
+
   getLogsByCode = async () => {
     const query = {
       filters: {
-        contract: {
-          specific: {},
+        logs: {
+          specific: { createdAt: this.state.valueDate },
         },
       },
       code: this.state.contractCode,
@@ -494,6 +513,7 @@ class GerenciarConsultaContainer extends Component {
             visible: false,
             contractCode: "",
             itemName: undefined,
+            valueDate: { start: "2019/01/01" },
           })
         }
       >
@@ -589,6 +609,13 @@ class GerenciarConsultaContainer extends Component {
               className="div-main-contentModal"
               style={{ overflow: "auto", maxHeight: "400px" }}
             >
+              <DatePicker.RangePicker
+                placeholder="Digite a data"
+                format="DD/MM/YYYY"
+                dropdownClassName="poucas"
+                onChange={this.searchDate}
+                onOk={this.searchDate}
+              />
               <this.ContentLog />
             </div>
           </TabPane>
