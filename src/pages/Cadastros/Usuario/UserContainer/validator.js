@@ -70,6 +70,7 @@ export const masks = (name, value) => {
       return { name, value };
 
     case "equacao":
+      // eslint-disable-next-line no-useless-escape
       value = value.replace(/[^(X|\d|*|/|\-\.|+|(|)\s))]/gi, "");
 
       return { name, value };

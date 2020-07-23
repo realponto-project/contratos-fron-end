@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Progress, Button, Input, Select } from "antd";
+import { Progress, Button, Input } from "antd";
 import { MailOutlined, BellOutlined, EditOutlined } from "@ant-design/icons";
 import { GetAllUsers } from "../../../../services/user";
 import { Redirect } from "react-router-dom";
@@ -19,7 +19,7 @@ class UserContainer extends Component {
     count: 0,
     page: 1,
     show: 0,
-    redirect: "",
+    redirect: ""
   };
 
   componentDidMount = async () => {
@@ -33,12 +33,12 @@ class UserContainer extends Component {
           specific: {
             username: this.state.nome,
             email: this.state.email,
-            telphone: this.state.telefone,
-          },
+            telphone: this.state.telefone
+          }
         },
         page: this.state.page,
-        total: this.state.total,
-      },
+        total: this.state.total
+      }
     };
 
     const { status, data } = await GetAllUsers(query);
@@ -48,18 +48,18 @@ class UserContainer extends Component {
         rows: data.rows,
         page: data.page,
         count: data.count,
-        show: data.show,
+        show: data.show
       });
   };
 
-  onChange = async (e) => {
+  onChange = async e => {
     const { name, value } = e.target;
 
     await this.setState({ [name]: value });
     await this.getAllUsers();
   };
 
-  setUserRedux = (user) => {
+  setUserRedux = user => {
     console.log(user);
     const {
       deletedAt,
@@ -71,7 +71,7 @@ class UserContainer extends Component {
       description,
       resource,
       typeAccount,
-      award,
+      award
     } = user;
     this.props.setUser({
       deletedAt: !!deletedAt,
@@ -83,16 +83,16 @@ class UserContainer extends Component {
       awardBoolean,
       resource,
       typeAccount,
-      award,
+      award
     });
 
     this.setState({ redirect: "/logged/newUser/add" });
   };
 
-  changePages = async (pages) => {
+  changePages = async pages => {
     await this.setState(
       {
-        page: pages,
+        page: pages
       },
       () => {
         this.getAllUsers();
@@ -256,7 +256,7 @@ class UserContainer extends Component {
                 <th style={{ width: "10%" }}>ação</th>
               </tr>
 
-              {this.state.rows.map((row) => (
+              {this.state.rows.map(row => (
                 <tr>
                   {console.log(row)}
                   <td>{row.username}</td>
@@ -290,4 +290,7 @@ function mapStateToProps(state) {
   return {};
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(UserContainer);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(UserContainer);

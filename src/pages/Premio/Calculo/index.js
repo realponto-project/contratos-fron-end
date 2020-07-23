@@ -30,7 +30,6 @@ import {
 import { validator, masks } from "./validator";
 import { GetAllContract, GetAllContractItem } from "../../../services/contract";
 import moment from "moment";
-import * as R from "ramda";
 
 const { Option } = Select;
 
