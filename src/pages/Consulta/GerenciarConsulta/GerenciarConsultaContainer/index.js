@@ -13,6 +13,8 @@ import {
   BellOutlined,
   MailOutlined,
   InfoCircleOutlined,
+  CloseCircleTwoTone,
+  CheckCircleTwoTone,
 } from "@ant-design/icons";
 import * as R from "ramda";
 
@@ -226,193 +228,252 @@ class GerenciarConsultaContainer extends Component {
   );
 
   ContentLog = () => {
-    console.log(this.state.logs);
-
     return (
       <>
         {this.state.logs.map((item) => {
           switch (item.type) {
             case "create":
-              const logCreate = JSON.parse(item.log),
-                { status, stockBase, client } = logCreate,
-                { razaosocial, cnpj, group, code } = client;
+              const logCreate = JSON.parse(item.log);
               return (
-                <tr>
-                  <td>
-                    <label>{item.user.username} </label>
-                  </td>
-                  <td>
-                    <label>{item.type}</label>
-                  </td>
-                  <td>
-                    <label>
-                      {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
-                    </label>
-                  </td>
-                  <td>
-                    <label>{razaosocial} </label>
-                    <label>{cnpj} </label>
-                    <label>{group} </label>
-                    <label>{code} </label>
-                    <label>{status} </label>
-                    <label>{stockBase} </label>
-                  </td>
-                </tr>
+                <div className="div-card-iten-contentModal">
+                  <div className="div-row-contentModal">
+                    <p>
+                      Criado por <strong>{item.user.username}</strong> no dia{" "}
+                      {moment(item.createdAt).format("DD/MM/YYYY, [às] HH:mm")}
+                    </p>
+                  </div>
+                  <div className="div-row-contentModal">
+                    <p>
+                      {logCreate.client.razaosocial} -{" "}
+                      {logCreate.client.cnpj.replace(
+                        /(\d{2})(\d{3})(\d{3})(\d{4})(\d{1,2})/,
+                        "$1.$2.$3/$4-$5"
+                      )}{" "}
+                      ({logCreate.client.group.group})
+                    </p>
+                  </div>
+                  <div className="div-row-contentModal">
+                    <p>
+                      <strong>Base de estoque:</strong> {logCreate.stockBase}
+                    </p>
+                    <p>
+                      <strong>status:</strong> {logCreate.status}
+                    </p>
+                    <p>
+                      <strong>multa:</strong>{" "}
+                      {logCreate.fine.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
+                  </div>
+                  <div className="div-row-contentModal">
+                    <p>
+                      <strong>data de Ativação:</strong>{" "}
+                      {moment(logCreate.dateActivation).format()}
+                    </p>
+                    <p>
+                      <strong>data de rescisão:</strong>{" "}
+                      {moment(logCreate.dateTermination).format()}
+                    </p>
+                  </div>
+                </div>
               );
             case "addItem":
-              const logAddItem = JSON.parse(item.log);
+            case "deletItem":
+              const logAddItemOrDeletItem = JSON.parse(item.log);
               return (
-                <tr>
-                  <td>
-                    <label>{item.user.username} </label>
-                  </td>
-                  <td>
-                    <label>{item.type}</label>
-                  </td>
-                  <td>
-                    <label>
-                      {moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}
-                    </label>
-                  </td>
-                  <td>
-                    <label>{logAddItem.price} </label>
-                    <label>{logAddItem.item.name} </label>
-                    <label>{logAddItem.item.type} </label>
-                    <label>{logAddItem.item.code} </label>
-                    <label>{logAddItem.item.description} </label>
-                  </td>
-                </tr>
+                <div className="div-card-iten-contentModal">
+                  <div className="div-row-contentModal">
+                    <p>
+                      Item {item.type === "deletItem" ? "removido" : null}
+                      {item.type === "addItem" ? "adicionado" : null} por{" "}
+                      <strong>{item.user.username}</strong> no dia{" "}
+                      {moment(item.createdAt).format("DD/MM/YYYY, [às] HH:mm")}
+                    </p>
+                  </div>
+                  <div className="div-row-contentModal">
+                    <p>
+                      {logAddItemOrDeletItem.quantidade}x{" "}
+                      {logAddItemOrDeletItem.item.name} (
+                      {logAddItemOrDeletItem.type}) -{" "}
+                      {logAddItemOrDeletItem.item.type}{" "}
+                    </p>
+                    <p>
+                      <strong>Preço venda: </strong>
+                      {logAddItemOrDeletItem.price.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
+                    <p>
+                      <strong>Preço custo: </strong>
+                      {logAddItemOrDeletItem.costPrice.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
+                  </div>
+                  <div className="div-row-contentModal">
+                    {logAddItemOrDeletItem.address && (
+                      <p>
+                        <strong>Endereço: </strong>
+                        {`${logAddItemOrDeletItem.address.street}, ${logAddItemOrDeletItem.address.number}, ${logAddItemOrDeletItem.address.complement} - ${logAddItemOrDeletItem.address.zipCode}. ${logAddItemOrDeletItem.address.city}/${logAddItemOrDeletItem.address.state}. CEP: ${logAddItemOrDeletItem.address.zipCode}`}
+                      </p>
+                    )}
+                  </div>
+                  <div className="div-row-contentModal">
+                    <p>
+                      {logAddItemOrDeletItem.razaosocial} -{" "}
+                      {logAddItemOrDeletItem.cnpj.replace(
+                        /(\d{2})(\d{3})(\d{3})(\d{4})(\d{1,2})/,
+                        "$1.$2.$3/$4-$5"
+                      )}
+                    </p>
+                    <p>
+                      empresa atual:{" "}
+                      {logAddItemOrDeletItem.empresaAtual ? (
+                        <CheckCircleTwoTone twoToneColor="#52c41a" />
+                      ) : (
+                        <CloseCircleTwoTone twoToneColor="#f71818" />
+                      )}
+                    </p>
+                  </div>
+                </div>
               );
+
             case "update":
               const logUpdate = JSON.parse(item.log);
               return (
-                <tr>
-                  <td>
-                    <label>{item.user.username} </label>
-                  </td>
-                  <td>
-                    <label>{item.type}</label>
-                  </td>
-                  <td>{moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}</td>
-                  <td>
-                    {R.keys(logUpdate.oldContratc).map((key) => {
-                      if (R.has(key, logUpdate.newContratc)) {
-                        return <label>{logUpdate.oldContratc[key]} </label>;
-                      }
-                    })}
-                    {R.keys(logUpdate.newContratc).map((key) => {
-                      if (R.has(key, logUpdate.oldContratc)) {
-                        return <label>{logUpdate.newContratc[key]} </label>;
-                      }
-                    })}
-                  </td>
-                </tr>
-              );
-            case "deletItem":
-              const logDeleteItem = JSON.parse(item.log);
-              return (
-                <tr>
-                  <td>
-                    <label>{item.user.username} </label>
-                  </td>
-                  <td>
-                    <label>{item.type}</label>
-                  </td>
-                  <td>{moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}</td>
-                  <td>
-                    {R.keys(
-                      R.omit(
-                        ["id", "updatedAt", "itemId", "addressId"],
-                        logDeleteItem
-                      )
-                    ).map((key) => {
-                      if (typeof logDeleteItem[key] === "string")
-                        return (
-                          <label>
-                            {key}: {logDeleteItem[key]}
-                          </label>
-                        );
-                      else if (typeof logDeleteItem[key] === "object") {
-                        return (
-                          <>
-                            {R.keys(logDeleteItem[key])
-                              .filter(
-                                (filterKey) =>
-                                  filterKey !== "id" &&
-                                  filterKey.indexOf("At") === -1 &&
-                                  filterKey.indexOf("Id") === -1
-                              )
-                              .map((itemKey) => {
-                                return (
-                                  <label>
-                                    {itemKey}: {logDeleteItem[key][itemKey]}
-                                  </label>
-                                );
-                              })}
-                          </>
-                        );
-                      }
-                    })}
-                  </td>
-                </tr>
+                <div className="div-card-iten-contentModal">
+                  <div className="div-row-contentModal">
+                    <p>
+                      Contrato atualizado por{" "}
+                      <strong>{item.user.username}</strong> no dia{" "}
+                      {moment(item.createdAt).format("DD/MM/YYYY, [às] HH:mm")}
+                    </p>
+                  </div>
+                  <div className="div-row-contentModal">
+                    <table style={{ width: "100%" }}>
+                      <tr>
+                        <th style={{ width: "33%" }}>Coluna</th>
+                        <th style={{ width: "33%" }}>de</th>
+                        <th style={{ width: "33%" }}>para</th>
+                      </tr>
+                      {R.keys(logUpdate.oldContratc).map((key) => (
+                        <tr>
+                          <td>{key}</td>
+                          <td>{logUpdate.oldContratc[key]}</td>
+                          <td>{logUpdate.newContratc[key]}</td>
+                        </tr>
+                      ))}
+                    </table>
+                  </div>
+                </div>
               );
             case "updateItem":
               const logUpdateItem = JSON.parse(item.log);
+
+              console.log(logUpdateItem);
               return (
-                <tr>
-                  <td>
-                    <label>{item.user.username} </label>
-                  </td>
-                  <td>
-                    <label>{item.type}</label>
-                  </td>
-                  <td>{moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}</td>
-                  <td>
-                    {R.keys(logUpdateItem.oldContractItem).map((key) => {
-                      return (
-                        <label>
-                          {key}: {logUpdateItem.oldContractItem[key]} ----->
-                          {logUpdateItem.newContractItem[key]}
-                        </label>
-                      );
-                    })}
-                    <strong>
-                      {logUpdateItem.item.name} {logUpdateItem.type}
-                    </strong>
-                  </td>
-                </tr>
+                <div className="div-card-iten-contentModal">
+                  <div className="div-row-contentModal">
+                    <p>
+                      Item atualizado por <strong>{item.user.username}</strong>{" "}
+                      no dia{" "}
+                      {moment(item.createdAt).format("DD/MM/YYYY, [às] HH:mm")}
+                    </p>
+                  </div>
+                  <div className="div-row-contentModal">
+                    <table style={{ width: "100%" }}>
+                      <tr>
+                        <th style={{ width: "33%" }}>Coluna</th>
+                        <th style={{ width: "33%" }}>de</th>
+                        <th style={{ width: "33%" }}>para</th>
+                      </tr>
+                      {R.keys(logUpdateItem.oldContractItem).map((key) => (
+                        <tr>
+                          <td>{key}</td>
+                          <td>
+                            {typeof logUpdateItem.oldContractItem[key] ===
+                            "boolean" ? (
+                              <>
+                                {logUpdateItem.oldContractItem[key] ? (
+                                  <CheckCircleTwoTone twoToneColor="#52c41a" />
+                                ) : (
+                                  <CloseCircleTwoTone twoToneColor="#f71818" />
+                                )}
+                              </>
+                            ) : (
+                              logUpdateItem.oldContractItem[key]
+                            )}
+                          </td>
+                          <td>
+                            {typeof logUpdateItem.newContractItem[key] ===
+                            "boolean" ? (
+                              <>
+                                {logUpdateItem.newContractItem[key] ? (
+                                  <CheckCircleTwoTone twoToneColor="#52c41a" />
+                                ) : (
+                                  <CloseCircleTwoTone twoToneColor="#f71818" />
+                                )}
+                              </>
+                            ) : (
+                              logUpdateItem.newContractItem[key]
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </table>
+                  </div>
+                </div>
               );
             case "igpm":
               const logIgpm = JSON.parse(item.log);
               return (
-                <tr>
-                  <td>
-                    <label>{item.user.username} </label>
-                  </td>
-                  <td>
-                    <label>{item.type}</label>
-                  </td>
-                  <td>{moment(item.createdAt).format("DD/MM/YYYY, HH:mm")}</td>
-                  <td>
-                    <label>
-                      {logIgpm.oldPrice} -----> {logIgpm.newPrice}
-                      {", "}
-                      <strong>
-                        {logIgpm.igpm} %, {logIgpm.item.name} {logIgpm.type}
-                      </strong>
-                    </label>
-                  </td>
-                </tr>
+                <div className="div-card-iten-contentModal">
+                  <div className="div-row-contentModal">
+                    <p>
+                      Igpm aplicado no dia{" "}
+                      {moment(item.createdAt).format("DD/MM/YYYY, [às] HH:mm")}
+                    </p>
+                  </div>
+                  <div className="div-row-contentModal">
+                    <table style={{ width: "100%" }}>
+                      <tr>
+                        <th style={{ width: "40%" }}>item</th>
+                        <th style={{ width: "20%" }}>valor</th>
+                        <th style={{ width: "15%" }}>igpm (%)</th>
+                        <th style={{ width: "20%" }}>valor corrigido</th>
+                      </tr>
+                      <tr>
+                        <td>
+                          {logIgpm.item.name} ({logIgpm.type})
+                        </td>
+                        <td>
+                          {(
+                            logIgpm.quantidade * logIgpm.oldPrice
+                          ).toLocaleString("pt-BR", {
+                            style: "currency",
+                            currency: "BRL",
+                          })}
+                        </td>
+                        <td>{logIgpm.igpm}</td>
+                        <td>
+                          {(
+                            logIgpm.quantidade * logIgpm.newPrice
+                          ).toLocaleString("pt-BR", {
+                            style: "currency",
+                            currency: "BRL",
+                          })}
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
               );
             default:
-              return (
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              );
+              return null;
           }
         })}
       </>
@@ -524,16 +585,11 @@ class GerenciarConsultaContainer extends Component {
             ) : null}
           </TabPane>
           <TabPane tab="historico" key={3}>
-            <div className="div-main-contentModal">
-              <table>
-                <tr>
-                  <th style={{ width: "15%" }}>Responsável</th>
-                  <th style={{ width: "15%" }}>Ação</th>
-                  <th style={{ width: "15%" }}>data</th>
-                  <th style={{ width: "55%" }}>Log</th>
-                </tr>
-                <this.ContentLog />
-              </table>
+            <div
+              className="div-main-contentModal"
+              style={{ overflow: "auto", maxHeight: "400px" }}
+            >
+              <this.ContentLog />
             </div>
           </TabPane>
         </Tabs>

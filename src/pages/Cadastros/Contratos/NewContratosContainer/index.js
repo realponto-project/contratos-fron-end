@@ -85,8 +85,8 @@ class NewContratosContainer extends Component {
     contractCode: "",
     type: "",
     itemId: "",
-    priceMonthly: "",
-    priceYearly: "",
+    priceMonthly: 0,
+    priceYearly: 0,
     username: undefined,
     userId: "",
     status: "ATIVO",
@@ -117,12 +117,12 @@ class NewContratosContainer extends Component {
   clearState = () => {
     this.setState({
       fine: 0,
-      priceMonthly: "",
-      priceYearly: "",
+      priceMonthly: 0,
+      priceYearly: 0,
       visible: false,
       search: "",
       razaosocial: "",
-      cnpj: "",
+      cnpj: undefined,
       codigo: "",
       grupo: "",
       dataRescisao: null,
@@ -322,12 +322,12 @@ class NewContratosContainer extends Component {
     } else {
       this.setState({
         razaosocial: "",
-        cnpj: "",
+        cnpj: undefined,
         grupo: "",
         dataRescisao: null,
         dataAtivacao: "",
-        status: "STATUS",
-        base: "BASE",
+        status: "ATIVO",
+        base: undefined,
         clientId: "",
         contractCode: "",
         itens: [],
@@ -430,6 +430,8 @@ class NewContratosContainer extends Component {
       itens: itens.map((item) => {
         if (R.has("id", item)) {
           const {
+            type,
+            quantidade,
             price,
             address,
             contractItemId,
@@ -442,9 +444,17 @@ class NewContratosContainer extends Component {
             state,
             complement,
             observation,
+            cnpj,
+            razaosocial,
+            empresaAtual,
           } = item;
           return {
+            type,
+            quantidade,
             price,
+            cnpj,
+            razaosocial,
+            empresaAtual,
             address: zipCode
               ? {
                   ...address,
@@ -517,12 +527,10 @@ class NewContratosContainer extends Component {
       case 0:
         return (
           <>
-            {/* <label className="label-title-modal">Item</label> */}
             <div className="div-line-modal">
               <Select
                 style={{
                   width: "100%",
-                  // marginRight: "10px",
                 }}
                 size="large"
                 showSearch
@@ -890,68 +898,6 @@ class NewContratosContainer extends Component {
         </Steps>
       </div>
       <this.ContentModalIncluir />
-      {/* <div className="div-twoInfo-modal">
-        <input
-          className={`input-cep-modal ${this.state.fieldErrors.cep &&
-            "input-error"}`}
-          placeholder="CEP"
-          onChange={this.onChange}
-          name="cep"
-          value={this.state.cep}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
-        ></input>
-        <input
-          className="input-bairro-modal"
-          placeholder="BAIRRO"
-          onChange={this.onChange}
-          name="bairro"
-          value={this.state.bairro}
-        ></input>
-      </div>
-      <input
-        className="input-endereco-modal"
-        placeholder="RUA"
-        onChange={this.onChange}
-        name="rua"
-        value={this.state.rua}
-      ></input>
-      <div className="div-twoInfo-modal">
-        <input
-          className={`input-cidade-modal ${this.state.fieldErrors.cidade &&
-            "input-error"}`}
-          placeholder="CIDADE"
-          onChange={this.onChange}
-          name="cidade"
-          value={this.state.cidade}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
-        ></input>
-        <input
-          className={`input-uf-modal ${this.state.fieldErrors.uf &&
-            "input-error"}`}
-          placeholder="UF"
-          onChange={this.onChange}
-          name="uf"
-          value={this.state.uf}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
-        ></input>
-      </div>
-      <input
-        className="input-endereco-modal"
-        placeholder="COMPLEMENTO"
-        onChange={this.onChange}
-        name="complemento"
-        value={this.state.complemento}
-      ></input>
-      <input
-        className="input-endereco-modal"
-        placeholder="OBSERVAÇÕES"
-        onChange={this.onChange}
-        name="observacoes"
-        value={this.state.observacoes}
-      ></input> */}
     </Modal>
   );
 
@@ -1227,6 +1173,9 @@ class NewContratosContainer extends Component {
       visible: false,
       item: undefined,
       codigoModal: undefined,
+      quantidade: 1,
+      tipo: undefined,
+      priceSaleModal: undefined,
       rua: "",
       number: "",
       bairro: "",
@@ -1502,6 +1451,8 @@ class NewContratosContainer extends Component {
     const { state } = this;
     const { fieldErrors } = state;
 
+    console.log(state);
+
     return (
       <div className="card-main">
         {this.renderRedirect()}
@@ -1550,6 +1501,7 @@ class NewContratosContainer extends Component {
               // className={`input-cnpj-contratos ${
               //   fieldErrors.cnpj && "input-error"
               // }`}
+              placeholder="cnpj"
               value={this.state.cnpj}
               style={{ width: "25%" }}
               onChange={async (id) => {
@@ -1567,7 +1519,6 @@ class NewContratosContainer extends Component {
               }}
               showSearch
               onSearch={(cnpj) => this.getAllClient(cnpj)}
-              placeholder="cnpj"
               optionFilterProp="children"
               filterOption={(input, option) =>
                 option.props.children
@@ -1728,13 +1679,13 @@ class NewContratosContainer extends Component {
             className="input-valor-contratos"
             style={{ margin: "0" }}
             placeholder="VALOR MENSAL"
-            value={this.state.priceMonthly}
+            value={this.state.priceMonthly.toFixed(2)}
           ></input>
           <input
             readOnly
             className="input-valor-contratos"
             placeholder="VALOR ANUAL"
-            value={this.state.priceYearly}
+            value={this.state.priceYearly.toFixed(2)}
           ></input>
         </div>
 
@@ -1820,7 +1771,7 @@ class NewContratosContainer extends Component {
                         onClick={() => {
                           const { priceMonthly, priceYearly } = this.state;
                           const price = item.price
-                            ? parseFloat(item.price, 10)
+                            ? parseFloat(item.price, 10) * item.quantidade
                             : 0;
                           this.setState({
                             priceMonthly:
@@ -1851,134 +1802,6 @@ class NewContratosContainer extends Component {
           {this.state.itens.length !== 0 && <this.Pages />}
         </div>
 
-        {/* <div className="div-main-contratos">
-          <div className="div-itens-contratos">
-            <div className="div-h2-modal">
-              <h2 style={{ fontFamily: "Bebas", marginLeft: "25px" }}>Itens</h2>
-            </div>
-            {this.state.itens.length !== 0 ? (
-              this.state.itens.map((item, index) => (
-                <>
-                  <div className="div-line-contratos">
-                    <Icon
-                      type="question-circle"
-                      className="icon-info"
-                      style={{ margin: "0 2px 0 25px" }}
-                      onClick={() => this.setState({ modalInfo: true, index })}
-                    />
-                    <input
-                      readOnly
-                      className="input-item-contratos"
-                      placeholder={item.name}
-                    ></input>
-                    <input
-                      step="0.01"
-                      min="0"
-                      max="99999"
-                      type="number"
-                      className="input-valor-contratos"
-                      placeholder="VALOR"
-                      onChange={(e) => {
-                        const { value } = e.target;
-                        const { itens, priceMonthly, priceYearly } = this.state;
-                        itens[index].price =
-                          itens[index].price === undefined
-                            ? "0"
-                            : itens[index].price;
-                        this.setState({
-                          itens,
-                        });
-
-                        this.setState({
-                          priceMonthly:
-                            item.type === "MENSAL"
-                              ? priceMonthly +
-                                parseFloat(value.slice(0, 9), 10) -
-                                parseFloat(itens[index].price, 10)
-                              : priceMonthly,
-                          priceYearly:
-                            item.type === "ANUAL"
-                              ? priceYearly +
-                                parseFloat(value.slice(0, 9), 10) -
-                                parseFloat(itens[index].price, 10)
-                              : priceYearly,
-                        });
-
-                        itens[index].price = value.slice(0, 9);
-
-                        this.setState({
-                          itens,
-                        });
-                      }}
-                      value={item.price}
-                    ></input>
-                    <input
-                      className="input-data-contratos"
-                      value={moment(item.createdAt).format("L")}
-                    ></input>
-                    <div className="div-block-button-donw">
-                      {item.igpms && item.igpms.length !== 0 ? (
-                        <>
-                          {this.state.indexIgpm === index ? (
-                            <UpOutlined
-                              onClick={() => this.setState({ indexIgpm: -1 })}
-                            />
-                          ) : (
-                            <DownOutlined
-                              onClick={() =>
-                                this.setState({ indexIgpm: index })
-                              }
-                            />
-                          )}
-                        </>
-                      ) : null}
-                    </div>
-                    <div className="div-block-icons-update-delete">
-                      <Icon
-                        type="edit"
-                        className="icon-edit"
-                        onClick={() => this.getModal(index)}
-                      />
-                      <Icon
-                        type="delete"
-                        className="icon-delete"
-                        onClick={() => {
-                          const { priceMonthly, priceYearly } = this.state;
-                          const price = item.price
-                            ? parseFloat(item.price, 10)
-                            : 0;
-                          this.setState({
-                            priceMonthly:
-                              item.type === "MENSAL"
-                                ? priceMonthly - price
-                                : priceMonthly,
-                            priceYearly:
-                              item.type === "ANUAL"
-                                ? priceYearly - price
-                                : priceYearly,
-                          });
-                          this.removeItem(index);
-                        }}
-                      />
-                    </div>
-                  </div>
-                  {this.state.indexIgpm === index &&
-                    this.state.itens[this.state.indexIgpm].igpms.map((item) => (
-                      <div className="div-igpm-contratos">
-                        <h4 className="h4-contratos">{`${item.type} ${
-                          item.month
-                        }/${item.year}  ${item.value.toFixed(2)}%`}</h4>
-                      </div>
-                    ))}
-                </>
-              ))
-            ) : (
-              <div className="div-noItens-contratos">
-                NÃO HÁ NENHUM ITEM NO CONTRATO
-              </div>
-            )}
-          </div>
-        </div> */}
         <div className="div-buttons-usuario">
           <button className="button-cancelar" onClick={this.clearState}>
             Cancelar

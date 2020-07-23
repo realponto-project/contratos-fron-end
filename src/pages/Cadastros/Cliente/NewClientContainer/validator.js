@@ -61,19 +61,16 @@ export const masks = (name, value) => {
     case "rua":
     case "cidade":
     case "observacoes":
-      value = value.replace(/\W/gi, "");
       value = value.slice(0, 40);
 
       return { name, value };
 
     case "bairro":
-      value = value.replace(/\W/gi, "");
       value = value.slice(0, 30);
 
       return { name, value };
 
     case "complemento":
-      value = value.replace(/\W/gi, "");
       value = value.slice(0, 20);
 
       return { name, value };
@@ -85,7 +82,6 @@ export const masks = (name, value) => {
       return { name, value };
 
     case "grupo":
-      value = value.replace(/\W/gi, "");
       value = value.slice(0, 10);
 
       return { name, value };
