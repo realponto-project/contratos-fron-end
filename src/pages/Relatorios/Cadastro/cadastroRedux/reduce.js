@@ -38,7 +38,7 @@ const INICIAL_STATE_USER = {
   telphone: "",
   description: "",
   awardBoolean: false,
-  award: {},
+  award: { name: "", id: "" },
   resource: {
     addClient: false,
     addItem: false,

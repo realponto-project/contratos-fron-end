@@ -78,3 +78,12 @@
   /* cursor: url("./mandrake.png"), help !important; */
   cursor: help !important;
 }
+
+.div-table table th {
+  background-color: #eee;
+  padding: 3px 1px;
+}
+
+.div-table table td {
+  border-top: 1px solid #666;
+}

@@ -172,37 +172,38 @@ class DashIgmpContainer extends Component {
   };
 
   TableIgpm = () => (
-    <div className="div-table">
-      {this.state.contractItems.length !== 0 ? (
-        <div className="div-main-table">
-          {this.state.contractItems.map((line) => (
-            <div className="div-line-table">
-              <label className="label-nome-igpm">{line.razaosocial}</label>
-              <label
-                className={`label-data-igpm ${
-                  this.props.login.user.troll && "cursor"
-                }`}
-                // onClick={() =>
-                //   this.setState({
-                //     igpm: line.item.igpms[0],
-                //     visible: true
-                //   })
-                // }
-                onMouseEnter={
-                  // null
-                  () => this.soundPlay()
-                  // this.props.login.user.troll ? () => this.soundPlay() : null
-                }
-              >
-                {`${line.type} ${line.month}/${line.year}`}
-              </label>
-              <label className="label-nContrato-igpm">
-                {line.contractCode}
-              </label>
-            </div>
-          ))}
-        </div>
-      ) : (
+    <div
+      className="div-table"
+      style={{ justifyContent: "center", alignItems: "center" }}
+    >
+      <table style={{ width: "calc(100% - 50px)" }}>
+        <tr>
+          <th style={{ width: "55%" }}>razão</th>
+          <th style={{ width: "30%" }}>data</th>
+          <th style={{ width: "15%" }}>Nº contrato</th>
+        </tr>
+        {this.state.contractItems.map((line) => (
+          <tr>
+            <td>{line.razaosocial}</td>
+            <td
+              className={`${this.props.login.user.troll && "cursor"}`}
+              // onClick={() =>
+              //   this.setState({
+              //     igpm: line.item.igpms[0],
+              //     visible: true
+              //   })
+              // }
+              onMouseEnter={
+                null
+                // () => this.soundPlay()
+                // this.props.login.user.troll ? () => this.soundPlay() : null
+              }
+            >{`${line.type} ${line.month}/${line.year}`}</td>
+            <td>{line.contractCode}</td>
+          </tr>
+        ))}
+      </table>
+      {this.state.contractItems.length === 0 && (
         <div className="div-main-table">
           <h3 style={{ fontFamily: "Bebas", fontSize: "20px" }}>
             * NADA FOI ENCONTRADO *
@@ -326,41 +327,43 @@ class DashIgmpContainer extends Component {
             <BellOutlined style={{ fontSize: "28px" }} />
           </div>
         </div>
-        <div className="div-inputs-flex">
-          <input
-            className="input-nome-igpm"
-            placeholder="RAZÃO SOCIAL / NOME"
-            onChange={this.onChange}
-            name="nome"
-            value={this.state.nome}
-          ></input>
-          <input
-            className="input-data-igpm"
-            placeholder="DATA"
-            onChange={this.onChange}
-            name="data"
-            value={this.state.data}
-          ></input>
-          <input
-            className="input-nContato-igpm"
-            placeholder="Nº CONTRATO"
-            onChange={this.onChange}
-            name="nContrato"
-            value={this.state.nContrato}
-          ></input>
-        </div>
-
-        {this.state.loading ? (
-          <div className="div-spin">
-            <Spin />
+        <div className="div-main-client-dash">
+          <div className="div-inputs-flex">
+            <input
+              className="input-nome-igpm"
+              placeholder="RAZÃO SOCIAL / NOME"
+              onChange={this.onChange}
+              name="nome"
+              value={this.state.nome}
+            ></input>
+            <input
+              className="input-data-igpm"
+              placeholder="DATA"
+              onChange={this.onChange}
+              name="data"
+              value={this.state.data}
+            ></input>
+            <input
+              className="input-nContato-igpm"
+              placeholder="Nº CONTRATO"
+              onChange={this.onChange}
+              name="nContrato"
+              value={this.state.nContrato}
+            ></input>
           </div>
-        ) : (
-          <this.TableIgpm />
-        )}
-        <div className="div-main-pages">
-          <this.Pages />
+
+          {this.state.loading ? (
+            <div className="div-spin">
+              <Spin />
+            </div>
+          ) : (
+            <this.TableIgpm />
+          )}
+          <div className="div-paginacao">
+            <this.Pages />
+          </div>
+          <this.ModalConfirmeDelete />
         </div>
-        <this.ModalConfirmeDelete />
       </div>
     );
   }

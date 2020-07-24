@@ -59,6 +59,9 @@ class SideBar extends Component {
         case "logout":
           return <Redirect to="/login" />;
         case "newUser_add":
+          if (document.location.href.indexOf("/logged/newUser/add") !== -1) {
+            document.location.reload(true);
+          }
           return (
             <Redirect
               push
@@ -86,6 +89,9 @@ class SideBar extends Component {
             />
           );
         case "newClient_add":
+          if (document.location.href.indexOf("/logged/newClient/add") !== -1) {
+            document.location.reload(true);
+          }
           return (
             <Redirect
               push
@@ -122,6 +128,9 @@ class SideBar extends Component {
             />
           );
         case "newItem_add":
+          if (document.location.href.indexOf("/logged/newItem/add") !== -1) {
+            document.location.reload(true);
+          }
           return (
             <Redirect
               push
@@ -131,6 +140,11 @@ class SideBar extends Component {
             />
           );
         case "newContrato_add":
+          if (
+            document.location.href.indexOf("/logged/newContrato/add") !== -1
+          ) {
+            document.location.reload(true);
+          }
           return (
             <Redirect
               push

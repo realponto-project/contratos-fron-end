@@ -626,7 +626,7 @@ class GerenciarConsultaContainer extends Component {
   TableConsulta = () => (
     <div className="div-table">
       <div className="div-main-table">
-        <table>
+        <table style={{ width: "calc(100% - 25px)" }}>
           <tr>
             <th style={{ width: "15%" }}>Nº Contrato</th>
             <th style={{ width: "45%" }}>razão</th>
@@ -714,7 +714,10 @@ class GerenciarConsultaContainer extends Component {
             <BellOutlined style={{ fontSize: "28px" }} />
           </div>
         </div>
-        <div className="div-table-gerenciar">
+        <div
+          className="div-table-gerenciar"
+          style={{ border: "1px solid #ccc", borderRadius: "10px" }}
+        >
           <div className="div-block-search-gerClient">
             <Button
               onClick={() => this.setState({ avancado: !this.state.avancado })}
