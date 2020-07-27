@@ -1479,113 +1479,131 @@ class NewContratosContainer extends Component {
 
         <div className="div-card-contratos-1">
           <div className="div-inputs-flex">
-            <input
-              className={`input-codigo-contratos ${fieldErrors.codigo &&
-                "input-error"}`}
-              placeholder="Nº CONTRATO"
-              onChange={this.onChange}
-              name="codigo"
-              value={this.state.codigo}
-              onBlur={this.onBlur}
-              onFocus={this.onFocus}
-            ></input>
-            <Select
-              // className={`input-cnpj-contratos ${
-              //   fieldErrors.cnpj && "input-error"
-              // }`}
-              placeholder="cnpj"
-              value={this.state.cnpj}
-              style={{ width: "25%" }}
-              onChange={async id => {
-                const { clientList } = this.state;
-                const index = R.findIndex(R.propEq("id", id))(clientList);
+            <div className="div-cnpj-teste">
+              <label>Nº Contrato</label>
+              <input
+                className={`input-codigo-contratos ${fieldErrors.codigo &&
+                  "input-error"}`}
+                placeholder="Nº CONTRATO"
+                onChange={this.onChange}
+                name="codigo"
+                value={this.state.codigo}
+                onBlur={this.onBlur}
+                onFocus={this.onFocus}
+              ></input>
+            </div>
+            <div className="div-cnpj-teste">
+              <label>CNPJ</label>
+              <Select
+                // className={`input-cnpj-contratos ${
+                //   fieldErrors.cnpj && "input-error"
+                // }`}
+                placeholder="cnpj"
+                value={this.state.cnpj}
+                style={{ width: "100%", margin: "0 10px 20px 0" }}
+                onChange={async id => {
+                  const { clientList } = this.state;
+                  const index = R.findIndex(R.propEq("id", id))(clientList);
 
-                await setTimeout(function() {}, 1000);
+                  await setTimeout(function() {}, 1000);
 
-                this.setState({
-                  clientId: clientList[index].id,
-                  razaosocial: clientList[index].razaosocial,
-                  cnpj: clientList[index].cnpj,
-                  grupo: clientList[index].group.group
-                });
-              }}
-              showSearch
-              onSearch={cnpj => this.getAllClient(cnpj)}
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                option.props.children
-                  .toLowerCase()
-                  .indexOf(input.toLowerCase()) >= 0
-              }
-              size="large"
-            >
-              {this.state.clientList.map(client => (
-                <Option
-                  value={client.id}
-                  onMouseEnter={() =>
-                    this.setState({
-                      razaosocial: client.razaosocial,
-                      grupo: client.group.group
-                    })
-                  }
-                  onMouseLeave={() => {
-                    if (this.state.cnpj === "")
+                  this.setState({
+                    clientId: clientList[index].id,
+                    razaosocial: clientList[index].razaosocial,
+                    cnpj: clientList[index].cnpj,
+                    grupo: clientList[index].group.group
+                  });
+                }}
+                showSearch
+                onSearch={cnpj => this.getAllClient(cnpj)}
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.props.children
+                    .toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
+                }
+                size="large"
+              >
+                {this.state.clientList.map(client => (
+                  <Option
+                    value={client.id}
+                    onMouseEnter={() =>
                       this.setState({
-                        razaosocial: "",
-                        grupo: ""
-                      });
-                  }}
-                >
-                  {client.cnpj}
-                </Option>
-              ))}
-            </Select>
-            <input
-              className={`input-nome-contratos ${fieldErrors.razaosocial &&
-                "input-error"}`}
-              style={{ textTransform: "uppercase" }}
-              placeholder="RAZÃO SOCIAL / NOME"
-              onChange={this.onChange}
-              name="razaosocial"
-              value={this.state.razaosocial}
-              onBlur={this.onBlur}
-              onFocus={this.onFocus}
-            ></input>
+                        razaosocial: client.razaosocial,
+                        grupo: client.group.group
+                      })
+                    }
+                    onMouseLeave={() => {
+                      if (this.state.cnpj === "")
+                        this.setState({
+                          razaosocial: "",
+                          grupo: ""
+                        });
+                    }}
+                  >
+                    {client.cnpj}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+            <div className="div-cnpj-teste">
+              <label>Razão social</label>
+              <input
+                className={`input-nome-contratos ${fieldErrors.razaosocial &&
+                  "input-error"}`}
+                style={{ textTransform: "uppercase" }}
+                placeholder="RAZÃO SOCIAL / NOME"
+                onChange={this.onChange}
+                name="razaosocial"
+                value={this.state.razaosocial}
+                onBlur={this.onBlur}
+                onFocus={this.onFocus}
+              ></input>
+            </div>
           </div>
 
           <div className="div-inputs-flex-contratos">
-            <input
-              readOnly
-              className="input-grupo-contratos"
-              placeholder="GRUPO"
-              onChange={this.onChange}
-              name="grupo"
-              value={this.state.grupo}
-            ></input>
-            <Select
-              onChange={this.onChangeBase}
-              value={this.state.base}
-              className="select-contratos"
-              placeholder="base"
-              size="large"
-              // style={{ marginLeft: "10px" }}
-            >
-              <Option value="REALPONTO">REALPONTO</Option>
-              <Option value="NOVAREAL">NOVA REALPONTO</Option>
-              <Option value="PONTOREAL">PONTOREAL</Option>
-            </Select>
-            <DatePicker
-              size="large"
-              placeholder="DATA ATIVAÇÃO"
-              className="data-contratos"
-              style={{ marginLeft: "10px", width: "30%" }}
-              name="dataAtivacao"
-              value={this.state.dataAtivacao}
-              format="DD/MM/YYYY"
-              onChange={e => {
-                this.setState({ dataAtivacao: e });
-              }}
-            />
+            <div className="div-cnpj-teste">
+              <label>Grupo</label>
+              <input
+                readOnly
+                className="input-grupo-contratos"
+                placeholder="GRUPO"
+                onChange={this.onChange}
+                name="grupo"
+                value={this.state.grupo}
+              ></input>
+            </div>
+            <div className="div-cnpj-teste">
+              <label>Base</label>
+              <Select
+                onChange={this.onChangeBase}
+                value={this.state.base}
+                className="select-contratos"
+                placeholder="base"
+                size="large"
+                // style={{ marginLeft: "10px" }}
+              >
+                <Option value="REALPONTO">REALPONTO</Option>
+                <Option value="NOVAREAL">NOVA REALPONTO</Option>
+                <Option value="PONTOREAL">PONTOREAL</Option>
+              </Select>
+            </div>
+            <div className="div-cnpj-teste">
+              <label>Data ativação</label>
+              <DatePicker
+                size="large"
+                placeholder="DATA ATIVAÇÃO"
+                className="data-contratos"
+                style={{ width: "100%" }}
+                name="dataAtivacao"
+                value={this.state.dataAtivacao}
+                format="DD/MM/YYYY"
+                onChange={e => {
+                  this.setState({ dataAtivacao: e });
+                }}
+              />
+            </div>
           </div>
 
           {this.state.divOculta && (
@@ -1594,55 +1612,68 @@ class NewContratosContainer extends Component {
                 className="div-inputs-flex-contratos"
                 style={{ marginTop: "20px" }}
               >
-                <input
-                  readOnly
-                  className="input-valor-contratos"
-                  style={{ marginLeft: "20px" }}
-                  placeholder="VALOR MENSAL"
-                  value={this.state.priceMonthly.toFixed(2)}
-                ></input>
-                <input
-                  readOnly
-                  className="input-valor-contratos"
-                  placeholder="VALOR ANUAL"
-                  value={this.state.priceYearly.toFixed(2)}
-                ></input>
+                <div className="div-cnpj-teste">
+                  <label>Valor mensal</label>
+                  <input
+                    readOnly
+                    className="input-valor-contratos"
+                    placeholder="VALOR MENSAL"
+                    value={this.state.priceMonthly.toFixed(2)}
+                  ></input>
+                </div>
+                <div className="div-cnpj-teste">
+                  <label>Valor anual</label>
+                  <input
+                    readOnly
+                    className="input-valor-contratos"
+                    placeholder="VALOR ANUAL"
+                    value={this.state.priceYearly.toFixed(2)}
+                  ></input>
+                </div>
               </div>
               <div className="div-inputs-flex-contratos">
-                <DatePicker
-                  size="large"
-                  placeholder="DATA RESCISÃO"
-                  style={{ marginLeft: "25px", width: "30%" }}
-                  name="dataRescisao"
-                  value={this.state.dataRescisao}
-                  disabledDate={this.disabledDate}
-                  format="DD/MM/YYYY"
-                  onChange={e => {
-                    this.setState({ dataRescisao: e });
-                  }}
-                />
-                <Select
-                  placeholder="STATUS"
-                  value={this.state.status}
-                  size="large"
-                  onChange={this.onChangeStatus}
-                  className="select-contratos"
-                >
-                  <Option value="ATIVO">ATIVO</Option>
-                  <Option value="DEBITO">EM DÉBITO</Option>
-                  <Option value="CANCELADO">CANCELADO</Option>
-                </Select>
-
+                <div className="div-cnpj-teste">
+                  <label>Data recisão</label>
+                  <DatePicker
+                    size="large"
+                    placeholder="DATA RESCISÃO"
+                    style={{ width: "100%" }}
+                    name="dataRescisao"
+                    value={this.state.dataRescisao}
+                    disabledDate={this.disabledDate}
+                    format="DD/MM/YYYY"
+                    onChange={e => {
+                      this.setState({ dataRescisao: e });
+                    }}
+                  />
+                </div>
+                <div className="div-cnpj-teste">
+                  <label>Status</label>
+                  <Select
+                    placeholder="STATUS"
+                    value={this.state.status}
+                    size="large"
+                    onChange={this.onChangeStatus}
+                    className="select-contratos"
+                  >
+                    <Option value="ATIVO">ATIVO</Option>
+                    <Option value="DEBITO">EM DÉBITO</Option>
+                    <Option value="CANCELADO">CANCELADO</Option>
+                  </Select>
+                </div>
                 <div className="div-block-row">
+                <div className="div-cnpj-teste">
+                  <label>Multa</label>
                   <InputNumber
                     placeholder="MULTA"
                     size="large"
-                    style={{ marginRight: "5%", width: "45%" }}
+                    style={{ marginRight: "5%", width: "100%" }}
                     value={this.state.fine}
                     step={0.01}
                     min={0}
                     onChange={fine => this.setState({ fine })}
                   />
+                  </div>
                   <button
                     onClick={() =>
                       this.state.contractCode !== "" ? this.setRedirect() : null

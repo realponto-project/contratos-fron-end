@@ -7,8 +7,7 @@
   margin-top: 10px;
 }
 .select-contratos {
-  width: 30% !important;
-  margin-left: 10px !important;
+  width: 100% !important;
 }
 
 .button-historico-contratos:active {
@@ -75,12 +74,6 @@
   padding: 0 0 0 10px;
 }
 
-.input-valor-contratos {
-  width: 15%;
-  margin: 0 25px 0 10px;
-  padding-left: 10px;
-}
-
 .input-data {
   width: 20%;
   margin: 0 0 0 10px;
@@ -93,9 +86,9 @@
   margin-left: 5px;
 }
 .input-valor-contratos {
-  width: 16%;
-  margin: 0 0 0 10px;
+  width: 100%;
   padding-left: 10px;
+  margin-bottom: 10px;
 }
 .input-data-contratos {
   width: 30% !important;
@@ -154,23 +147,25 @@
   background: #666666;
 }
 .input-codigo-contratos {
-  width: 20%;
-  margin: 0 10px 0 25px;
+  width: 100%;
+  margin: 0 10px 20px 0;
   padding-left: 10px;
 }
+.div-cnpj-teste {
+  width: 30%;
+}
 .input-nome-contratos {
-  width: 45%;
-  margin-left: 0;
+  width: 100%;
+  margin: 0 10px 20px 0;
   padding-left: 10px;
 }
 .input-grupo-contratos {
-  width: 30%;
-  margin-left: 25px;
+  width: 100%;
   padding-left: 10px;
 }
 
 .input-cnpj-contratos {
-  width: 47%;
+  width: 100%;
   /* margin: 0 10px 0 0px; */
   padding-left: 10px;
 }
@@ -300,7 +295,7 @@
 
 .button-historico-contratos,
 .button-historico-contratos-disable {
-  width: 50%;
+  width: 70%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -311,6 +306,7 @@
   border-radius: 4px;
   padding: 5px 20px;
   font-size: 14px;
+  margin-top: 20px;
   font-weight: bold;
   color: #fff;
   cursor: pointer;
