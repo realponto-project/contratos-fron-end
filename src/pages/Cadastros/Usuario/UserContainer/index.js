@@ -6,7 +6,7 @@ import {
   Modal,
   Select,
   Switch,
-  Progress
+  Progress,
 } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -19,7 +19,7 @@ import { GetAllAwards } from "../../../../services/award";
 import { MailOutlined, BellOutlined } from "@ant-design/icons";
 import {
   NewTypeAccount,
-  GetAllTypeAccounts
+  GetAllTypeAccounts,
 } from "../../../../services/typeAccount";
 import { PlusOutlined } from "@ant-design/icons";
 import { clearUser } from "../../../Relatorios/Cadastro/cadastroRedux/action";
@@ -41,7 +41,7 @@ class UserContainer extends Component {
       senha: false,
       email: false,
       telefone: false,
-      confirmarSenha: false
+      confirmarSenha: false,
     },
     addClient: false,
     addItem: false,
@@ -55,9 +55,9 @@ class UserContainer extends Component {
     typeAccount: undefined,
     awardList: [],
     award: undefined,
-    awardId: "",
+    awardId: null,
     deletedAt: false,
-    userId: ""
+    userId: "",
   };
 
   componentDidMount = async () => {
@@ -74,7 +74,7 @@ class UserContainer extends Component {
       description: descricao,
       resource: { addClient, addItem, addContract, addUser, addIgpm },
       typeAccount: { id: typeAccountId, group: typeAccount },
-      award
+      award,
     } = this.props.userValue;
 
     if (premiacao) this.setState({ award: award.name, awardId: award.id });
@@ -92,22 +92,22 @@ class UserContainer extends Component {
       addItem,
       addContract,
       addUser,
-      addIgpm
+      addIgpm,
     });
 
     this.props.clearUser();
   };
 
-  getAllAwards = async name => {
+  getAllAwards = async (name) => {
     const query = {
       filters: {
         award: {
           specific: {
-            name
-          }
-        }
+            name,
+          },
+        },
       },
-      total: 100
+      total: 100,
     };
     const { status, data } = await GetAllAwards(query);
 
@@ -120,19 +120,19 @@ class UserContainer extends Component {
     if (status === 200) this.setState({ typeAccounts: data.rows });
   };
 
-  onChange = e => {
+  onChange = (e) => {
     const { name, value } = masks(e.target.name, e.target.value);
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
 
-  onChangeEmail = e => {
+  onChangeEmail = (e) => {
     const { name, value } = masks(e.target.name, e.target.value);
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -151,7 +151,7 @@ class UserContainer extends Component {
         senha: false,
         email: false,
         telefone: false,
-        confirmarSenha: false
+        confirmarSenha: false,
       },
       addClient: false,
       addItem: false,
@@ -162,7 +162,7 @@ class UserContainer extends Component {
       typeAccountId: "",
       typeAccount: undefined,
       award: undefined,
-      awardId: ""
+      awardId: null,
     });
   };
 
@@ -182,7 +182,7 @@ class UserContainer extends Component {
       addIgpm,
       premiacao: awardBoolean,
       awardId,
-      userId
+      userId,
     } = this.state;
 
     if (confirmarSenha !== password) {
@@ -203,9 +203,9 @@ class UserContainer extends Component {
         addItem,
         addContract,
         addUser,
-        addIgpm
+        addIgpm,
       },
-      awardId
+      awardId,
     };
 
     if (userId) {
@@ -222,28 +222,28 @@ class UserContainer extends Component {
         this.clearState();
         message.success("Usuario cadatrado com sucesso");
       } else if (status === 422) {
-        R.keys(data.errors[0].field).map(key =>
+        R.keys(data.errors[0].field).map((key) =>
           this.setState({
             fieldErrors: {
               ...this.state.fieldErrors,
-              [key]: data.errors[0].field
-            }
+              [key]: data.errors[0].field,
+            },
           })
         );
       }
     }
   };
 
-  onFocus = e => {
+  onFocus = (e) => {
     const { name } = e.target;
     const { fieldErrors } = this.state;
 
     this.setState({
-      fieldErrors: { ...fieldErrors, [name]: false }
+      fieldErrors: { ...fieldErrors, [name]: false },
     });
   };
 
-  onBlur = e => {
+  onBlur = (e) => {
     let { name, value } = e.target;
     const { fieldErrors, senha, confirmarSenha } = this.state;
 
@@ -252,11 +252,11 @@ class UserContainer extends Component {
     }
 
     this.setState({
-      fieldErrors: { ...fieldErrors, [name]: validator(name, value) }
+      fieldErrors: { ...fieldErrors, [name]: validator(name, value) },
     });
   };
 
-  onChengeCheckbox = e => {
+  onChengeCheckbox = (e) => {
     const { name, checked } = e.target;
     this.setState({ [name]: checked });
   };
@@ -294,9 +294,9 @@ class UserContainer extends Component {
       this.setState({
         grupo: "",
         fieldErrors: {
-          grupo: false
+          grupo: false,
         },
-        visible: false
+        visible: false,
       });
       message.success("sucesso");
       await this.getAllTypeAccounts();
@@ -305,15 +305,15 @@ class UserContainer extends Component {
     }
   };
 
-  handleCancel = e => {
+  handleCancel = (e) => {
     this.setState({
-      visible: false
+      visible: false,
     });
   };
 
   openModal = () => {
     this.setState({
-      visible: true
+      visible: true,
     });
   };
 
@@ -350,8 +350,9 @@ class UserContainer extends Component {
         <div className="div-main-usuario">
           <div className="div-info-usuario">
             <input
-              className={`input-info-usuario ${fieldErrors.nome &&
-                "input-error"}`}
+              className={`input-info-usuario ${
+                fieldErrors.nome && "input-error"
+              }`}
               style={{ textTransform: "none" }}
               onChange={this.onChange}
               placeholder="NOME"
@@ -362,8 +363,9 @@ class UserContainer extends Component {
             ></input>
 
             <input
-              className={`input-info-usuario ${fieldErrors.email &&
-                "input-error"}`}
+              className={`input-info-usuario ${
+                fieldErrors.email && "input-error"
+              }`}
               style={{ textTransform: "none" }}
               onChange={this.onChangeEmail}
               placeholder="E-MAIL"
@@ -374,8 +376,9 @@ class UserContainer extends Component {
             ></input>
 
             <input
-              className={`input-info-usuario ${fieldErrors.telefone &&
-                "input-error"}`}
+              className={`input-info-usuario ${
+                fieldErrors.telefone && "input-error"
+              }`}
               onChange={this.onChange}
               placeholder="TELEFONE"
               value={state.telefone}
@@ -386,8 +389,9 @@ class UserContainer extends Component {
 
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <input
-                className={`input-info-usuario ${fieldErrors.senha &&
-                  "input-error"}`}
+                className={`input-info-usuario ${
+                  fieldErrors.senha && "input-error"
+                }`}
                 style={{ textTransform: "none", width: "30%" }}
                 onChange={this.onChange}
                 placeholder="SENHA"
@@ -398,8 +402,9 @@ class UserContainer extends Component {
                 // type="password"
               ></input>
               <input
-                className={`input-info-usuario ${fieldErrors.confirmarSenha &&
-                  "input-error"}`}
+                className={`input-info-usuario ${
+                  fieldErrors.confirmarSenha && "input-error"
+                }`}
                 style={{ textTransform: "none", width: "30%" }}
                 onChange={this.onChange}
                 placeholder="CONFIRMAR SENHA"
@@ -418,11 +423,11 @@ class UserContainer extends Component {
                   className="switch-info-usuario"
                   value={this.state.premiacao}
                   checked={this.state.premiacao}
-                  onChange={value =>
+                  onChange={(value) =>
                     this.setState({
                       premiacao: value,
                       award: undefined,
-                      awardId: ""
+                      awardId: null,
                     })
                   }
                 />
@@ -432,7 +437,7 @@ class UserContainer extends Component {
             {this.state.premiacao && (
               <Select
                 showSearch
-                onSearch={name => this.getAllAwards(name)}
+                onSearch={(name) => this.getAllAwards(name)}
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   option.props.children
@@ -440,7 +445,7 @@ class UserContainer extends Component {
                     .indexOf(input.toLowerCase()) >= 0
                 }
                 style={{ marginTop: "15px" }}
-                onChange={name => {
+                onChange={(name) => {
                   const { id: awardId, name: award } = R.find(
                     R.propEq("name", name)
                   )(this.state.awardList);
@@ -449,15 +454,16 @@ class UserContainer extends Component {
                 placeholder="SELECIONE UM GRUPO"
                 value={this.state.award}
               >
-                {this.state.awardList.map(award => (
+                {this.state.awardList.map((award) => (
                   <Option value={award.name}>{award.name}</Option>
                 ))}
               </Select>
             )}
 
             <textarea
-              className={`textArea-descricao-item ${fieldErrors.descricao &&
-                "input-error"}`}
+              className={`textArea-descricao-item ${
+                fieldErrors.descricao && "input-error"
+              }`}
               style={{ marginTop: "20px" }}
               value={this.state.descricao}
               placeholder="DIGITE A DESCRIÇÃO"
@@ -480,13 +486,13 @@ class UserContainer extends Component {
                 </button>
                 <Select
                   style={{
-                    width: "200px"
+                    width: "200px",
                   }}
                   defaultValue={this.state.typeAccount}
                   onChange={this.onChangeSelect}
                   value={this.state.typeAccount}
                 >
-                  {this.state.typeAccounts.map(typeAccount => (
+                  {this.state.typeAccounts.map((typeAccount) => (
                     <Option key={typeAccount.id} value={typeAccount.group}>
                       {typeAccount.group}
                     </Option>
@@ -569,11 +575,8 @@ function mapDispacthToProps(dispach) {
 
 function mapStateToProps(state) {
   return {
-    userValue: state.userValue
+    userValue: state.userValue,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispacthToProps
-)(UserContainer);
+export default connect(mapStateToProps, mapDispacthToProps)(UserContainer);

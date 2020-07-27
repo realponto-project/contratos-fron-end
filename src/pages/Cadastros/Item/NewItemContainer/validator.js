@@ -16,7 +16,6 @@ export const validator = (name, value) => {
 export const masks = (name, value) => {
   switch (name) {
     case "name":
-      value = value.replace(/\W/gi, "");
       value = value.slice(0, 30);
 
       return { name, value };
@@ -47,7 +46,6 @@ export const masks = (name, value) => {
       return { name, value };
 
     case "descricao":
-      value = value.replace(/\W/gi, "");
       value = value.slice(0, 50);
 
       return { name, value };

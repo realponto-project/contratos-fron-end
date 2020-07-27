@@ -14,9 +14,9 @@ export default class GraficoContainer extends Component {
       ["Work", 11],
       ["Eat", 2],
       ["Commute", 2],
-      ["Watch TV", 2]
+      ["Watch TV", 2],
     ],
-    icon: "pie-chart"
+    icon: "pie-chart",
   };
 
   drawTrendlines = () => {
@@ -24,15 +24,15 @@ export default class GraficoContainer extends Component {
       {
         cols: [
           { id: "task", label: "Task", type: "string" },
-          { id: "hours", label: "Hours per Day", type: "number" }
+          { id: "hours", label: "Hours per Day", type: "number" },
         ],
         rows: [
           { c: [{ v: "Work" }, { v: 11 }] },
           { c: [{ v: "Eat" }, { v: 2 }] },
           { c: [{ v: "Commute" }, { v: 2 }] },
           { c: [{ v: "Watch TV" }, { v: 2 }] },
-          { c: [{ v: "Sleep" }, { v: 7, f: "7.000" }] }
-        ]
+          { c: [{ v: "Sleep" }, { v: 7, f: "7.000" }] },
+        ],
       },
       0.6
     );
@@ -57,19 +57,19 @@ export default class GraficoContainer extends Component {
       title: "Motivation and Energy Level Throughout the Day",
       trendlines: {
         0: { type: "linear", lineWidth: 5, opacity: 0.3 },
-        1: { type: "exponential", lineWidth: 10, opacity: 0.3 }
+        1: { type: "exponential", lineWidth: 10, opacity: 0.3 },
       },
       hAxis: {
         title: "Time of Day",
         format: "h:mm a",
         viewWindow: {
           min: [7, 30, 0],
-          max: [17, 30, 0]
-        }
+          max: [17, 30, 0],
+        },
       },
       vAxis: {
-        title: "Rating (scale of 1-10)"
-      }
+        title: "Rating (scale of 1-10)",
+      },
     };
 
     var chart = new window.google.visualization.ColumnChart(
@@ -83,7 +83,7 @@ export default class GraficoContainer extends Component {
 
     var options = {
       title: "My Daily Activities",
-      is3D: false
+      is3D: false,
     };
     var chart = new window.google.visualization.PieChart(
       document.getElementById("piechart_3d")
@@ -94,7 +94,7 @@ export default class GraficoContainer extends Component {
   drawChartt = () => {
     var data = window.google.visualization.arrayToDataTable([
       ["Label", "Value"],
-      ["Viadagem", 0]
+      ["broderagem", 0],
     ]);
 
     var options = {
@@ -104,7 +104,7 @@ export default class GraficoContainer extends Component {
       redTo: 100,
       yellowFrom: 75,
       yellowTo: 90,
-      minorTicks: 5
+      minorTicks: 5,
     };
 
     var chart = new window.google.visualization.Gauge(
@@ -113,12 +113,12 @@ export default class GraficoContainer extends Component {
 
     chart.draw(data, options);
 
-    setInterval(function() {
+    setInterval(function () {
       data.setValue(0, 1, 5);
       chart.draw(data, options);
     }, 1000);
 
-    setInterval(function() {
+    setInterval(function () {
       data.setValue(0, 1, 99);
       chart.draw(data, options);
     }, 3000);
@@ -137,7 +137,7 @@ export default class GraficoContainer extends Component {
         );
       case "bar-chart":
         window.google.charts.load("current", {
-          packages: ["corechart", "bar"]
+          packages: ["corechart", "bar"],
         });
         window.google.charts.setOnLoadCallback(this.drawTrendlines);
         return (
