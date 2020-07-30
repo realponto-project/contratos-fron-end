@@ -8,21 +8,16 @@ export const NewIGPM = async (value) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .post("/igpm", value, { headers })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.post("/igpm", value, { headers });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const DeleteIGPM = async (id) => {
@@ -32,21 +27,16 @@ export const DeleteIGPM = async (id) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .delete("/igpm", { headers, params: { id } })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.delete("/igpm", { headers, params: { id } });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const GetAllIgpm = async (query) => {
@@ -56,19 +46,14 @@ export const GetAllIgpm = async (query) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .get("/igpm", { headers, params: query })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.get("/igpm", { headers, params: query });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };

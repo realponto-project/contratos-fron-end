@@ -8,21 +8,16 @@ export const NewItem = async (value) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .post("/item", value, { headers })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.post("/item", value, { headers });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const UpdateItem = async (value) => {
@@ -32,21 +27,16 @@ export const UpdateItem = async (value) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .put("/item", value, { headers })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.put("/item", value, { headers });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const GetItemByParams = async (query) => {
@@ -56,21 +46,19 @@ export const GetItemByParams = async (query) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .get("/item/getItemByParams", { headers, params: query })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
+  try {
+    const response = await api.get("/item/getItemByParams", {
+      headers,
+      params: query,
     });
-
-  return response;
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const GetAllItens = async (query) => {
@@ -80,21 +68,16 @@ export const GetAllItens = async (query) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .get("/item", { headers, params: query })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.get("/item", { headers, params: query });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const DeleteItem = async (id) => {
@@ -104,21 +87,16 @@ export const DeleteItem = async (id) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .delete("/item", { headers, params: { id } })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.delete("/item", { headers, params: { id } });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const RestoreItem = async (id) => {
@@ -128,19 +106,14 @@ export const RestoreItem = async (id) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .put("/item/restore", { id }, { headers })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.put("/item/restore", { id }, { headers });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };

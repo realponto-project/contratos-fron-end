@@ -424,7 +424,14 @@ class GerenciarConsultaContainer extends Component {
                                 )}
                               </>
                             ) : (
-                              logUpdateItem.oldContractItem[key]
+                              <>
+                                {typeof logUpdateItem.oldContractItem[key] ===
+                                "object"
+                                  ? logUpdateItem.oldContractItem[key] !== null
+                                    ? `${logUpdateItem.oldContractItem[key].street}, ${logUpdateItem.oldContractItem[key].number}, ${logUpdateItem.oldContractItem[key].complement} - ${logUpdateItem.oldContractItem[key].zipCode}. ${logUpdateItem.oldContractItem[key].city}/${logUpdateItem.oldContractItem[key].state}. CEP: ${logUpdateItem.oldContractItem[key].zipCode}`
+                                    : "-"
+                                  : logUpdateItem.oldContractItem[key]}
+                              </>
                             )}
                           </td>
                           <td>
@@ -438,7 +445,14 @@ class GerenciarConsultaContainer extends Component {
                                 )}
                               </>
                             ) : (
-                              logUpdateItem.newContractItem[key]
+                              <>
+                                {typeof logUpdateItem.newContractItem[key] ===
+                                "object"
+                                  ? logUpdateItem.newContractItem[key] !== null
+                                    ? `${logUpdateItem.newContractItem[key].street}, ${logUpdateItem.newContractItem[key].number}, ${logUpdateItem.newContractItem[key].complement} - ${logUpdateItem.newContractItem[key].zipCode}. ${logUpdateItem.newContractItem[key].city}/${logUpdateItem.newContractItem[key].state}. CEP: ${logUpdateItem.newContractItem[key].zipCode}`
+                                    : "-"
+                                  : logUpdateItem.newContractItem[key]}
+                              </>
                             )}
                           </td>
                         </tr>
@@ -594,6 +608,7 @@ class GerenciarConsultaContainer extends Component {
                         "$1.$2.$3/$4-$5"
                       )}
                     </p>
+                    {console.log(contractItem)}
                     {contractItem.address && (
                       <p>
                         {`${contractItem.address.street}, ${contractItem.address.number}, ${contractItem.address.complement} - ${contractItem.address.zipCode}. ${contractItem.address.city}/${contractItem.address.state}. CEP: ${contractItem.address.zipCode}`}

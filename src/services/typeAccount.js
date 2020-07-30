@@ -8,21 +8,16 @@ export const NewTypeAccount = async (value) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .post("/typeAccount", value, { headers })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.post("/typeAccount", value, { headers });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const GetAllTypeAccounts = async (query) => {
@@ -32,19 +27,14 @@ export const GetAllTypeAccounts = async (query) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .get("/typeAccount", { headers, params: query })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.get("/typeAccount", { headers, params: query });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };

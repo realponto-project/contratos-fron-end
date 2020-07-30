@@ -8,21 +8,16 @@ export const PriceByContractType = async () => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .get("/grafic/priceByContractType", { headers })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.get("/grafic/priceByContractType", { headers });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const RelatorioBasesService = async () => {
@@ -32,21 +27,16 @@ export const RelatorioBasesService = async () => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .get("/grafic/relatorioBases", { headers })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.get("/grafic/relatorioBases", { headers });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const AllItems = async () => {
@@ -56,19 +46,14 @@ export const AllItems = async () => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .get("/grafic/allItems", { headers })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.get("/grafic/allItems", { headers });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };

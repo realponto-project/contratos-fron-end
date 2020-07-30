@@ -8,21 +8,16 @@ export const NewContract = async (value) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .post("/contract", value, { headers })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.post("/contract", value, { headers });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const UpdateContract = async (value) => {
@@ -32,21 +27,16 @@ export const UpdateContract = async (value) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .put("/contract", value, { headers })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.put("/contract", value, { headers });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const GetContractByParams = async (query) => {
@@ -56,21 +46,16 @@ export const GetContractByParams = async (query) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .get("/contract", { headers, params: query })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
-
-  return response;
+  try {
+    const response = await api.get("/contract", { headers, params: query });
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const GetAllContract = async (query) => {
@@ -80,21 +65,19 @@ export const GetAllContract = async (query) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .get("/contract/getAll", { headers, params: query })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
+  try {
+    const response = await api.get("/contract/getAll", {
+      headers,
+      params: query,
     });
-
-  return response;
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const GetLogsByCode = async (query) => {
@@ -104,21 +87,19 @@ export const GetLogsByCode = async (query) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .get("/contract/getLogsByCode", { headers, params: query })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
+  try {
+    const response = await api.get("/contract/getLogsByCode", {
+      headers,
+      params: query,
     });
-
-  return response;
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const GetAllContractItem = async (query) => {
@@ -128,19 +109,17 @@ export const GetAllContractItem = async (query) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .get("/contract/contractItem/getAll", { headers, params: query })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
+  try {
+    const response = await api.get("/contract/contractItem/getAll", {
+      headers,
+      params: query,
     });
-
-  return response;
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };

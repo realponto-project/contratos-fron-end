@@ -8,21 +8,17 @@ export const NewAward = async (value) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .post("/award", value, { headers })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
+  try {
+    const response = await api.post("/award", value, { headers });
 
-  return response;
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const GetAllAwards = async (query) => {
@@ -32,21 +28,17 @@ export const GetAllAwards = async (query) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .get("/award", { headers, params: query })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
+  try {
+    const response = await api.get("/award", { headers, params: query });
 
-  return response;
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const NewEquation = async (value) => {
@@ -56,21 +48,17 @@ export const NewEquation = async (value) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .post("/award/equation", value, { headers })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
+  try {
+    const response = await api.post("/award/equation", value, { headers });
 
-  return response;
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const UpdateEquation = async (value) => {
@@ -80,21 +68,17 @@ export const UpdateEquation = async (value) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .put("/award/equation", value, { headers })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
-    });
+  try {
+    const response = await api.put("/award/equation", value, { headers });
 
-  return response;
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
 
 export const DeleteEquation = async (value) => {
@@ -104,19 +88,18 @@ export const DeleteEquation = async (value) => {
     authorization: `Bearer ${storeObject.login.token}`,
   };
 
-  let response = {};
-  await api
-    .delete("/award/equation", { headers, params: value })
-    .then((resp) => {
-      response = resp;
-    })
-    .catch((err) => {
-      if (err.response) {
-        response = err.response;
-      } else {
-        console.log("Error", err.message);
-      }
+  try {
+    const response = await api.delete("/award/equation", {
+      headers,
+      params: value,
     });
 
-  return response;
+    return response;
+  } catch (err) {
+    if (err.response) {
+      return err.response;
+    } else {
+      console.log("Error", err.message);
+    }
+  }
 };
