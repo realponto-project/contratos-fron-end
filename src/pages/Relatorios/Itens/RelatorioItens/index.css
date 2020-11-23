@@ -1,0 +1,78 @@
+.input-item-relatorioItens {
+  width: 80%;
+  height: 35px;
+  margin-left: 25px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-item-relatorioItens::placeholder {
+  color: rgb(177, 177, 177);
+}
+.div-info-re-itens {
+  width: 90%;
+  background-color: white;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding-bottom: 10px;
+}
+.input-item-relatorioItens:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-codigo-relatorioItens {
+  width: 20%;
+  height: 35px;
+  margin: 0 25px 0 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-codigo-relatorioItens::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-codigo-relatorioItens:focus {
+  border-bottom: 1px solid #001529;
+}
+.label-nContrato-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 10%;
+  margin-right: 10px;
+}
+.label-razao-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 40%;
+  margin-right: 10px;
+}
+.div-seminfo-relatorioItens {
+  width: 100%;
+  font-weight: bold;
+  margin-top: 15px;
+}
+.label-valor-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 15%;
+  margin-right: 10px;
+}
+.label-tipo-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 15%;
+}

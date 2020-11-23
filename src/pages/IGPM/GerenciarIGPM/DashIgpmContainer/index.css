@@ -1,0 +1,89 @@
+.input-nContato-igpm {
+  width: 20%;
+  height: 35px;
+  margin: 0 25px 0 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-nContato-igpm::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-nContato-igpm:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-data-igpm {
+  width: 20%;
+  height: 35px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-data-igpm::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-data-igpm:focus {
+  border-bottom: 1px solid #001529;
+}
+.input-nome-igpm {
+  width: 60%;
+  height: 35px;
+  margin: 0 15px 0 25px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-nome-igpm::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-nome-igpm:focus {
+  border-bottom: 1px solid #001529;
+}
+.label-nome-igpm {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 60%;
+  margin-right: 15px;
+}
+.label-data-igpm {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 20%;
+  margin-right: 15px;
+  cursor: help;
+}
+.label-nContrato-igpm {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 20%;
+}
+
+.cursor {
+  /* cursor: url("https://csscursor.info/source/santahand.png"), help !important; */
+  /* cursor: url("./mandrake.png"), help !important; */
+  cursor: help !important;
+}
+
+.div-table table th {
+  background-color: #eee;
+  padding: 3px 1px;
+}
+
+.div-table table td {
+  border-top: 1px solid #666;
+}

@@ -20,6 +20,8 @@ export function login(state = INICIAL_STATE_LOGIN, action) {
       };
 
       return auth;
+    case actions.LOGIN.LOGOUT:
+      return (state = {});
     default:
       return state;
   }

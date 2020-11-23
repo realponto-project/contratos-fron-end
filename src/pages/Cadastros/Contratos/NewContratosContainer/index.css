@@ -1,0 +1,491 @@
+.div-inputs-flex-contratos {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.select-contratos {
+  width: 100% !important;
+}
+
+.button-historico-contratos:active {
+  background: #2279c0;
+}
+.div-main-contratos {
+  width: 100%;
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.div-itens-contratos {
+  margin: 10px 25px 10px 25px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  height: auto;
+}
+.div-line-contratos {
+  width: 100%;
+  margin: 0 25px 15px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.div-igpm-contratos {
+  width: 100%;
+  margin: 0 25px 15px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.h4-contratos {
+  margin-left: 50px;
+}
+.div-noItens-contratos {
+  font-size: 16px;
+  color: #262626;
+  font-weight: bold;
+  width: 100%;
+  margin: 0 25px 15px 25px;
+}
+
+.input-valor-contratos,
+.input-data,
+.input-item-contratos,
+.input-codigo-contratos,
+.input-grupo-contratos,
+.input-cnpj-contratos,
+.input-nome-contratos,
+.input-quantidade-contratos,
+.input-valor-contratos {
+  height: 40px;
+  color: #666;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 4px;
+  outline: none;
+}
+.input-quantidade-contratos {
+  padding: 0 0 0 10px;
+}
+
+.input-data {
+  width: 20%;
+  margin: 0 0 0 10px;
+  padding-left: 10px;
+}
+.input-item-contratos {
+  width: 45%;
+  padding-left: 10px;
+  font-size: 14px;
+  margin-left: 5px;
+}
+.input-valor-contratos {
+  width: 100%;
+  padding-left: 10px;
+  margin-bottom: 10px;
+}
+.input-data-contratos {
+  width: 30% !important;
+  height: 38px;
+  margin: 0 0 0 10px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.button-cancelar {
+  height: 35px;
+  border: 0;
+  background: #666;
+  border-radius: 4px;
+  padding: 5px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  margin-right: 10px;
+}
+.button-cancelar:active {
+  background: #2279c0;
+}
+.div-info-titulo {
+  margin: 10px 0;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+.div-h3-titulo {
+  display: flex;
+  flex-direction: column;
+}
+.button-incluir {
+  height: 35px;
+  border: 0;
+  background: #42a5f6;
+  border-radius: 4px;
+  padding: 5px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  margin-right: 10px;
+}
+.button-incluir:active {
+  background: #2279c0;
+}
+.button-incluir:disabled {
+  background: #666666;
+}
+.input-codigo-contratos {
+  width: 100%;
+  margin: 0 10px 20px 0;
+  padding-left: 10px;
+}
+.div-cnpj-teste {
+  width: 30%;
+}
+.input-nome-contratos {
+  width: 100%;
+  margin: 0 10px 20px 0;
+  padding-left: 10px;
+}
+.input-grupo-contratos {
+  width: 100%;
+  padding-left: 10px;
+}
+
+.input-cnpj-contratos {
+  width: 100%;
+  /* margin: 0 10px 0 0px; */
+  padding-left: 10px;
+}
+
+.input-cnpj-contratos:disabled {
+  background-color: #f5f5f5;
+}
+/* .ant-modal-content {
+  width: 700px;
+} */
+.ant-modal-body {
+  display: flex;
+  flex-direction: column;
+}
+.input-item-modal {
+  width: 75%;
+  height: 35px;
+  margin: 10px 10px 0 0;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-codigo-modal {
+  width: 25%;
+  height: 35px;
+  margin: 10px 0 0 0;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.div-line-modal {
+  width: 100%;
+  display: flex;
+  margin: 5px 0 20px 0;
+  justify-content: space-between;
+}
+.input-valor::placeholder,
+.input-valor-contratos::placeholder,
+.input-grupo-contratos::placeholder,
+.input-cnpj-contratos::placeholder,
+.input-nome-contratos::placeholder,
+.input-codigo-contratos::placeholder,
+.input-quantidade-contratos::placeholder,
+.input-item-modal::placeholder,
+.input-codigo-modal::placeholder,
+.input-endereco-modal::placeholder,
+.input-bairro-modal::placeholder,
+.input-cep-modal::placeholder,
+.input-cidade-modal::placeholder,
+.input-uf-modal::placeholder {
+  color: rgb(177, 177, 177);
+}
+
+.input-valor:focus,
+.input-cnpj-contratos:focus,
+.input-nome-contratos:focus,
+.input-codigo-contratos:focus,
+.input-quantidade-contratos:focus,
+.input-item-modal:focus,
+.input-codigo-modal:focus,
+.input-endereco-modal:focus,
+.input-bairro-modal:focus,
+.input-cep-modal:focus,
+.input-cidade-modal:focus,
+.input-uf-modal:focus {
+  border-bottom: 1px solid #001529;
+}
+
+.div-twoInfo-modal {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.input-bairro-modal,
+.input-cep-modal,
+.input-cidade-modal,
+.input-uf-modal,
+.input-endereco-modal {
+  height: 35px;
+  margin-top: 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 4px;
+  outline: none;
+}
+
+.input-endereco-modal {
+  width: 100%;
+}
+
+.input-bairro-modal {
+  width: 55%;
+}
+.input-cep-modal {
+  width: 40%;
+}
+.input-cidade-modal {
+  width: 80%;
+}
+.input-uf-modal {
+  width: 15%;
+}
+.button-delete {
+  height: 38px;
+  border: 0;
+  background: red;
+  border-radius: 2px;
+  padding: 5px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  margin: 0 25px 0 10px;
+}
+.button-delete:active {
+  background: rgb(185, 23, 23);
+}
+
+.button-historico-contratos,
+.button-historico-contratos-disable {
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  margin-left: 5%;
+  background-color: #42a5f6;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 20px;
+  font-size: 14px;
+  margin-top: 20px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+}
+.button-historico-contratos-disable {
+  background-color: #666 !important;
+  cursor: not-allowed;
+}
+
+.button-down {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+.div-block-button-donw {
+  width: 2%;
+  margin: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.div-block-button-donw:hover {
+  color: #2279c0;
+}
+
+.div-block-icons-update-delete {
+  margin: 7px;
+  width: 5%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.div-block-icons-update-delete svg {
+  font-size: 18px;
+}
+
+.icon-info {
+  font-size: 16px;
+  cursor: pointer;
+  color: rgba(0, 15, 29, 0.55) !important;
+  /* margin-left: 0px; */
+}
+.icon-info:hover {
+  color: #42a5f6 !important;
+}
+
+.icon-delete {
+  color: rgba(235, 51, 51, 0.5) !important;
+}
+.icon-delete:hover {
+  color: rgba(233, 19, 19, 0.767) !important;
+}
+
+.card-modal-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.rows-modal-info {
+  display: flex;
+  flex-direction: row;
+}
+
+.rows-block-modal-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 5px 0;
+}
+
+.rows-block-modal-info strong {
+  color: #003060;
+  /* color: rebeccapurple; */
+  font-size: 11px;
+}
+
+.rows-block-modal-info label {
+  padding: 0 2px 0 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
+}
+
+.div-card-contratos-1 {
+  padding: 20px 20px;
+  width: 90%;
+  height: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  align-items: center;
+  margin-top: 50px;
+  transition: height 1s;
+}
+
+.icon-plus-contratos {
+  /* color: red !important; */
+  color: #42a5f6 !important;
+  font-size: 20px;
+}
+
+.icon-plus-contratos:hover {
+  font-size: 21px;
+}
+
+.div-block-title-contractItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  margin: 7px 0;
+}
+
+.div-block-header-contractItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.h4-title-contractItem {
+  color: #888;
+}
+
+.div-codico-title-contractItem {
+  width: 5%;
+}
+
+.div-nome-title-contractItem {
+  width: 45%;
+}
+.div-valor-title-contractItem {
+  width: 10%;
+}
+.div-acoes-title-contractItem {
+  display: flex;
+  justify-content: space-evenly;
+  width: 10%;
+  overflow: hidden;
+  align-items: center;
+}
+
+.div-tipo-title-contractItem {
+  width: 18%;
+}
+
+.icon-edit-contractItem {
+  font-size: 18px;
+  color: rgba(127, 255, 0, 0.6) !important;
+}
+.icon-edit-contractItem:hover {
+  font-size: 20px;
+  color: rgb(127, 255, 0) !important;
+  cursor: pointer;
+}
+
+.icon-close {
+  font-size: 18px;
+  color: rgba(255, 0, 0, 0.5) !important;
+}
+
+.icon-close:hover {
+  font-size: 20px;
+  color: red !important;
+  cursor: pointer;
+}
+
+.div-block-row {
+  display: flex;
+  width: 30%;
+}
+
+.label-title-modal {
+  font-family: Bebas;
+  font-size: 25px;
+  margin: 10px 0;
+}

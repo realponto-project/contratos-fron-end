@@ -1,12 +1,47 @@
-.div-body {
+.div-main-body {
   height: 100vh !important;
-  width: calc(100% - 190px) !important;
+  /* width: calc(100% - 190px) !important; */
+  width: 100% !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  background-color: #f5f5f5;
+  overflow: auto;
+  /* position: relative; */
+}
+.div-body {
+  height: 96vh !important;
+  width: 100% !important;
   display: flex;
   justify-content: center;
-  /* background-color: #f0f2f5; */
   align-items: center;
 }
 .div-main-route {
   display: flex;
   width: 100%;
+}
+
+.troll {
+  cursor: url("./mandrake.png"), help !important;
+}
+.div-footer-main {
+  position: absolute;
+  bottom: 0;
+  height: 50px !important;
+  cursor: url("./mickey.png"), help !important;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Bebas;
+  font-size: 17px;
+  padding-top: 10px;
+  margin-top: 20px;
+}
+
+.div-block-switch {
+  width: 100%;
+  padding: 0;
+  background-color: #f4f6f7;
 }

@@ -1,7 +1,20 @@
 export default {
   LOGIN: {
     // CHANGE_VALUE: 'LOGIN_CHANGE_VALUE',
-    AUTH: "LOGIN_AUTH"
-    // LOGOUT: 'LOGOUT_AUTH',
-  }
+    AUTH: "LOGIN_AUTH",
+    LOGOUT: "LOGOUT_AUTH",
+  },
+  CONTRACTCODE: "CONTRACTCODE",
+  SET: {
+    ITEM: "SET_ITEM",
+    CLIENT: "SET_CLIENT",
+    USER: "SET_USER",
+    CONTRACT: "SET_CONTRACT",
+  },
+  CLEAR: {
+    ITEM: "CLEAR_ITEM",
+    CLIENT: "CLEAR_CLIENT",
+    USER: "CLEAR_USER",
+    CONTRACT: "CLEAR_CONTRACT",
+  },
 };

@@ -2,7 +2,8 @@
   text-align: center;
 }
 .App-aside {
-  background-color: white;
+  background: url("./ceu.jpg") no-repeat;
+  background-size: cover;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -15,58 +16,77 @@
 .App-container-inputs-login {
   display: flex;
   flex-direction: column;
+  border: 1px solid #ccc;
+  padding: 30px 20px;
+  border-radius: 10px;
+  background-color: white;
 }
 
 .App-block-inputs-login {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: 10px;
   align-items: flex-start;
 }
 
 .App-block-inputs-login label {
   color: rgb(43, 43, 43);
-  font-size: 18px;
+  font-size: 14px;
   margin-right: 15px;
 }
-
+.div-button-login {
+  width: 100%;
+  display: flex;
+  margin-top: 10px;
+  justify-content: center;
+}
 .App-block-inputs-login input {
   width: 250px;
   height: 42px;
   font-size: 15px;
   color: #666;
+  margin: 0;
   border: 0;
   border-bottom: 1px solid #ccc;
-  padding-left: 5px;
+  padding-left: 2px;
   outline: none;
   transition: border-bottom 0.8s;
   transition-timing-function: ease;
 }
+.message-error {
+  background-color: red !important;
+  color: white !important;
+}
 .div-contrato {
   display: flex;
+  font-size: 24px;
+  margin-bottom: 10px;
   width: 250px;
-  height: 55px;
+  height: 35px;
+  color: black;
   flex-direction: column;
-  margin-bottom: 15px;
   align-items: center;
+  margin-bottom: 20px;
+  text-transform: none;
 }
 .App-block-inputs-login ::placeholder {
+  font-size: 14px;
   color: rgb(177, 177, 177);
 }
 .img-Login {
   width: 300px;
   margin-bottom: 10px;
-  height: 65px;
+  height: 60px;
 }
 .App-block-inputs-login input:focus {
-  border-bottom: 1px solid #0b0550;
+  border-bottom: 1px solid #001529;
 }
 
 aside button[type="submit"] {
   width: 100px;
   height: 35px;
   border: 0;
-  background: #0b0550;
+  background: #001529;
   border-radius: 2px;
   padding: 5px 20px;
   font-size: 14px;
@@ -78,7 +98,7 @@ aside button[type="submit"] {
 }
 
 aside button[type="submit"]:active {
-  background: #180c99;
+  background: #1e176d;
 }
 
 @keyframes App-logo-spin {
@@ -88,4 +108,31 @@ aside button[type="submit"]:active {
   to {
     transform: rotate(360deg);
   }
+}
+
+.input-login-error {
+  width: 250px;
+  height: 42px;
+  font-size: 15px;
+  color: #666;
+  border: 0;
+  border-bottom: 1px solid red !important;
+  padding-left: 5px;
+  outline: none;
+  transition: border-bottom 0.8s !important;
+  transition-timing-function: ease !important;
+}
+
+.labelError-login {
+  margin-top: 3px;
+  color: red !important;
+  font-size: 16px !important;
+  font-family: Bebas;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@font-face {
+  font-family: "Bebas";
+  src: url(../../fonts/Bebas-Regular.otf);
 }

@@ -2,7 +2,7 @@ import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import multi from "redux-multi";
 import promise from "redux-promise";
-import { persistReducer } from "redux-persist";
+import { persistReducer, persistStore } from "redux-persist";
 import { composeWithDevTools } from "redux-devtools-extension";
 import storage from "redux-persist/lib/storage";
 
@@ -10,7 +10,7 @@ import reducers from "./reducers";
 
 const persistConfig = {
   key: "root",
-  storage
+  storage,
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
@@ -20,4 +20,6 @@ const store = applyMiddleware(thunk, multi, promise)(createStore)(
   composeWithDevTools()
 );
 
-export default store;
+const persistor = persistStore(store);
+
+export { store, persistor };

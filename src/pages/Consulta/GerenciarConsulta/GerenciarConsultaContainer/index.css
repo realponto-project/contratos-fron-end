@@ -1,0 +1,224 @@
+.input-cnpj-consulta,
+.input-nome-consulta,
+.input-codigo-consulta {
+  height: 38px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+
+.input-cnpj-consulta {
+  width: 15%;
+  /* margin-left: 10px; */
+}
+.input-nome-consulta {
+  width: 45%;
+  /* margin-left: 25px; */
+}
+
+.input-codigo-consulta {
+  width: 15%;
+  /* margin: 0 0 0 15px; */
+}
+
+.input-codigo-consulta::placeholder,
+.input-grupo-consulta::placeholder,
+.input-nome-consulta::placeholder,
+.input-cnpj-consulta::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-codigo-consulta:focus,
+.input-grupo-consulta:focus,
+.input-cnpj-consulta:focus,
+.input-nome-consulta:focus {
+  border-bottom: 1px solid #001529;
+}
+
+.input-tipo-consulta {
+  width: 15%;
+  height: 38px;
+  margin: 0 25px 0 15px;
+  color: #666;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none;
+}
+.input-tipo-consulta::placeholder {
+  color: rgb(177, 177, 177);
+}
+.input-tipo-consulta:focus {
+  border-bottom: 1px solid #001529;
+}
+
+.label-nome-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 35%;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.label-cnpj-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 20%;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.label-grupo-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 15%;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.label-codigo-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 15%;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.div-main-labels-modal {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #9a9a9a;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.div-esquerda-label-modal {
+  width: 33%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.div-direita-label-modal {
+  width: 33%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.div-meio-label-modal {
+  width: 33%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.div-esquerda-label-modal:active {
+  width: 33%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #5fceef;
+}
+.div-direita-label-modal:active {
+  width: 33%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #5fceef;
+}
+.div-meio-label-modal:active {
+  width: 33%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #5fceef;
+}
+.label-tipo-table {
+  display: flex;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  font-size: 15px;
+  width: 15%;
+  cursor: pointer;
+}
+.div-pages {
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+.div-main-pages {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.div-teste {
+  margin: 0 12px 0 0;
+}
+.div-spin {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.div-noItens-consulta {
+  font-size: 16px;
+  color: #262626;
+  font-weight: bold;
+  width: 100%;
+}
+
+.div-main-table table th {
+  background-color: #eee;
+  padding: 3px 1px;
+}
+
+.div-main-table table td {
+  border-top: 1px solid #666;
+}
+
+.div-row-contentModal {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.div-block-contentModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  margin: 10px 0;
+}
+
+.div-block-contentModal label {
+  font-size: 10px;
+  color: rgba(0, 21, 41, 1);
+}
+
+.div-card-iten-contentModal {
+  min-height: 60px;
+  width: calc(100% - 4px);
+  margin: 10px 0;
+  border: 1px solid #999;
+  border-radius: 5px;
+  box-shadow: 1px 1px 4px -1px #666;
+  padding: 10px;
+}
